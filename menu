@@ -12,7 +12,7 @@ IP_PUBLICO=$(wget -qO- ifconfig.me)
 file=mcpe
 FILE2=mcpe-start.txt
 MAPA=$(cat /tmp/level.txt)
-BACKUP=$($(TZ=UTC+3 date +"%d-%m-%Y-%H-%M-%S")-"$MAPA")
+BACKUP="$($(TZ=UTC+3 date +"%d-%m-%Y-%H-%M-%S")-"$(cat /tmp/level.txt)")"
 
 echo " "
 
@@ -44,11 +44,13 @@ case $1 in
             echo -ne "\n completo                 (100%)\r";
       ;;
       "--update")
+            rm -rf /tmp/level.txt
+            cat $PATH_TO_INSTALL/mcpe/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
             sudo mkdir $PATH_TO_BACKUP > /dev/null 2>&1;
-            sudo cp -r $PATH_TO_INSTALL/mcpe/worlds/"$MAPA" $PATH_TO_BACKUP/$BACKUP > /dev/null 2>&1;
+            sudo cp -r $PATH_TO_INSTALL/mcpe/worlds/"$(cat /tmp/level.txt)" $PATH_TO_BACKUP/$BACKUP > /dev/null 2>&1;
             sudo mv $PATH_TO_INSTALL /tmp > /dev/null 2>&1;
             sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip > /dev/null 2>&1;
-            sudo cp -r $PATH_TO_BACKUP/$BACKUP $PATH_TO_INSTALL/worlds/$MAPA > /dev/null 2>&1;
+            sudo cp -r $PATH_TO_BACKUP/$BACKUP $PATH_TO_INSTALL/worlds/$(cat /tmp/level.txt) > /dev/null 2>&1;
       ;;
       "--screen") 
             #install
@@ -58,10 +60,11 @@ case $1 in
       ;;
       "--start-file")
             #Config File
+            rm -rf /tmp/level.txt
             cat $FILE2 > "$file"
             cat $PATH_TO_INSTALL/mcpe/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
             sed -i "s|DIRE|$PATH_TO_INSTALL|g" "$file";
-            sed -i "s|MAPASS|$MAPA|g" "$file"
+            sed -i "s|MAPASS|$(cat /tmp/level.txt)|g" "$file"
             sed -i "s|PATH_TO_INSTALL|$PATH_TO_INSTALL|g" "$file"
             sudo cp "$file" /sbin/mcpe ; sudo chmod a+x /sbin/mcpe ; 
       ;;
