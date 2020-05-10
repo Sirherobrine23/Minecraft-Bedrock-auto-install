@@ -1,12 +1,4 @@
 #!/bin/bash
-#banner
-cat banner.txt;
-
-#Variaveis
-SERVER_URL="https://minecraft.azureedge.net/bin-linux/bedrock-server-1.14.60.5.zip"
-PATH_TO_INSTALL="/var/www"
-
-
 
 # Prerequisite
 echo "  ";
