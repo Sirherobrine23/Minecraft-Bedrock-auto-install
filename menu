@@ -3,8 +3,8 @@
 cat banner.txt;
 
 #Variaveis
-SERVER_URL="https://minecraft.azureedge.net/bin-linux/bedrock-server-1.14.60.5.zip"
-PATH_TO_INSTALL="/var/www"
+export SERVER_URL="https://minecraft.azureedge.net/bin-linux/bedrock-server-1.14.60.5.zip"
+export PATH_TO_INSTALL="/var/www"
 echo " "
 
 case $1 in
