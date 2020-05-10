@@ -10,9 +10,9 @@ echo " "
 case $1 in
    "-h") cat help.txt ; echo " "
          ;;
-   "--ubuntu") ./ubuntu.sh
+   "--ubuntu") bash ubuntu.sh
          ;;
-   "--debian") ./debian.sh
+   "--debian") bash debian.sh
          ;;
    *) echo "Opção inválida! utilize a opção -h"
       exit 1
