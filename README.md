@@ -18,3 +18,7 @@ Atualmente temos essa opções para instalação:
     --unistall - remove a pasta installer 
 
 #### Testado no ubuntu e no debian não sei se vai funciona em outras distrs que utilizam o apt.
+
+## futuro
+1. Inicialização junto com o sistema.
+2. Backup e atalização.
