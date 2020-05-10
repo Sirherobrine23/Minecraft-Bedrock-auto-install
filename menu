@@ -12,7 +12,7 @@ IP_PUBLICO=$(wget -qO- ifconfig.me)
 file=mcpe
 FILE2=mcpe-start.txt
 MAPA=$(cat /tmp/level.txt)
-BACKUP="$($(TZ=UTC+3 date +"%d-%m-%Y-%H-%M-%S")-"$(cat /tmp/level.txt)")"
+BACKUP="$(TZ=UTC+3 date +"%d-%m-%Y")-"$(cat /tmp/level.txt)""
 
 echo " "
 
@@ -26,13 +26,13 @@ case $1 in
             echo "  ";
             echo "Instalando os Pré-reuisitos para o debian, ubuntu";
             echo -ne "#                         (01%)\r";
-            sudo apt install -y wget unzip > /dev/null 2>&1;
+            sudo apt install -y wget unzip ;
             echo -ne "##                        (02%)\r";
-            sudo mkdir $PATH_TO_INSTALL > /dev/null 2>&1;
+            sudo mkdir $PATH_TO_INSTALL ;
             #Download do arquivos servidor
-            sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip > /dev/null 2>&1;
+            sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip ;
             echo -ne "########                  (40%)\r";
-            sudo unzip $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe > /dev/null 2>&1;
+            sudo unzip $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe ;
             sudo rm -r $PATH_TO_INSTALL/mcpe.zip;
             echo -ne "#############             (50%)\r";
             #config
@@ -45,17 +45,17 @@ case $1 in
       ;;
       "--update")
             rm -rf /tmp/level.txt
-            cat $PATH_TO_INSTALL/mcpe/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
-            sudo mkdir $PATH_TO_BACKUP > /dev/null 2>&1;
-            sudo cp -r $PATH_TO_INSTALL/mcpe/worlds/"$(cat /tmp/level.txt)" $PATH_TO_BACKUP/$BACKUP > /dev/null 2>&1;
-            sudo mv $PATH_TO_INSTALL /tmp > /dev/null 2>&1;
-            sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip > /dev/null 2>&1;
-            sudo cp -r $PATH_TO_BACKUP/$BACKUP $PATH_TO_INSTALL/worlds/$(cat /tmp/level.txt) > /dev/null 2>&1;
+            cat $PATH_TO_INSTALL/mcpe/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt";
+            sudo mkdir $PATH_TO_BACKUP ;
+            sudo cp -r $PATH_TO_INSTALL/mcpe/worlds/"$(cat /tmp/level.txt)" $PATH_TO_BACKUP/$BACKUP ;
+            sudo mv $PATH_TO_INSTALL /tmp ;
+            sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip ;
+            sudo cp -r $PATH_TO_BACKUP/$BACKUP $PATH_TO_INSTALL/worlds/$(cat /tmp/level.txt) ;
       ;;
       "--screen") 
             #install
             echo "Instalando o Screen ";
-            sudo apt install -y screen > /dev/null 2>&1;
+            sudo apt install -y screen ;
             ./menu --ubuntu;
       ;;
       "--start-file")
