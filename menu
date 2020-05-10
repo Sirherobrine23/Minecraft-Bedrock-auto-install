@@ -26,13 +26,13 @@ case $1 in
             echo "  ";
             echo "Instalando os Pré-reuisitos para o debian, ubuntu";
             echo -ne "#                         (01%)\r";
-            sudo apt install -y wget unzip > log.txt > /dev/null 2>&1;
+            sudo apt install -y wget unzip > /dev/null 2>&1;
             echo -ne "##                        (02%)\r";
             sudo mkdir $PATH_TO_INSTALL > /dev/null 2>&1;
             #Download do arquivos servidor
-            sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip > log.txt > /dev/null 2>&1;
+            sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip > /dev/null 2>&1;
             echo -ne "########                  (40%)\r";
-            sudo unzip $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe > log.txt > /dev/null 2>&1;
+            sudo unzip $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe > /dev/null 2>&1;
             sudo rm -r $PATH_TO_INSTALL/mcpe.zip;
             echo -ne "#############             (50%)\r";
             #config
@@ -50,7 +50,7 @@ case $1 in
       "-s") 
             #install
             echo "Instalando o Screen ";
-            sudo apt install -y screen > log.txt > /dev/null 2>&1;
+            sudo apt install -y screen > /dev/null 2>&1;
             ./menu --ubuntu;
       ;;
       "--start-file")
