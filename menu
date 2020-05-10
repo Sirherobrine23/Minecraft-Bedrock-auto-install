@@ -26,7 +26,7 @@ case $1 in
             echo "  ";
             echo "Instalando os Pré-reuisitos para o debian, ubuntu";
             echo -ne "#                         (01%)\r";
-            sudo apt install -y wget git unzip > log.txt > /dev/null 2>&1;
+            sudo apt install -y wget unzip > log.txt > /dev/null 2>&1;
             echo -ne "##                        (02%)\r";
             sudo mkdir $PATH_TO_INSTALL > /dev/null 2>&1;
             #Download do arquivos servidor
