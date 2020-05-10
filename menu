@@ -21,7 +21,7 @@ case $1 in
          ;;
    "--help") cat help.txt ; echo " "
          ;;
-   "--ubuntu") 
+   "--install") 
             # Prerequisite
             echo "  ";
             echo "Instalando os Pré-reuisitos para o debian, ubuntu";
@@ -43,11 +43,7 @@ case $1 in
             echo -ne "\n #######################   (100%)\r";
             echo -ne "\n completo                 (100%)\r";
       ;;
-    "-u" ) ./menu --ubuntu
-      ;;
-   "--debian") bash debian.sh
-      ;;
-      "-s") 
+      "--screen") 
             #install
             echo "Instalando o Screen ";
             sudo apt install -y screen > /dev/null 2>&1;
@@ -70,6 +66,7 @@ case $1 in
             rm -r /tmp/ip.txt
             echo " ";
       ;;
+      "--unistall") sudo rm -rf ../installer
    *) echo "Opção inválida! utilize a opção -h"
       exit 1
       ;;
