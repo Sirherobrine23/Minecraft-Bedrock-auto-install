@@ -67,6 +67,7 @@ case $1 in
             echo " ";
       ;;
       "--unistall") sudo rm -rf ../installer
+      ;;
    *) echo "Opção inválida! utilize a opção -h"
       exit 1
       ;;
