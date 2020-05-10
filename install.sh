@@ -19,6 +19,7 @@ sudo mkdir $PATH_TO_INSTALL > /dev/null 2>&1;
 sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip > log.txt > /dev/null 2>&1;
 echo -ne "########                  (40%)\r";
 sudo unzip $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe > log.txt > /dev/null 2>&1;
+sudo rm -r $PATH_TO_INSTALL/mcpe.zip;
 echo -ne "#############             (50%)\r";
 #config
 rm $PATH_TO_INSTALL/mcpe/server.properties
@@ -26,3 +27,4 @@ rm $PATH_TO_INSTALL/mcpe/whitelist.json
 cp -r ./server.properties $PATH_TO_INSTALL/mcpe/
 cp -r ./whitelist.json $PATH_TO_INSTALL/mcpe/
 echo -ne "\n #######################   (100%)\r";
+echo -ne "\n completo                 (100%)\r";
