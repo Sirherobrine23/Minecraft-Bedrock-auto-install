@@ -59,6 +59,7 @@ case $1 in
             sed -i "s|DIRE|$PATH_TO_INSTALL|g" "$file";
             sed -i "s|MAPASS|$MAPA|g" "$file"
             sed -i "s|PATH_TO_INSTALL|$PATH_TO_INSTALL|g" "$file"
+            sudo cp "$file" /sbin/mcpe ; sudo chmod a+x /sbin/mcpe ; 
       ;;
       "--ip")
             cp ips.txt /tmp/ip.txt;
