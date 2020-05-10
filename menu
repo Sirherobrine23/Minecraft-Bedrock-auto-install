@@ -4,15 +4,15 @@ cat banner.txt;
 
 #Variaveis
 SERVER_URL="https://minecraft.azureedge.net/bin-linux/bedrock-server-1.14.60.5.zip"
-PATH_TO_INSTALL="/var/www"
+PATH_TO_INSTALL="/home/Minecraft"
+PATH_TO_BACKUP="/home/Minecraft-Backup"
 IP_V4=$(hostname -i)
 IP_V6=$(hostname -I)
 IP_PUBLICO=$(wget -qO- ifconfig.me)
-      #start-file
 file=mcpe
 FILE2=mcpe-start.txt
-cat $PATH_TO_INSTALL/mcpe/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
 MAPA=$(cat /tmp/level.txt)
+BACKUP=$($(TZ=UTC+3 date +"%d-%m-%Y-%H-%M-%S")-"$MAPA")
 
 echo " "
 
@@ -36,12 +36,19 @@ case $1 in
             sudo rm -r $PATH_TO_INSTALL/mcpe.zip;
             echo -ne "#############             (50%)\r";
             #config
-            rm $PATH_TO_INSTALL/mcpe/server.properties
-            rm $PATH_TO_INSTALL/mcpe/whitelist.json
+            rm -rf $PATH_TO_INSTALL/mcpe/server.properties
+            rm -rf $PATH_TO_INSTALL/mcpe/whitelist.json
             cp -r ./server.properties $PATH_TO_INSTALL/mcpe/
             cp -r ./whitelist.json $PATH_TO_INSTALL/mcpe/
             echo -ne "\n #######################   (100%)\r";
             echo -ne "\n completo                 (100%)\r";
+      ;;
+      "--update")
+            sudo mkdir $PATH_TO_BACKUP > /dev/null 2>&1;
+            sudo cp -r $PATH_TO_INSTALL/mcpe/worlds/"$MAPA" $PATH_TO_BACKUP/$BACKUP > /dev/null 2>&1;
+            sudo mv $PATH_TO_INSTALL /tmp > /dev/null 2>&1;
+            sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip > /dev/null 2>&1;
+            sudo cp -r $PATH_TO_BACKUP/$BACKUP $PATH_TO_INSTALL/worlds/$MAPA > /dev/null 2>&1;
       ;;
       "--screen") 
             #install
@@ -52,6 +59,7 @@ case $1 in
       "--start-file")
             #Config File
             cat $FILE2 > "$file"
+            cat $PATH_TO_INSTALL/mcpe/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
             sed -i "s|DIRE|$PATH_TO_INSTALL|g" "$file";
             sed -i "s|MAPASS|$MAPA|g" "$file"
             sed -i "s|PATH_TO_INSTALL|$PATH_TO_INSTALL|g" "$file"
