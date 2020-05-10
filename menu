@@ -5,6 +5,15 @@ cat banner.txt;
 #Variaveis
 SERVER_URL="https://minecraft.azureedge.net/bin-linux/bedrock-server-1.14.60.5.zip"
 PATH_TO_INSTALL="/var/www"
+IP_V4=$(hostname -i)
+IP_V6=$(hostname -I)
+IP_PUBLICO=$(curl ifconfig.me) > /dev/null 2>&1;
+      #start-file
+file=mcpe
+FILE2=mcpe-start.txt
+cat $PATH_TO_INSTALL/mcpe/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
+MAPA=$(cat /tmp/level.txt)
+
 echo " "
 
 case $1 in
@@ -13,29 +22,44 @@ case $1 in
    "--help") cat help.txt ; echo " "
          ;;
    "--ubuntu") 
-   # Prerequisite
-echo "  ";
-echo "Instalando os Pré-reuisitos para o debian, ubuntu";
-echo -ne "#                         (01%)\r";
-sudo apt install -y wget git unzip > log.txt > /dev/null 2>&1;
-echo -ne "##                        (02%)\r";
-sudo mkdir $PATH_TO_INSTALL > /dev/null 2>&1;
-#Download do arquivos servidor
-sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip > log.txt > /dev/null 2>&1;
-echo -ne "########                  (40%)\r";
-sudo unzip $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe > log.txt > /dev/null 2>&1;
-sudo rm -r $PATH_TO_INSTALL/mcpe.zip;
-echo -ne "#############             (50%)\r";
-#config
-rm $PATH_TO_INSTALL/mcpe/server.properties
-rm $PATH_TO_INSTALL/mcpe/whitelist.json
-cp -r ./server.properties $PATH_TO_INSTALL/mcpe/
-cp -r ./whitelist.json $PATH_TO_INSTALL/mcpe/
-echo -ne "\n #######################   (100%)\r";
-echo -ne "\n completo                 (100%)\r";
-         ;;
+            # Prerequisite
+            echo "  ";
+            echo "Instalando os Pré-reuisitos para o debian, ubuntu";
+            echo -ne "#                         (01%)\r";
+            sudo apt install -y wget git unzip > log.txt > /dev/null 2>&1;
+            echo -ne "##                        (02%)\r";
+            sudo mkdir $PATH_TO_INSTALL > /dev/null 2>&1;
+            #Download do arquivos servidor
+            sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip > log.txt > /dev/null 2>&1;
+            echo -ne "########                  (40%)\r";
+            sudo unzip $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe > log.txt > /dev/null 2>&1;
+            sudo rm -r $PATH_TO_INSTALL/mcpe.zip;
+            echo -ne "#############             (50%)\r";
+            #config
+            rm $PATH_TO_INSTALL/mcpe/server.properties
+            rm $PATH_TO_INSTALL/mcpe/whitelist.json
+            cp -r ./server.properties $PATH_TO_INSTALL/mcpe/
+            cp -r ./whitelist.json $PATH_TO_INSTALL/mcpe/
+            echo -ne "\n #######################   (100%)\r";
+            echo -ne "\n completo                 (100%)\r";
+      ;;
+    "-u" ) ./menu --ubuntu
+      ;;
    "--debian") bash debian.sh
-         ;;
+      ;;
+      "-s") 
+            #install
+            echo "Instalando o Screen ";
+            sudo apt install -y screen > log.txt > /dev/null 2>&1;
+            ./menu --ubuntu;
+      ;;
+      "-start-file")
+            #Config File
+            cat $FILE2 > "$file"
+            sed -i "s|DIRE|$PATH_TO_INSTALL|g" "$file";
+            sed -i "s|MAPASS|$MAPA|g" "$file"
+            sed -i "s|PATH_TO_INSTALL|$PATH_TO_INSTALL|g" "$file"
+      ;;
    *) echo "Opção inválida! utilize a opção -h"
       exit 1
       ;;
