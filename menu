@@ -4,6 +4,7 @@ cat banner.txt;
 
 #Variaveis
 SERVER_URL="https://minecraft.azureedge.net/bin-linux/bedrock-server-1.14.60.5.zip"
+SERVER_UPDATE="$(wget -qO- https://raw.githubusercontent.com/Sirherobrine23/Minecraft-Bedrock-auto-install/master/Update.txt)"
 PATH_TO_INSTALL="/home/Minecraft"
 PATH_TO_BACKUP="/home/Minecraft-Backup"
 IP_V4=$(hostname -i)
@@ -40,17 +41,11 @@ case $1 in
             rm -rf $PATH_TO_INSTALL/mcpe/whitelist.json
             cp -r ./server.properties $PATH_TO_INSTALL/mcpe/
             cp -r ./whitelist.json $PATH_TO_INSTALL/mcpe/
-            echo -ne "\n #######################   (100%)\r";
-            echo -ne "\n completo                 (100%)\r";
+            echo -ne "#######################   (100%)\r";
+            echo -ne "####### completo ######   (100%)\r";
       ;;
       "--update")
-            rm -rf /tmp/level.txt
-            cat $PATH_TO_INSTALL/mcpe/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt";
-            sudo mkdir $PATH_TO_BACKUP ;
-            sudo cp -r $PATH_TO_INSTALL/mcpe/worlds/"$(cat /tmp/level.txt)" $PATH_TO_BACKUP/$BACKUP ;
-            sudo mv $PATH_TO_INSTALL /tmp ;
-            sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip ;
-            sudo cp -r $PATH_TO_BACKUP/$BACKUP $PATH_TO_INSTALL/worlds/$(cat /tmp/level.txt) ;
+            echo "Beta Ainda";
       ;;
       "--screen") 
             #install
