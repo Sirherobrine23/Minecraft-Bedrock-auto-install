@@ -1,0 +1,3 @@
+opções para instalação:
+    --ubuntu - instalação para ubuntu X64
+    --debian - instalação para o sistema debian (e distro que utilizam o APT)

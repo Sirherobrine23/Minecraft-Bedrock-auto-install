@@ -1,3 +1,3 @@
-# sirherobrine23-backup-mcpe
+# Instalação do Minecraft Bedrock Server
 
-''' BAckups do meu mapa '''
+Por favor edite o arquivo "menu" na variaveis para não ter erro de instalação.
