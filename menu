@@ -7,7 +7,7 @@ SERVER_URL="https://minecraft.azureedge.net/bin-linux/bedrock-server-1.14.60.5.z
 PATH_TO_INSTALL="/var/www"
 IP_V4=$(hostname -i)
 IP_V6=$(hostname -I)
-IP_PUBLICO=$(curl ifconfig.me) > /dev/null 2>&1;
+IP_PUBLICO=$(wget -qO- ifconfig.me)
       #start-file
 file=mcpe
 FILE2=mcpe-start.txt
@@ -53,12 +53,21 @@ case $1 in
             sudo apt install -y screen > log.txt > /dev/null 2>&1;
             ./menu --ubuntu;
       ;;
-      "-start-file")
+      "--start-file")
             #Config File
             cat $FILE2 > "$file"
             sed -i "s|DIRE|$PATH_TO_INSTALL|g" "$file";
             sed -i "s|MAPASS|$MAPA|g" "$file"
             sed -i "s|PATH_TO_INSTALL|$PATH_TO_INSTALL|g" "$file"
+      ;;
+      "--ip")
+            cp ips.txt /tmp/ip.txt;
+            sed -i "s|IPV4|$IP_V4|g" "/tmp/ip.txt";
+            sed -i "s|IPV6|$IP_V6|g" "/tmp/ip.txt";
+            sed -i "s|IPPUBLICO|$IP_PUBLICO|g" "/tmp/ip.txt";
+            cat /tmp/ip.txt;
+            rm -r /tmp/ip.txt
+            echo " ";
       ;;
    *) echo "Opção inválida! utilize a opção -h"
       exit 1

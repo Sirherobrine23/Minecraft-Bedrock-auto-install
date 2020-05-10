@@ -1,5 +1,7 @@
 opções para instalação:
+
     --ubuntu, -u - instalação para ubuntu X64
     --debian - instalação para o sistema debian (e distro que utilizam o APT)
     -s - Add screen, mais a instalação para servidor para funciona 24 Horas sem a necessidade de deixa o ssh ou outro meio conectado
-    -start-file - Adiciona um arquivo para "screen mcpe"
+    --start-file - Adiciona um arquivo para "screen mcpe"
+    --ip - Mostre seu IPs Disponiveis

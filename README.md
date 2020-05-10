@@ -1,3 +1,5 @@
 # Instalação do Minecraft Bedrock Server
 
-Por favor edite o arquivo "menu" na variaveis para não ter erro de instalação.
+Como foi feito para Ajudar na instalação do Minecraft Bedrock server para uma instalação de um simples linha do terminal
+
+Este Script só agiliza a instalação do servidor para MCPE (Minecraft Bedrock)
