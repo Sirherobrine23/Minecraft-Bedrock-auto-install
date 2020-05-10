@@ -5,15 +5,18 @@ cat banner.txt;
 #Variaveis
 SERVER_URL="https://minecraft.azureedge.net/bin-linux/bedrock-server-1.14.60.5.zip"
 SERVER_UPDATE="$(wget -qO- https://raw.githubusercontent.com/Sirherobrine23/Minecraft-Bedrock-auto-install/master/Update.txt)"
-PATH_TO_INSTALL="/home/Minecraft"
-PATH_TO_BACKUP="/home/Minecraft-Backup"
+PATH_TO_INSTALL="/mnt/d/teste/Minecraft"
+PATH_TO_BACKUP="/mnt/d/teste/Minecraft-Backup"
 IP_V4=$(hostname -i)
 IP_V6=$(hostname -I)
 IP_PUBLICO=$(wget -qO- ifconfig.me)
 file=mcpe
 FILE2=mcpe-start.txt
-MAPA=$(cat /tmp/level.txt)
-BACKUP="$(TZ=UTC+3 date +"%d-%m-%Y")-"$(cat /tmp/level.txt)""
+MAPA=$(cat $TMP/level.txt)
+BACKUP="$(TZ=UTC+3 date +"%d-%m-%Y")"
+TMP=/mnt/d/teste/tmp
+rm -rf $TMP/level.txt
+cat "$PATH_TO_INSTALL/mcpe/server.properties" | grep "level-name=" > "$TMP/level.txt" ; sed -i "s|level-name=||g" "$TMP/level.txt";
 
 echo " "
 
@@ -45,7 +48,7 @@ case $1 in
             echo -ne "####### completo ######   (100%)\r";
       ;;
       "--update")
-            echo "Beta Ainda";
+            bash teste.sh
       ;;
       "--screen") 
             #install
