@@ -1,54 +1,92 @@
 #!/bin/bash
- #banner
-cat banner.txt;
-
+clear
 #Variaveis
 SERVER_URL="https://minecraft.azureedge.net/bin-linux/bedrock-server-1.14.60.5.zip"
 SERVER_UPDATE="$(wget -qO- https://raw.githubusercontent.com/Sirherobrine23/Minecraft-Bedrock-auto-install/master/Update.txt)"
-PATH_TO_INSTALL="/mnt/d/teste/Minecraft"
-PATH_TO_BACKUP="/mnt/d/teste/Minecraft-Backup"
+PATH_TO_INSTALL="/home/Minecraft"
+PATH_TO_BACKUP="/home/Minecraft-Backup"
 IP_V4=$(hostname -i)
 IP_V6=$(hostname -I)
 IP_PUBLICO=$(wget -qO- ifconfig.me)
 file=mcpe
 FILE2=mcpe-start.txt
-MAPA=$(cat $TMP/level.txt)
 BACKUP="$(TZ=UTC+3 date +"%d-%m-%Y")"
-TMP=/mnt/d/teste/tmp
-rm -rf $TMP/level.txt
-cat "$PATH_TO_INSTALL/mcpe/server.properties" | grep "level-name=" > "$TMP/level.txt" ; sed -i "s|level-name=||g" "$TMP/level.txt";
-
+TMP=/home/Minecraft/tmp &> ./log.txt;
+sudo mkdir $TMP &> ./log.txt;
+rm -rf $TMP/level.txt &> ./log.txt;
+cat "$PATH_TO_INSTALL/mcpe/server.properties" | grep "level-name=" > "$TMP/level.txt" ; sed -i "s|level-name=||g" "$TMP/level.txt" &> ./log.txt;
+MAPA=$(cat $TMP/level.txt)
 echo " "
 
 case $1 in
-   "-h") cat help.txt ; echo " "
+   "-h") cat banner.txt ; cat help.txt ; echo " "
          ;;
-   "--help") cat help.txt ; echo " "
+   "--help") cat banner.txt ; cat help.txt ; echo " "
          ;;
    "--install") 
+             #banner
+            cat banner.txt;
             # Prerequisite
             echo "  ";
             echo "Instalando os Pré-reuisitos para o debian, ubuntu";
             echo -ne "#                         (01%)\r";
-            sudo apt install -y wget unzip ;
+            sudo apt install -y wget unzip 2>> log.txt &> ./log.txt;
             echo -ne "##                        (02%)\r";
-            sudo mkdir $PATH_TO_INSTALL ;
+            sudo mkdir $PATH_TO_INSTALL &> ./log.txt;
             #Download do arquivos servidor
-            sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip ;
+            sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip &> ./log.txt;
             echo -ne "########                  (40%)\r";
-            sudo unzip $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe ;
-            sudo rm -r $PATH_TO_INSTALL/mcpe.zip;
+            sudo unzip -o $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe &> ./log.txt;
+            sudo rm -rf $PATH_TO_INSTALL/mcpe.zip;
             echo -ne "#############             (50%)\r";
             #config
-            rm -rf $PATH_TO_INSTALL/mcpe/server.properties
-            rm -rf $PATH_TO_INSTALL/mcpe/whitelist.json
-            cp -r ./server.properties $PATH_TO_INSTALL/mcpe/
-            cp -r ./whitelist.json $PATH_TO_INSTALL/mcpe/
+            rm -rf $PATH_TO_INSTALL/mcpe/server.properties &> ./log.txt;
+            rm -rf $PATH_TO_INSTALL/mcpe/whitelist.json &> ./log.txt;
+            cp -r ./server.properties $PATH_TO_INSTALL/mcpe/ &> ./log.txt;
+            cp -r ./whitelist.json $PATH_TO_INSTALL/mcpe/ &> ./log.txt;
             echo -ne "#######################   (100%)\r";
             echo -ne "####### completo ######   (100%)\r";
+            sudo cat "./log.txt"
       ;;
       "--update")
-            bash teste.sh
+             #banner
+            cat banner.txt;
+            #Copiando
+            echo -ne "                          (0%)\r";
+            sudo mkdir $PATH_TO_BACKUP &> ./log.txt;
+            sudo mkdir $PATH_TO_BACKUP/$BACKUP &> ./log.txt;            
+            echo -ne "#                         (1%)\r";
+            sudo cp -r $PATH_TO_INSTALL/mcpe/worlds/* $PATH_TO_BACKUP/$BACKUP &> ./log.txt;
+            sudo cp $PATH_TO_INSTALL/mcpe/server.properties $PATH_TO_BACKUP/$BACKUP &> ./log.txt;
+            sudo cp $PATH_TO_INSTALL/mcpe/whitelist.json $PATH_TO_BACKUP/$BACKUP &> ./log.txt;
+            #Movendo versão antiga para $TMP
+            echo -ne "##                       (10%)\r";
+            
+            sudo mv $PATH_TO_INSTALL $TMP &> ./log.txt;
+            #Baixando
+            sudo rm -rf $PATH_TO_INSTALL/mcpe.zip &> ./log.txt;
+            sudo wget $SERVER_UPDATE -O $PATH_TO_INSTALL/mcpe.zip &> ./log.txt;
+            sudo unzip -o $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe &> ./log.txt;
+            sudo rm -r $PATH_TO_INSTALL/mcpe.zip &> ./log.txt;
+            echo -ne "###########              (50%)\r";
+            #Criando Diretorios
+            sudo mkdir $PATH_TO_INSTALL &> ./log.txt;
+            sudo mkdir $PATH_TO_INSTALL/mcpe &> ./log.txt;
+            
+            #Copiando mapa para nova versão
+             sudo rm -rf $PATH_TO_INSTALL/worlds &> ./log.txt;
+             sudo rm -rf $PATH_TO_INSTALL/server.properties &> ./log.txt;
+             sudo rm -rf $PATH_TO_INSTALL/whitelist.json &> ./log.txt;
+            sudo cp -r $PATH_TO_BACKUP/$BACKUP/$MAPA $PATH_TO_INSTALL/mcpe/worlds/ &> ./log.txt;
+            sudo cp $PATH_TO_BACKUP/$BACKUP/server.properties $PATH_TO_INSTALL/mcpe/ &> ./log.txt;
+            sudo cp $PATH_TO_BACKUP/$BACKUP/whitelist.json $PATH_TO_INSTALL/mcpe/ &> ./log.txt;
+
+            sudo rm -rf $PATH_TO_INSTALL/mcpe/worlds/server.properties &> ./log.txt;
+            sudo rm -rf $PATH_TO_INSTALL/mcpe/worlds/whitelist.json &> ./log.txt;
+            sudo rm -r $PATH_TO_BACKUP
+            echo -ne "#######################   (100%)\r";
+            echo -ne "###### Completo #######   (100%)\r";
+            sudo cat "./log.txt"
       ;;
       "--screen") 
             #install
