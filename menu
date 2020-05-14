@@ -92,7 +92,8 @@ case $1 in
             #install
             echo "Instalando o Screen ";
             sudo apt install -y screen ;
-            ./menu --ubuntu;
+            sudo bash menu --ubuntu;
+            sudo mv mcpe /sbin/ ; sudo chmod a+x /sbin/mcpe;
       ;;
       "--start-file")
             #Config File
