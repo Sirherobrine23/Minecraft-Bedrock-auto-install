@@ -1,0 +1,54 @@
+#!/bin/bash
+
+case "$1" in 
+    start)
+       sudo screen -S bedrock mcpe
+       ;;
+    stop)
+            screen -Rd bedrock -X stuff
+            sleep 5
+            screen -Rd bedrock -X stuff
+            sleep 1
+            screen -Rd bedrock -X stuff
+            sleep 1
+            screen -Rd bedrock -X stuff
+            sleep 1
+            screen -Rd bedrock -X stuff
+            sleep 1
+            screen -Rd bedrock -X stuff
+            sleep 1
+            screen -Rd bedrock -X stuff
+            screen -X -S bedrock quit
+            echo "Server has now stopped."
+       ;;
+    restart)
+        if ! screen -list | grep -q "mcbe"; then
+        echo "Server is not running and therefore can not restart."
+    else
+
+        echo "Restarting Minecraft Bedrock server in 30 seconds"
+        screen -Rd bedrock -X stuff
+        sleep 25
+        screen -Rd bedrock -X stuff
+        sleep 1
+        screen -Rd bedrock -X stuff
+        sleep 1
+        screen -Rd bedrock -X stuff
+        sleep 1
+        screen -Rd bedrock -X stuff
+        sleep 1
+        screen -Rd bedrock -X stuff
+        sleep 1
+        screen -Rd bedrock -X stuff
+        screen -X -S bedrock quit
+        echo "Server will now start up once again :)"
+        sleep 2
+        screen -dmS bedrock
+        screen -S bedrock -X stuff "./bedrock_server"
+    fi
+    ;;
+    *)
+       echo "Usage: $0 {start|stop|reboot|restart}"
+esac
+
+exit 0 
