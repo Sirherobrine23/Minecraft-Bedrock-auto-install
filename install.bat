@@ -16,5 +16,5 @@ rm -rf mcpe/whitelist.json >>install.log 2>&1
 rm -rf mcpe/server.properties >>install.log 2>&1
 wget.exe --no-check-certificate https://raw.githubusercontent.com/Sirherobrine23/Minecraft-Bedrock-auto-install/Beta/server.properties -O mcpe/server.properties >>install.log 2>&1
 wget.exe --no-check-certificate https://raw.githubusercontent.com/Sirherobrine23/Minecraft-Bedrock-auto-install/Beta/whitelist.json -O mcpe/whitelist.json >>install.log 2>&1
-
-rem cp -r mcpe/* %PATH_TO_INSTALL%
+cp -r mcpe/* %PATH_TO_INSTALL%
+rm -rf mcpe
