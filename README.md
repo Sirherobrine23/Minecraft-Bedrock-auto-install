@@ -7,7 +7,7 @@
  execute o <code>install.bat</code>.
  ele cria as pastas no diretorio do usuario chamadas <code>mcpe</code>, dentro dela terá todos os arquivos do servido.
 
-## Atualização
+## Atualização ou Update
 
  execute o script <code>update.bat</code>
   ele criar duas pastas o <code>mcpe-backup</code>, <code>mcpe-backup-zip</code>. Recomendo pega os arquivos zip do <code>mcpe-backup-zip</code> renomear, e coloca-lo dentro de uma pasta de backup
