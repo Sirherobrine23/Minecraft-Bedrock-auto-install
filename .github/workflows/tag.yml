@@ -5,11 +5,25 @@
 # file with configuration.  For more information, see:
 # https://github.com/actions/labeler/blob/master/README.md
 
-name: Labeler
-on: pushe
+name: Tag
+on:
+  push:
+    branches:
+      - Beta
+    paths:
+      - .gitgnore
+      - banner.txt
+      - help.txt
+      - install.sh
+      - menu
+      - mcpe-start.txt
+      - server.properties
+      - whitelist.json
+      - start-on-system
+      - Update.txt
 
 jobs:
-  label:
+  Tag:
 
     runs-on: ubuntu-latest
 
