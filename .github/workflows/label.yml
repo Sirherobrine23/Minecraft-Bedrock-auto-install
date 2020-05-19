@@ -6,7 +6,7 @@
 # https://github.com/actions/labeler/blob/master/README.md
 
 name: Labeler
-on: [pull_request]
+on: push
 
 jobs:
   label:
@@ -14,6 +14,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/labeler@v2
+    - name: Gerando Tag
+      id: tag
+      run: |
+        echo ::set-env name=RELEASE_TAG::"$(TZ=UTC+3 date +"%d/%m/%Y-%H-%M-%S")-tag"
+        echo "Tag $(TZ=UTC+3 date +"%d/%m/%Y-%H-%M-%S")" >> release.txt
+        echo "::set-output name=status::success"
+    
+    - name: Upload so Firmware para o Release
+      uses: softprops/action-gh-release@v1
+      if: steps.tag.outputs.status == 'success' && !cancelled()
+      env:
+        GITHUB_TOKEN: ${{ secrets.tag }}
       with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        tag_name: ${{ env.RELEASE_TAG }}
+        body_path: release.txt
