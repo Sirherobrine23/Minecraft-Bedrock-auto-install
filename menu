@@ -5,8 +5,9 @@ SERVER_UPDATE="$(wget -qO- https://raw.githubusercontent.com/Sirherobrine23/Mine
 PATH_TO_INSTALL="/home/Minecraft"
 PATH_TO_BACKUP="/home/Minecraft-Backup"
 IP_V4=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
-IP_V6=$(hostname -I)
-IP_PUBLICO=$(wget -qO- ifconfig.me)
+SEARCH_IPV6=$(ip -6 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)
+IP_V6=$(ifconfig $SEARCH_IPV6 | grep "inet6" | awk -F' ' '{print $2}' | awk '{print $1}') 
+IP_PUBLICO=$(wget -qO- http://ipecho.net/plain)
 file=mcpe
 FILE2=mcpe-start.txt
 BACKUP="$(TZ=UTC+3 date +"%d-%m-%Y")"
@@ -202,7 +203,7 @@ fi
       "--ip")
             cp ips.txt /tmp/ip.txt;
             sed -i "s|IPV4|$IP_V4|g" "/tmp/ip.txt";
-            sed -i "s|IPV6|$IP_V6|g" "/tmp/ip.txt";
+            sed -i "s|NANOV6|$IP_V6|g" "/tmp/ip.txt";
             sed -i "s|IPPUBLICO|$IP_PUBLICO|g" "/tmp/ip.txt";
             cat /tmp/ip.txt;
             rm -r /tmp/ip.txt
