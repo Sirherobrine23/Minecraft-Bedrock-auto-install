@@ -1,7 +1,11 @@
 #!/bin/bash
-
+if [ "$EUID" -ne 0 ]; then
+	echo "Você não está executando o service com root ou sudo"
+	exit 1
+fi
 case "$1" in 
     start)
+       echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
        sudo screen -S bedrock mcpe
        ;;
     stop)
@@ -19,14 +23,14 @@ case "$1" in
             sleep 1
             screen -Rd bedrock -X stuff
             screen -X -S bedrock quit
-            echo "Server has now stopped."
+            echo "Agora o Servidor está parado."
        ;;
     restart)
-        if ! screen -list | grep -q "mcbe"; then
-        echo "Server is not running and therefore can not restart."
+        if ! screen -list | grep -q "bedrock"; then
+        echo "Servidor não está ligado ou Não foi possivel reinicia."
     else
 
-        echo "Restarting Minecraft Bedrock server in 30 seconds"
+        echo "Reiniciando o servidor em 30 segundos"
         screen -Rd bedrock -X stuff
         sleep 25
         screen -Rd bedrock -X stuff
@@ -41,7 +45,7 @@ case "$1" in
         sleep 1
         screen -Rd bedrock -X stuff
         screen -X -S bedrock quit
-        echo "Server will now start up once again :)"
+        echo "O servidor está ligado ágora:)"
         sleep 2
         screen -dmS bedrock
         screen -S bedrock -X stuff "./bedrock_server"

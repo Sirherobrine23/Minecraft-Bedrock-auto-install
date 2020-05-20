@@ -1,6 +1,8 @@
 #!/bin/bash
 #Variaveis
 REMOVE=$(pwd)
+sudo apt install net-tools -y >>/tmp/log.txt 2>&1 ;
+sudo apt install screen -y >>/tmp/log.txt 2>&1 ;
 SERVER_URL="https://minecraft.azureedge.net/bin-linux/bedrock-server-1.14.60.5.zip"
 SERVER_UPDATE="$(wget -qO- https://raw.githubusercontent.com/Sirherobrine23/Minecraft-Bedrock-auto-install/master/Update.txt)"
 PATH_TO_INSTALL="/home/Minecraft"
@@ -10,11 +12,11 @@ SEARCH_IPV6=$(ip -6 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -
 IP_V6=$(ifconfig $SEARCH_IPV6 | grep "inet6" | awk -F' ' '{print $2}' | awk '{print $1}') 
 IP_PUBLICO=$(wget -qO- http://ipecho.net/plain)
 file=mcpe
-FILE2=mcpe-start.txt
+FILE2=mcpe-start.sh
 BACKUP="$(TZ=UTC+3 date +"%d-%m-%Y")"
 TMP=/home/Minecraft/tmp >>/tmp/log.txt 2>&1 ;
 sudo mkdir $TMP >>/tmp/log.txt 2>&1 ;
-rm -rf $TMP/level.txt >>/tmp/log.txt 2>&1 ;
+sudo rm -rf $TMP/level.txt >>/tmp/log.txt 2>&1 ;
 cat "$PATH_TO_INSTALL/mcpe/server.properties" | grep "level-name=" > "$TMP/level.txt" ; sed -i "s|level-name=||g" "$TMP/level.txt" >>/tmp/log.txt 2>&1 ;
 MAPA=$(cat $TMP/level.txt)
 echo " "
@@ -191,27 +193,28 @@ fi
       "--start-file")
             #Config File
             rm -rf /tmp/level.txt
+            rm -rf /sbin/mcpe
             cat $FILE2 > "$file"
             cat $PATH_TO_INSTALL/mcpe/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
             sed -i "s|DIRE|$PATH_TO_INSTALL|g" "$file";
             sed -i "s|MAPASS|$(cat /tmp/level.txt)|g" "$file"
             sed -i "s|PATH_TO_INSTALL|$PATH_TO_INSTALL|g" "$file"
-            sudo cp "$file" /sbin/mcpe ; sudo chmod a+x /sbin/mcpe ; 
+            sudo mv "$file" /sbin/mcpe ; sudo chmod a+x /sbin/mcpe ; 
+            echo " "
+            echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
       ;;
       "--start-on-system")
-            sudo cp start-on-system /etc/init.d/mcpe;
+            sudo rm -rf /etc/init.d/mcpe
+            sudo cp start-on-system.sh /etc/init.d/mcpe;
             echo "copiando o arquivo";
             sudo chmod a+x /etc/init.d/mcpe;
             echo 'service mcpe start|stop|restart'
-            echo 'teste caso não inicie o servidor é por causa, que não instalaram o script "start-file"'
+            echo 'teste caso não inicie o servidor é por causa, que não instalaram o script "--start-file"'
       ;;
       "--ip")
-            cp ips.txt /tmp/ip.txt;
-            sed -i "s|IPV4|$IP_V4|g" "/tmp/ip.txt";
-            sed -i "s|NANOV6|$IP_V6|g" "/tmp/ip.txt";
-            sed -i "s|IPPUBLICO|$IP_PUBLICO|g" "/tmp/ip.txt";
-            cat /tmp/ip.txt;
-            rm -r /tmp/ip.txt
+            echo "Seu IPv4 é $IP_V4 para Jogar localmente , e o Seu IPv6 é $(echo -ne $IP_V6)."
+            echo " "
+            echo "Caso Queira Jogar Remotamento com alguém Abra as Portas 19132 e 19133 no seu Roteador ou seu Firewall, seu IPv4 Publico é $IP_PUBLICO"
             echo " ";
       ;;
       "--unistall") sudo rm -rf $REMOVE
