@@ -1,5 +1,6 @@
 #!/bin/bash
 #Variaveis
+REMOVE=$(pwd)
 SERVER_URL="https://minecraft.azureedge.net/bin-linux/bedrock-server-1.14.60.5.zip"
 SERVER_UPDATE="$(wget -qO- https://raw.githubusercontent.com/Sirherobrine23/Minecraft-Bedrock-auto-install/master/Update.txt)"
 PATH_TO_INSTALL="/home/Minecraft"
@@ -213,7 +214,7 @@ fi
             rm -r /tmp/ip.txt
             echo " ";
       ;;
-      "--unistall") sudo rm -rf ../installer
+      "--unistall") sudo rm -rf $REMOVE
       ;;
       *) cat banner.txt ; cat help.txt ; echo " ";
       exit 1
