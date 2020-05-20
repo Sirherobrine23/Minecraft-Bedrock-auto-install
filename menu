@@ -11,10 +11,10 @@ IP_PUBLICO=$(wget -qO- http://ipecho.net/plain)
 file=mcpe
 FILE2=mcpe-start.txt
 BACKUP="$(TZ=UTC+3 date +"%d-%m-%Y")"
-TMP=/home/Minecraft/tmp >>log.txt 2>&1 ;
-sudo mkdir $TMP >>log.txt 2>&1 ;
-rm -rf $TMP/level.txt >>log.txt 2>&1 ;
-cat "$PATH_TO_INSTALL/mcpe/server.properties" | grep "level-name=" > "$TMP/level.txt" ; sed -i "s|level-name=||g" "$TMP/level.txt" >>log.txt 2>&1 ;
+TMP=/home/Minecraft/tmp >>/tmp/log.txt 2>&1 ;
+sudo mkdir $TMP >>/tmp/log.txt 2>&1 ;
+rm -rf $TMP/level.txt >>/tmp/log.txt 2>&1 ;
+cat "$PATH_TO_INSTALL/mcpe/server.properties" | grep "level-name=" > "$TMP/level.txt" ; sed -i "s|level-name=||g" "$TMP/level.txt" >>/tmp/log.txt 2>&1 ;
 MAPA=$(cat $TMP/level.txt)
 echo " "
 
@@ -42,25 +42,28 @@ if [[ $OS == 'ubuntu' ]]; then
             echo "  ";
             echo "Instalando os Pré-reuisitos para o  ubuntu";
             echo -ne "#                         (01%)\r";
-            sudo apt install -y wget unzip >>log.txt 2>&1 ;
+            sudo apt install -y wget unzip >>/tmp/log.txt 2>&1 ;
             echo -ne "##                        (02%)\r";
             echo " ";
-            echo "Instalando o Servidor";
-            sudo mkdir $PATH_TO_INSTALL >>log.txt 2>&1 ;
+            echo "Criando diretorio do servidor no $PATH_TO_INSTALL"
+            sudo mkdir $PATH_TO_INSTALL >>/tmp/log.txt 2>&1 ;
             #Download do arquivos servidor
-            sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip >>log.txt 2>&1 ;
+            echo -ne "#####                     (20%)\r";
+            echo "Baixando o Software do Servidor";
+            sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip >>/tmp/log.txt 2>&1 ;
             echo -ne "########                  (40%)\r";
-            sudo unzip -o $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe >>log.txt 2>&1 ;
+            echo "Instalando o Servidor";
+            sudo unzip -o $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe >>/tmp/log.txt 2>&1 ;
             sudo rm -rf $PATH_TO_INSTALL/mcpe.zip;
             echo -ne "#############             (50%)\r";
             #config
-            rm -rf $PATH_TO_INSTALL/mcpe/server.properties >>log.txt 2>&1 ;
-            rm -rf $PATH_TO_INSTALL/mcpe/whitelist.json >>log.txt 2>&1 ;
-            cp -r ./server.properties $PATH_TO_INSTALL/mcpe/ >>log.txt 2>&1 ;
-            cp -r ./whitelist.json $PATH_TO_INSTALL/mcpe/ >>log.txt 2>&1 ;
+            rm -rf $PATH_TO_INSTALL/mcpe/server.properties >>/tmp/log.txt 2>&1 ;
+            rm -rf $PATH_TO_INSTALL/mcpe/whitelist.json >>/tmp/log.txt 2>&1 ;
+            cp -r ./server.properties $PATH_TO_INSTALL/mcpe/ >>/tmp/log.txt 2>&1 ;
+            cp -r ./whitelist.json $PATH_TO_INSTALL/mcpe/ >>/tmp/log.txt 2>&1 ;
             echo -ne "#######################   (100%)\r";
             echo -ne "####### completo ######   (100%)\r";
-            echo "O log está no arquivo log.txt ou install.log"
+            echo "O log está no arquivo /tmp/log.txt ou /tmp/install.log"
 elif [[ $OS == 'debian' ]]; then
              #banner
             cat banner.txt;
@@ -68,25 +71,26 @@ elif [[ $OS == 'debian' ]]; then
             echo "  ";
             echo "Instalando os Pré-reuisitos para o debian";
             echo -ne "#                         (01%)\r";
-            sudo apt install -y wget unzip >>log.txt 2>&1 ;
+            sudo apt install -y wget unzip >>/tmp/log.txt 2>&1 ;
             echo -ne "##                        (02%)\r";
             echo " ";
-            echo "Instalando o Servidor";
-            sudo mkdir $PATH_TO_INSTALL >>log.txt 2>&1 ;
+            echo "Criando o Diretorio do servidor no $PATH_TO_INSTALL";
+            sudo mkdir $PATH_TO_INSTALL >>/tmp/log.txt 2>&1 ;
             #Download do arquivos servidor
-            sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip >>log.txt 2>&1 ;
+            echo "Baixando o Software do Servidor";
+            sudo wget $SERVER_URL -O $PATH_TO_INSTALL/mcpe.zip >>/tmp/log.txt 2>&1 ;
             echo -ne "########                  (40%)\r";
-            sudo unzip -o $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe >>log.txt 2>&1 ;
+            sudo unzip -o $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe >>/tmp/log.txt 2>&1 ;
             sudo rm -rf $PATH_TO_INSTALL/mcpe.zip;
             echo -ne "#############             (50%)\r";
             #config
-            rm -rf $PATH_TO_INSTALL/mcpe/server.properties >>log.txt 2>&1 ;
-            rm -rf $PATH_TO_INSTALL/mcpe/whitelist.json >>log.txt 2>&1 ;
-            cp -r ./server.properties $PATH_TO_INSTALL/mcpe/ >>log.txt 2>&1 ;
-            cp -r ./whitelist.json $PATH_TO_INSTALL/mcpe/ >>log.txt 2>&1 ;
+            rm -rf $PATH_TO_INSTALL/mcpe/server.properties >>/tmp/log.txt 2>&1 ;
+            rm -rf $PATH_TO_INSTALL/mcpe/whitelist.json >>/tmp/log.txt 2>&1 ;
+            cp -r ./server.properties $PATH_TO_INSTALL/mcpe/ >>/tmp/log.txt 2>&1 ;
+            cp -r ./whitelist.json $PATH_TO_INSTALL/mcpe/ >>/tmp/log.txt 2>&1 ;
             echo -ne "#######################   (100%)\r";
             echo -ne "####### completo ######   (100%)\r";
-            echo "O log está no arquivo log.txt ou install.log"
+            echo "O log está no arquivo /tmp/log.txt ou /tmp/install.log"
 fi
       ;;
       "--update")
@@ -98,40 +102,40 @@ if [[ $OS == 'ubuntu' ]]; then
             sleep 2
             echo -ne "Começado\r"
             echo -ne "                          (0%)\r";
-            sudo mkdir $PATH_TO_BACKUP >>log.txt 2>&1 ;
-            sudo mkdir $PATH_TO_BACKUP/$BACKUP >>log.txt 2>&1 ;            
+            sudo mkdir $PATH_TO_BACKUP >>/tmp/log.txt 2>&1 ;
+            sudo mkdir $PATH_TO_BACKUP/$BACKUP >>/tmp/log.txt 2>&1 ;            
             echo -ne "#                         (1%)\r";
-            sudo cp -r $PATH_TO_INSTALL/mcpe/worlds/* $PATH_TO_BACKUP/$BACKUP >>log.txt 2>&1 ;
-            sudo cp $PATH_TO_INSTALL/mcpe/server.properties $PATH_TO_BACKUP/$BACKUP >>log.txt 2>&1 ;
-            sudo cp $PATH_TO_INSTALL/mcpe/whitelist.json $PATH_TO_BACKUP/$BACKUP >>log.txt 2>&1 ;
+            sudo cp -r $PATH_TO_INSTALL/mcpe/worlds/* $PATH_TO_BACKUP/$BACKUP >>/tmp/log.txt 2>&1 ;
+            sudo cp $PATH_TO_INSTALL/mcpe/server.properties $PATH_TO_BACKUP/$BACKUP >>/tmp/log.txt 2>&1 ;
+            sudo cp $PATH_TO_INSTALL/mcpe/whitelist.json $PATH_TO_BACKUP/$BACKUP >>/tmp/log.txt 2>&1 ;
             #Movendo versão antiga para $TMP
             echo -ne "##                       (10%)\r";
             
-            sudo mv $PATH_TO_INSTALL $TMP >>log.txt 2>&1 ;
+            sudo mv $PATH_TO_INSTALL $TMP >>/tmp/log.txt 2>&1 ;
             #Baixando
-            sudo rm -rf $PATH_TO_INSTALL/mcpe.zip >>log.txt 2>&1 ;
-            sudo wget $SERVER_UPDATE -O $PATH_TO_INSTALL/mcpe.zip >>log.txt 2>&1 ;
-            sudo unzip -o $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe >>log.txt 2>&1 ;
-            sudo rm -r $PATH_TO_INSTALL/mcpe.zip >>log.txt 2>&1 ;
+            sudo rm -rf $PATH_TO_INSTALL/mcpe.zip >>/tmp/log.txt 2>&1 ;
+            sudo wget $SERVER_UPDATE -O $PATH_TO_INSTALL/mcpe.zip >>/tmp/log.txt 2>&1 ;
+            sudo unzip -o $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe >>/tmp/log.txt 2>&1 ;
+            sudo rm -r $PATH_TO_INSTALL/mcpe.zip >>/tmp/log.txt 2>&1 ;
             echo -ne "###########              (50%)\r";
             #Criando Diretorios
-            sudo mkdir $PATH_TO_INSTALL >>log.txt 2>&1 ;
-            sudo mkdir $PATH_TO_INSTALL/mcpe >>log.txt 2>&1 ;
+            sudo mkdir $PATH_TO_INSTALL >>/tmp/log.txt 2>&1 ;
+            sudo mkdir $PATH_TO_INSTALL/mcpe >>/tmp/log.txt 2>&1 ;
             
             #Copiando mapa para nova versão
-             sudo rm -rf $PATH_TO_INSTALL/worlds >>log.txt 2>&1 ;
-             sudo rm -rf $PATH_TO_INSTALL/server.properties >>log.txt 2>&1 ;
-             sudo rm -rf $PATH_TO_INSTALL/whitelist.json >>log.txt 2>&1 ;
-            sudo cp -r $PATH_TO_BACKUP/$BACKUP/$MAPA $PATH_TO_INSTALL/mcpe/worlds/ >>log.txt 2>&1 ;
-            sudo cp $PATH_TO_BACKUP/$BACKUP/server.properties $PATH_TO_INSTALL/mcpe/ >>log.txt 2>&1 ;
-            sudo cp $PATH_TO_BACKUP/$BACKUP/whitelist.json $PATH_TO_INSTALL/mcpe/ >>log.txt 2>&1 ;
+             sudo rm -rf $PATH_TO_INSTALL/worlds >>/tmp/log.txt 2>&1 ;
+             sudo rm -rf $PATH_TO_INSTALL/server.properties >>/tmp/log.txt 2>&1 ;
+             sudo rm -rf $PATH_TO_INSTALL/whitelist.json >>/tmp/log.txt 2>&1 ;
+            sudo cp -r $PATH_TO_BACKUP/$BACKUP/$MAPA $PATH_TO_INSTALL/mcpe/worlds/ >>/tmp/log.txt 2>&1 ;
+            sudo cp $PATH_TO_BACKUP/$BACKUP/server.properties $PATH_TO_INSTALL/mcpe/ >>/tmp/log.txt 2>&1 ;
+            sudo cp $PATH_TO_BACKUP/$BACKUP/whitelist.json $PATH_TO_INSTALL/mcpe/ >>/tmp/log.txt 2>&1 ;
 
-            sudo rm -rf $PATH_TO_INSTALL/mcpe/worlds/server.properties >>log.txt 2>&1 ;
-            sudo rm -rf $PATH_TO_INSTALL/mcpe/worlds/whitelist.json >>log.txt 2>&1 ;
+            sudo rm -rf $PATH_TO_INSTALL/mcpe/worlds/server.properties >>/tmp/log.txt 2>&1 ;
+            sudo rm -rf $PATH_TO_INSTALL/mcpe/worlds/whitelist.json >>/tmp/log.txt 2>&1 ;
             sudo rm -r $PATH_TO_BACKUP
             echo -ne "#######################   (100%)\r";
             echo -ne "###### Completo #######   (100%)\r";
-            echo "O log está no arquivo log.txt ou install.log"
+            echo "O log está no arquivo /tmp/log.txt ou /tmp/install.log"
 elif [[ $OS == 'debian' ]]; then
              #banner
             cat banner.txt;
@@ -140,40 +144,40 @@ elif [[ $OS == 'debian' ]]; then
             echo -ne "Começado\r"
             #Copiando
             echo -ne "                          (0%)\r";
-            sudo mkdir $PATH_TO_BACKUP >>log.txt 2>&1 ;
-            sudo mkdir $PATH_TO_BACKUP/$BACKUP >>log.txt 2>&1 ;            
+            sudo mkdir $PATH_TO_BACKUP >>/tmp/log.txt 2>&1 ;
+            sudo mkdir $PATH_TO_BACKUP/$BACKUP >>/tmp/log.txt 2>&1 ;            
             echo -ne "#                         (1%)\r";
-            sudo cp -r $PATH_TO_INSTALL/mcpe/worlds/* $PATH_TO_BACKUP/$BACKUP >>log.txt 2>&1 ;
-            sudo cp $PATH_TO_INSTALL/mcpe/server.properties $PATH_TO_BACKUP/$BACKUP >>log.txt 2>&1 ;
-            sudo cp $PATH_TO_INSTALL/mcpe/whitelist.json $PATH_TO_BACKUP/$BACKUP >>log.txt 2>&1 ;
+            sudo cp -r $PATH_TO_INSTALL/mcpe/worlds/* $PATH_TO_BACKUP/$BACKUP >>/tmp/log.txt 2>&1 ;
+            sudo cp $PATH_TO_INSTALL/mcpe/server.properties $PATH_TO_BACKUP/$BACKUP >>/tmp/log.txt 2>&1 ;
+            sudo cp $PATH_TO_INSTALL/mcpe/whitelist.json $PATH_TO_BACKUP/$BACKUP >>/tmp/log.txt 2>&1 ;
             #Movendo versão antiga para $TMP
             echo -ne "##                       (10%)\r";
             
-            sudo mv $PATH_TO_INSTALL $TMP >>log.txt 2>&1 ;
+            sudo mv $PATH_TO_INSTALL $TMP >>/tmp/log.txt 2>&1 ;
             #Baixando
-            sudo rm -rf $PATH_TO_INSTALL/mcpe.zip >>log.txt 2>&1 ;
-            sudo wget $SERVER_UPDATE -O $PATH_TO_INSTALL/mcpe.zip >>log.txt 2>&1 ;
-            sudo unzip -o $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe >>log.txt 2>&1 ;
-            sudo rm -r $PATH_TO_INSTALL/mcpe.zip >>log.txt 2>&1 ;
+            sudo rm -rf $PATH_TO_INSTALL/mcpe.zip >>/tmp/log.txt 2>&1 ;
+            sudo wget $SERVER_UPDATE -O $PATH_TO_INSTALL/mcpe.zip >>/tmp/log.txt 2>&1 ;
+            sudo unzip -o $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe >>/tmp/log.txt 2>&1 ;
+            sudo rm -r $PATH_TO_INSTALL/mcpe.zip >>/tmp/log.txt 2>&1 ;
             echo -ne "###########              (50%)\r";
             #Criando Diretorios
-            sudo mkdir $PATH_TO_INSTALL >>log.txt 2>&1 ;
-            sudo mkdir $PATH_TO_INSTALL/mcpe >>log.txt 2>&1 ;
+            sudo mkdir $PATH_TO_INSTALL >>/tmp/log.txt 2>&1 ;
+            sudo mkdir $PATH_TO_INSTALL/mcpe >>/tmp/log.txt 2>&1 ;
             
             #Copiando mapa para nova versão
-             sudo rm -rf $PATH_TO_INSTALL/worlds >>log.txt 2>&1 ;
-             sudo rm -rf $PATH_TO_INSTALL/server.properties >>log.txt 2>&1 ;
-             sudo rm -rf $PATH_TO_INSTALL/whitelist.json >>log.txt 2>&1 ;
-            sudo cp -r $PATH_TO_BACKUP/$BACKUP/$MAPA $PATH_TO_INSTALL/mcpe/worlds/ >>log.txt 2>&1 ;
-            sudo cp $PATH_TO_BACKUP/$BACKUP/server.properties $PATH_TO_INSTALL/mcpe/ >>log.txt 2>&1 ;
-            sudo cp $PATH_TO_BACKUP/$BACKUP/whitelist.json $PATH_TO_INSTALL/mcpe/ >>log.txt 2>&1 ;
+             sudo rm -rf $PATH_TO_INSTALL/worlds >>/tmp/log.txt 2>&1 ;
+             sudo rm -rf $PATH_TO_INSTALL/server.properties >>/tmp/log.txt 2>&1 ;
+             sudo rm -rf $PATH_TO_INSTALL/whitelist.json >>/tmp/log.txt 2>&1 ;
+            sudo cp -r $PATH_TO_BACKUP/$BACKUP/$MAPA $PATH_TO_INSTALL/mcpe/worlds/ >>/tmp/log.txt 2>&1 ;
+            sudo cp $PATH_TO_BACKUP/$BACKUP/server.properties $PATH_TO_INSTALL/mcpe/ >>/tmp/log.txt 2>&1 ;
+            sudo cp $PATH_TO_BACKUP/$BACKUP/whitelist.json $PATH_TO_INSTALL/mcpe/ >>/tmp/log.txt 2>&1 ;
 
-            sudo rm -rf $PATH_TO_INSTALL/mcpe/worlds/server.properties >>log.txt 2>&1 ;
-            sudo rm -rf $PATH_TO_INSTALL/mcpe/worlds/whitelist.json >>log.txt 2>&1 ;
+            sudo rm -rf $PATH_TO_INSTALL/mcpe/worlds/server.properties >>/tmp/log.txt 2>&1 ;
+            sudo rm -rf $PATH_TO_INSTALL/mcpe/worlds/whitelist.json >>/tmp/log.txt 2>&1 ;
             sudo rm -r $PATH_TO_BACKUP
             echo -ne "#######################   (100%)\r";
             echo -ne "###### Completo #######   (100%)\r";
-            echo "O log está no arquivo log.txt ou install.log"
+            echo "O log está no arquivo /tmp/log.txt ou /tmp/install.log"
 fi
       ;;
       "--screen") 
@@ -215,3 +219,5 @@ fi
       exit 1
       ;;
 esac
+
+sudo rm -rf mcpe.zip
