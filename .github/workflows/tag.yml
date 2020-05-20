@@ -31,7 +31,7 @@ jobs:
     - name: Gerando Tag
       id: tag
       run: |
-        echo ::set-env name=RELEASE_TAG::"$(TZ=UTC+3 date +"%d/%m/%Y-%H-%M-%S")-tag"
+        echo ::set-env name=RELEASE_TAG::"$(TZ=UTC+3 date +"%d/%m/%Y-%H-%M-%S")-tag-Linux"
         echo "Tag $(TZ=UTC+3 date +"%d/%m/%Y-%H-%M-%S")" >> release.txt
         echo "::set-output name=status::success"
     
