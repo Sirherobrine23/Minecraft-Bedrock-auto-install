@@ -14,7 +14,7 @@ IP_PUBLICO=$(wget -qO- http://ipecho.net/plain)
 file=mcpe
 FILE2=mcpe-start.sh
 BACKUP="$(TZ=UTC+3 date +"%d-%m-%Y")"
-TMP=/home/Minecraft/tmp >>/tmp/log.txt 2>&1 ;
+TMP=/home/Minecraft-temp >>/tmp/log.txt 2>&1 ;
 sudo mkdir $TMP >>/tmp/log.txt 2>&1 ;
 sudo rm -rf $TMP/level.txt >>/tmp/log.txt 2>&1 ;
 cat "$PATH_TO_INSTALL/mcpe/server.properties" | grep "level-name=" > "$TMP/level.txt" ; sed -i "s|level-name=||g" "$TMP/level.txt" >>/tmp/log.txt 2>&1 ;
