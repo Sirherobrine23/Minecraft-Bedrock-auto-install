@@ -17,3 +17,5 @@ wget.exe --no-check-certificate https://raw.githubusercontent.com/Sirherobrine23
 wget.exe --no-check-certificate https://raw.githubusercontent.com/Sirherobrine23/Minecraft-Bedrock-auto-install/Beta/whitelist.json -O mcpe/whitelist.json >>install.log 2>&1
 cp -r mcpe/* %PATH_TO_INSTALL%
 rm -rf mcpe
+
+rem instalador bat
