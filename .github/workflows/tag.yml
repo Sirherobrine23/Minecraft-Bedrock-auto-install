@@ -5,7 +5,8 @@ on:
       - Windows
     paths:
       - .gitgnore
-      - .bat
+      - install.bat
+      - update.bat
       - zip/
 
 jobs:
