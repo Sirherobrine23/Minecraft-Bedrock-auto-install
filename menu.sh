@@ -218,15 +218,15 @@ case $1 in
             echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
       ;;
       "--sistema")
-
 	if [[ -e /sbin/mcpe ]]; then
-            echo "Percebi que já tem o --start-file pronto."
+            echo "Percebi que já tem o --start-file pronto. Otimo!"
             echo "montando o arquivos para que tudo nos ajude"
             sudo cp start-on-system.sh /etc/init.d/mcpe;
             echo "copiando o arquivo";
             sudo chmod a+x /etc/init.d/mcpe;
             update-rc.d mcpe defaults
             echo "pronto ele inicia junto com sistema(Beta), o comando abaixo pode ajudar"
+            echo " "
             echo 'sudo service mcpe start | stop | restart'
             echo " "
 	else
