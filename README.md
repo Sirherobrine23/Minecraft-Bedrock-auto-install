@@ -16,4 +16,4 @@ atualmente opções para instalação:
     --sistema           - Adiciona um script para iniciar junto com sistema pelo service
     --ip                - Mostre seu IPs Disponiveis
     --unistall          - remove a pasta installer
-#### Testado no ubuntu e no debian não sei se vai funciona em outras distrs que utilizam o apt.
+#### Testado no ubuntu e no debian não sei se vai funciona em outras distros que utilizam o apt.
