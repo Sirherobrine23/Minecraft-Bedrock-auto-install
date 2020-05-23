@@ -30,6 +30,9 @@ sudo rm -rf $TMP/level.txt >>$USUARIO/log.txt 2>&1 ;
 
 #Espaço
 echo "o Diretorio do seu usuario é $USUARIO"
+echo "Começamos ás $(TZ=UTC+3 date +"%H:%M:%S")"
+echo " "
+echo "--------------"
 echo " "
 
 #Root
@@ -275,5 +278,9 @@ case $1 in
       ;;
 esac
 
+echo " "
+echo "--------------"
+echo " "
 echo "qualquer erro no script me comunique no https://github.com/Sirherobrine23/Minecraft-Bedrock-auto-install/issues"
+echo "Terminamos as $(TZ=UTC+3 date +"%H:%M:%S")"
 sudo rm -rf mcpe.zip
