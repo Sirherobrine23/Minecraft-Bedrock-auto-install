@@ -212,10 +212,11 @@ fi
             echo 'teste caso não inicie o servidor é por causa, que não instalaram o script "--start-file"'
       ;;
       "--ip")
-            echo "Seu IPv4 é $IP_V4 para Jogar localmente , e o Seu IPv6 é $(echo -ne $IP_V6)."
+            echo "Seu IPv4 é $IP_V4 para Jogar localmente , e o Seu IPv6 é $(echo -ne $IP_V6)"
             echo " "
             echo "Caso Queira Jogar Remotamento com alguém Abra as Portas 19132 e 19133 no seu Roteador ou seu Firewall, seu IPv4 Publico é $IP_PUBLICO"
-            echo " ";
+            echo "Também verifique se sua operadora ou provedor libera as portas do servidor. contate-os"
+	    echo " ";
       ;;
       "--unistall") sudo rm -rf $REMOVE
       ;;
