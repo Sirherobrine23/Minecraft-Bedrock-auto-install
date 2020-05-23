@@ -15,11 +15,11 @@ on:
       - banner.txt
       - help.txt
       - install.sh
-      - menu
-      - mcpe-start.txt
+      - menu.sh
+      - mcpe-start.sh
       - server.properties
       - whitelist.json
-      - start-on-system
+      - start-on-system.sh
       - Update.txt
 
 jobs:
