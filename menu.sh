@@ -1,5 +1,6 @@
 #!/bin/bash
 clear
+
 #--unistall
 REMOVE=$(pwd)
 
@@ -20,7 +21,7 @@ USUARIO=$(cd ~/;pwd)
 file=mcpe
 FILE2=mcpe-start.sh
 
-
+#pode ser aqui ali ou DEBIAN
 TMP=/home/Minecraft-temp
 sudo mkdir $TMP >>$USUARIO/log.txt 2>&1 ;
 
