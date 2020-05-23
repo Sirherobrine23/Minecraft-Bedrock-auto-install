@@ -217,7 +217,7 @@ case $1 in
             echo " "
             echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
       ;;
-      "--start-on-system")
+      "--sistema")
 
 	if [[ -e /sbin/mcpe ]]; then
             echo "Percebi que já tem o --start-file pronto."

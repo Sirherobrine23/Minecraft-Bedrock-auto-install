@@ -13,7 +13,7 @@ atualmente opções para instalação:
     --install           - instalação para ubuntu X64
     --screen            - Add screen, mais a instalação para servidor para funciona 24 Horas sem a necessidade de deixa o ssh ou outro meio conectado
     --start-file        - Adiciona um arquivo para "screen mcpe"
-    --start-on-system   - Adiciona um script para iniciar junto com sistema pelo service
+    --sistema   - Adiciona um script para iniciar junto com sistema pelo service
     --ip                - Mostre seu IPs Disponiveis
     --unistall          - remove a pasta installer
 #### Testado no ubuntu e no debian não sei se vai funciona em outras distrs que utilizam o apt.
