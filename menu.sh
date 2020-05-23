@@ -25,10 +25,6 @@ sudo mkdir $TMP >>$usuario/log.txt 2>&1 ;
 # Remoção dos arquivo de log
 sudo rm -rf $TMP/level.txt >>$usuario/log.txt 2>&1 ;
 
-
-
-
-
 #Espaço
 echo " "
 
@@ -37,8 +33,6 @@ if [ "$EUID" -ne 0 ]; then
 	echo "Você não está executando o script com root ou sudo"
 	exit 1
 fi
-
-# Check OS version
 if [[ -e /etc/debian_version ]]; then
 	source /etc/os-release
 	OS=$ID # debian or ubuntu
@@ -46,66 +40,65 @@ else
 	echo "Você não tem instalado ou não esta com sistema Debian ou Ubuntu "
 	exit 1
 fi
-
 case $1 in
    "--install") 
-if [[ $OS == 'ubuntu' ]]; then
-             #banner
-            cat banner.txt;
-            # Prerequisite
-            echo "  ";
-            echo "Instalando os Pré-reuisitos para o  ubuntu";
-            echo -ne "#                         (01%)\r";
-            sudo apt install -y wget unzip >>$usuario/log.txt 2>&1 ;
-            echo -ne "##                        (02%)\r";
-            echo " ";
-            echo "Criando diretorio do servidor no $PATH_TO_INSTALL"
-            sudo mkdir $PATH_TO_INSTALL >>$usuario/log.txt 2>&1 ;
-            #Download do arquivos servidor
-            echo -ne "#####                     (20%)\r";
-            echo "Baixando o Software do Servidor";
-            sudo wget $BDS -O $PATH_TO_INSTALL/mcpe.zip >>$usuario/log.txt 2>&1 ;
-            echo -ne "########                  (40%)\r";
-            echo "Instalando o Servidor";
-            sudo unzip -o $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe >>$usuario/log.txt 2>&1 ;
-            sudo rm -rf $PATH_TO_INSTALL/mcpe.zip;
-            echo -ne "#############             (50%)\r";
-            #config
-            rm -rf $PATH_TO_INSTALL/mcpe/server.properties >>$usuario/log.txt 2>&1 ;
-            rm -rf $PATH_TO_INSTALL/mcpe/whitelist.json >>$usuario/log.txt 2>&1 ;
-            cp -r ./server.properties $PATH_TO_INSTALL/mcpe/ >>$usuario/log.txt 2>&1 ;
-            cp -r ./whitelist.json $PATH_TO_INSTALL/mcpe/ >>$usuario/log.txt 2>&1 ;
-            echo -ne "#######################   (100%)\r";
-            echo -ne "####### completo ######   (100%)\r";
-            echo "O log está no arquivo $usuario/log.txt ou /tmp/install.log"
-elif [[ $OS == 'debian' ]]; then
-             #banner
-            cat banner.txt;
-            # Prerequisite
-            echo "  ";
-            echo "Instalando os Pré-reuisitos para o debian";
-            echo -ne "#                         (01%)\r";
-            sudo apt install -y wget unzip >>$usuario/log.txt 2>&1 ;
-            echo -ne "##                        (02%)\r";
-            echo " ";
-            echo "Criando o Diretorio do servidor no $PATH_TO_INSTALL";
-            sudo mkdir $PATH_TO_INSTALL >>$usuario/log.txt 2>&1 ;
-            #Download do arquivos servidor
-            echo "Baixando o Software do Servidor";
-            sudo wget $BDS -O $PATH_TO_INSTALL/mcpe.zip >>$usuario/log.txt 2>&1 ;
-            echo -ne "########                  (40%)\r";
-            sudo unzip -o $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe >>$usuario/log.txt 2>&1 ;
-            sudo rm -rf $PATH_TO_INSTALL/mcpe.zip;
-            echo -ne "#############             (50%)\r";
-            #config
-            rm -rf $PATH_TO_INSTALL/mcpe/server.properties >>$usuario/log.txt 2>&1 ;
-            rm -rf $PATH_TO_INSTALL/mcpe/whitelist.json >>$usuario/log.txt 2>&1 ;
-            cp -r ./server.properties $PATH_TO_INSTALL/mcpe/ >>$usuario/log.txt 2>&1 ;
-            cp -r ./whitelist.json $PATH_TO_INSTALL/mcpe/ >>$usuario/log.txt 2>&1 ;
-            echo -ne "#######################   (100%)\r";
-            echo -ne "####### completo ######   (100%)\r";
-            echo "O log está no arquivo $usuario/log.txt ou /tmp/install.log"
-fi
+      if [[ $OS == 'ubuntu' ]]; then
+                  #banner
+                  cat banner.txt;
+                  # Prerequisite
+                  echo "  ";
+                  echo "Instalando os Pré-reuisitos para o  ubuntu";
+                  echo -ne "#                         (01%)\r";
+                  sudo apt install -y wget unzip >>$usuario/log.txt 2>&1 ;
+                  echo -ne "##                        (02%)\r";
+                  echo " ";
+                  echo "Criando diretorio do servidor no $PATH_TO_INSTALL"
+                  sudo mkdir $PATH_TO_INSTALL >>$usuario/log.txt 2>&1 ;
+                  #Download do arquivos servidor
+                  echo -ne "#####                     (20%)\r";
+                  echo "Baixando o Software do Servidor";
+                  sudo wget $BDS -O $PATH_TO_INSTALL/mcpe.zip >>$usuario/log.txt 2>&1 ;
+                  echo -ne "########                  (40%)\r";
+                  echo "Instalando o Servidor";
+                  sudo unzip -o $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe >>$usuario/log.txt 2>&1 ;
+                  sudo rm -rf $PATH_TO_INSTALL/mcpe.zip;
+                  echo -ne "#############             (50%)\r";
+                  #config
+                  rm -rf $PATH_TO_INSTALL/mcpe/server.properties >>$usuario/log.txt 2>&1 ;
+                  rm -rf $PATH_TO_INSTALL/mcpe/whitelist.json >>$usuario/log.txt 2>&1 ;
+                  cp -r ./server.properties $PATH_TO_INSTALL/mcpe/ >>$usuario/log.txt 2>&1 ;
+                  cp -r ./whitelist.json $PATH_TO_INSTALL/mcpe/ >>$usuario/log.txt 2>&1 ;
+                  echo -ne "#######################   (100%)\r";
+                  echo -ne "####### completo ######   (100%)\r";
+                  echo "O log está no arquivo $usuario/log.txt ou /tmp/install.log"
+      elif [[ $OS == 'debian' ]]; then
+                  #banner
+                  cat banner.txt;
+                  # Prerequisite
+                  echo "  ";
+                  echo "Instalando os Pré-reuisitos para o debian";
+                  echo -ne "#                         (01%)\r";
+                  sudo apt install -y wget unzip >>$usuario/log.txt 2>&1 ;
+                  echo -ne "##                        (02%)\r";
+                  echo " ";
+                  echo "Criando o Diretorio do servidor no $PATH_TO_INSTALL";
+                  sudo mkdir $PATH_TO_INSTALL >>$usuario/log.txt 2>&1 ;
+                  #Download do arquivos servidor
+                  echo "Baixando o Software do Servidor";
+                  sudo wget $BDS -O $PATH_TO_INSTALL/mcpe.zip >>$usuario/log.txt 2>&1 ;
+                  echo -ne "########                  (40%)\r";
+                  sudo unzip -o $PATH_TO_INSTALL/mcpe.zip -d $PATH_TO_INSTALL/mcpe >>$usuario/log.txt 2>&1 ;
+                  sudo rm -rf $PATH_TO_INSTALL/mcpe.zip;
+                  echo -ne "#############             (50%)\r";
+                  #config
+                  rm -rf $PATH_TO_INSTALL/mcpe/server.properties >>$usuario/log.txt 2>&1 ;
+                  rm -rf $PATH_TO_INSTALL/mcpe/whitelist.json >>$usuario/log.txt 2>&1 ;
+                  cp -r ./server.properties $PATH_TO_INSTALL/mcpe/ >>$usuario/log.txt 2>&1 ;
+                  cp -r ./whitelist.json $PATH_TO_INSTALL/mcpe/ >>$usuario/log.txt 2>&1 ;
+                  echo -ne "#######################   (100%)\r";
+                  echo -ne "####### completo ######   (100%)\r";
+                  echo "O log está no arquivo $usuario/log.txt ou /tmp/install.log"
+      fi
       ;;
       "--update")
 
