@@ -1,7 +1,6 @@
-opções para instalação:
-    --install           - instalação para ubuntu X64
-    --screen            - Add screen, mais a instalação para servidor para funciona 24 Horas sem a necessidade de deixa o ssh ou outro meio conectado
-    --start-file        - Adiciona um arquivo para "screen mcpe"
-    --sistema   - Adiciona um script para iniciar junto com sistema pelo service
-    --ip                - Mostre seu IPs Disponiveis
-    --unistall          - remove a pasta installer
+installation options:
+     --install              - installation for ubuntu X64
+     --start-file           - Add a file to "screen mcpe"
+     --sistema              - Add a script to start together with the system through the service
+     --ip                   - Show your available IPs
+     --unistall             - remove the installer folder

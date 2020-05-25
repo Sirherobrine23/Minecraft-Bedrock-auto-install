@@ -1,19 +1,19 @@
-# Instalação do Minecraft Bedrock Server
+# Installing Minecraft Bedrock Server
 
-Como foi feito para Ajudar na instalação do Minecraft Bedrock server para uma instalação de um simples linha do terminal.
+How it was done to Assist in the installation of Minecraft Bedrock server for an installation of a simple line of the terminal.
 
-por favor instale o **curl** para agilizar o instalador.
+please install **curl** to speed up the installer.
 
-execute <code>sudo curl https://raw.githubusercontent.com/Sirherobrine23/Minecraft-Bedrock-auto-install/master/install.sh | bash ; cd installer</code>.
+run <code> sudo curl https://raw.githubusercontent.com/Sirherobrine23/Minecraft-Bedrock-auto-install/master/install.sh | bash; cd installer </code>.
 
-Este Script só agiliza a instalação do servidor para MCPE (Minecraft Bedrock).
+This Script only speeds up the server installation for MCPE (Minecraft Bedrock).
 
-atualmente opções para instalação:
+currently installation options:
+    --install - installation for ubuntu X64
+    --screen - Add screen, plus the server installation to work 24 hours without the need to leave ssh or another means connected
+    --start-file - Add a file to "screen mcpe"
+    --sistema - Add a script to start together with the system through the service
+    --ip - Show your available IPs
+    --unistall - remove the installer folder
 
-    --install           - instalação para ubuntu X64
-    --screen            - Add screen, mais a instalação para servidor para funciona 24 Horas sem a necessidade de deixa o ssh ou outro meio conectado
-    --start-file        - Adiciona um arquivo para "screen mcpe"
-    --sistema           - Adiciona um script para iniciar junto com sistema pelo service
-    --ip                - Mostre seu IPs Disponiveis
-    --unistall          - remove a pasta installer
-#### Testado no ubuntu e no debian não sei se vai funciona em outras distros que utilizam o apt.
+#### Tested on ubuntu and debian I don't know if it will work on other distros that use apt.
