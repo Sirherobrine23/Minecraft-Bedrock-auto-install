@@ -4,11 +4,11 @@ if [ "$EUID" -ne 0 ]; then
 	exit 1
 fi
 case "$1" in 
-    start)
+    --start)
        echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
        sudo screen -S bedrock mcpe
        ;;
-    stop)
+    --stop)
             screen -Rd bedrock -X stuff
             sleep 5
             screen -Rd bedrock -X stuff
@@ -25,7 +25,7 @@ case "$1" in
             screen -X -S bedrock quit
             echo "Agora o Servidor está parado."
        ;;
-    restart)
+    --restart)
         if ! screen -list | grep -q "bedrock"; then
         echo "Servidor não está ligado ou Não foi possivel reinicia."
     else
@@ -52,7 +52,7 @@ case "$1" in
     fi
     ;;
     *)
-       echo "Usage: $0 {start|stop|reboot|restart}"
+       echo "Usage: $0 {--start | --stop| --restart}"
 esac
 
 exit 0 
