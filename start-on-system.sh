@@ -6,7 +6,7 @@ fi
 case "$1" in 
     --start)
        echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
-       sudo screen -S bedrock mcpe
+       sudo screen -S bedrock mcpe-server
        ;;
     --stop)
             screen -Rd bedrock -X stuff
