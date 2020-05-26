@@ -14,7 +14,7 @@ else
     GDRIVE_FOLDE=ID-DA-PASTA-NO-GOOGLE-DRIVE
     cd worlds/ ; zip $DATE-"MAPASS".zip -r "MAPASS" 
     gdrive upload --parent $GDRIVE_FOLDE $DATE-MAPASS.zip
-    rm $DATE-Sirherobrine23.zip
+    rm $DATE-MAPASS.zip
 fi
 
 exit 1
