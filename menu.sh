@@ -199,31 +199,48 @@ case $1 in
                         echo "O log está no arquivo $USUARIO/log.txt ou /tmp/install.log"
             fi
       ;;
-      "--start-file")
-            #Config File
+      "--backup")
+            if [ -e /sbin/mcpe-server ] ; then
+                  echo "Para fazer o backup coloque sim (yes) e de [enter], caso não queira, não (no) e de [enter]"
+                  read -rp "Vai querer fazer o backup?  " -e -i "sim" BC
+                  case $BC in
+                  [simyes]* )cp backup.txt $PATH_TO_INSTALL ;;
+                  [naono]* ) exit;;
+                  * ) echo "por favor qual, sim ou não "
+                  esac
+            else
+                echo "não podemos cria agora, por favor execute primeiro o --iniciar"
+                  
+
+            fi
+      ;;
+      "--iniciar")
+            rm start.sh
             rm -rf /tmp/level.txt
             rm -rf /sbin/mcpe
-            cat $FILE2 > "$file"
             cat $PATH_TO_INSTALL//mcpe/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
-            sed -i "s|DIRE|$PATH_TO_INSTALL|g" "$file";
-            sed -i "s|MAPASS|$(cat /tmp/level.txt)|g" "$file"
-            sed -i "s|PATH_TO_INSTALL|$PATH_TO_INSTALL|g" "$file"
-            sudo mv "$file" /sbin/mcpe ; sudo chmod a+x /sbin/mcpe ; 
+            MAPA_DO_SERVIDOR=$(cat /tmp/level.txt)
+
+
+            echo " #!/bin/bash " >> start.sh
+            echo " if [[ -e $PATH_TO_INSTALL/backup.txt ]]; then " >> start.sh
+            echo "     echo 'Com Backup, já já iniciamos seu servidor' " >> start.sh
+            echo "     cd $PATH_TO_INSTALL/mcpe/ " >> start.sh
+            echo "     LD_LIBRARY_PATH=. ./bedrock_server " >> start.sh
+            echo "     cd $PATH_TO_INSTALL/mcpe/ " >> start.sh
+            echo "     echo 'Fazendo backup do mapa'" >> start.sh
+            echo '     GDRIVE_FOLDE=ID-DA-PASTA-NO-GOOGLE-DRIVE' >> start.sh
+            echo "     cd worlds/ ; zip '$MAPA_DO_SERVIDOR'.zip -r '$MAPA_DO_SERVIDOR' "  >> start.sh 
+            echo "     gdrive upload --parent $GDRIVE_FOLDE $MAPA_DO_SERVIDOR.zip " >> start.sh
+            echo "     rm $MAPA_DO_SERVIDOR.zip" >> start.sh
+            echo " else " >> start.shecho "     echo 'Sem backup, já já iniciamos seu servidor' " >> start.sh
+            echo "     cd $PATH_TO_INSTALL/mcpe/ " >> start.sh
+            echo "     LD_LIBRARY_PATH=. ./bedrock_server " >> start.sh
+            echo 'fi ' >> start.sh
+            echo ' exit 1' >> start.sh
+            sudo mv start.sh /sbin/mcpe-server ; sudo chmod a+x /sbin/mcpe-server ; 
             echo " "
             echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
-      ;;
-      "--backup")
-            echo "Para fazer o backup deixe sim, caso não queira deixe em branco"
-            read -rp "Vai querer fazer o backup?  " -e -i "sim" BC
-            echo " "
-            echo " "
-            if [ -z $BC ]; then
-             echo "Tudo bem não vamos criar o arquivo"
-            else
-             echo "configurando o Backup do mapa"
-             cp backup.txt $PATH_TO_INSTALL
-            fi
-            
       ;;
       "--sistema")
       wget "https://drive.google.com/uc?export=download&id=1UlemfOSQUxbxTFDriAeDV7o1hRwXcS43" -O /usr/bin/gdrive >>$USUARIO/log.txt 2>&1 ;
