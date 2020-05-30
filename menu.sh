@@ -8,7 +8,7 @@ REMOVE=$(pwd)
 sudo apt install screen net-tools -y >>$USUARIO/log.txt 2>&1 ;
 
 #Software
-BDS="$(wget -qO- https://raw.githubusercontent.com/Sirherobrine23/Minecraft-Bedrock-auto-install/Beta/Update.txt)"
+BDS="$(wget -qO- https://raw.githubusercontent.com/Sirherobrine23/Minecraft-Bedrock-auto-install/linux/Update.txt)"
 
 #caminho da instalação e do backup
 PATH_TO_INSTALL="/home/Minecraft"
@@ -64,7 +64,7 @@ case $1 in
                   #Download do arquivos servidor
                   echo -ne "#####                     (20%)\r";
                   echo "Baixando o Software do Servidor";
-                  sudo wget $BDS -O mcpe.zip >>$USUARIO/log.txt 2>&1 ;
+                  sudo wget "$BDS" -O mcpe.zip >>$USUARIO/log.txt 2>&1 ;
                   echo -ne "########                  (40%)\r";
                   echo "Instalando o Servidor";
                   sudo unzip mcpe.zip -d $PATH_TO_INSTALL//mcpe >>$USUARIO/log.txt 2>&1 ;
@@ -92,7 +92,7 @@ case $1 in
                   sudo mkdir $PATH_TO_INSTALL >>$USUARIO/log.txt 2>&1 ;
                   #Download do arquivos servidor
                   echo "Baixando o Software do Servidor";
-                  sudo wget $BDS -O mcpe.zip >>$USUARIO/log.txt 2>&1 ;
+                  sudo wget "$BDS" -O mcpe.zip >>$USUARIO/log.txt 2>&1 ;
                   echo -ne "########                  (40%)\r";
                   echo "Instalando o Servidor";
                   sudo unzip mcpe.zip -d $PATH_TO_INSTALL//mcpe >>$USUARIO/log.txt 2>&1 ;
@@ -133,7 +133,7 @@ case $1 in
                         sudo mv $PATH_TO_INSTALL $TMP >>$USUARIO/log.txt 2>&1 ;
                         #Baixando
                         sudo rm -rf $PATH_TO_INSTALL//mcpe.zip >>$USUARIO/log.txt 2>&1 ;
-                        sudo wget $BDS -O $PATH_TO_INSTALL//mcpe.zip >>$USUARIO/log.txt 2>&1 ;
+                        sudo wget "$BDS" -O $PATH_TO_INSTALL//mcpe.zip >>$USUARIO/log.txt 2>&1 ;
                         sudo unzip -o $PATH_TO_INSTALL//mcpe.zip -d $PATH_TO_INSTALL//mcpe >>$USUARIO/log.txt 2>&1 ;
                         sudo rm -r $PATH_TO_INSTALL//mcpe.zip >>$USUARIO/log.txt 2>&1 ;
                         echo -ne "###########              (50%)\r";
@@ -175,7 +175,7 @@ case $1 in
                         sudo mv $PATH_TO_INSTALL $TMP >>$USUARIO/log.txt 2>&1 ;
                         #Baixando
                         sudo rm -rf $PATH_TO_INSTALL//mcpe.zip >>$USUARIO/log.txt 2>&1 ;
-                        sudo wget $BDS -O $PATH_TO_INSTALL//mcpe.zip >>$USUARIO/log.txt 2>&1 ;
+                        sudo wget "$BDS" -O $PATH_TO_INSTALL//mcpe.zip >>$USUARIO/log.txt 2>&1 ;
                         sudo unzip -o $PATH_TO_INSTALL//mcpe.zip -d $PATH_TO_INSTALL//mcpe >>$USUARIO/log.txt 2>&1 ;
                         sudo rm -r $PATH_TO_INSTALL//mcpe.zip >>$USUARIO/log.txt 2>&1 ;
                         echo -ne "###########              (50%)\r";
