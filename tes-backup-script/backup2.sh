@@ -32,7 +32,9 @@ echo " "
 echo " "
 
 #copia
-cp -r "$PATH_TO_INSTALL"  "$PATH_TO_BACKUP"
+cp -r "$PATH_TO_INSTALL/mcpe/worlds" "$PATH_TO_BACKUP"
+cp "$PATH_TO_INSTALL/mcpe/server.proprieties" "$PATH_TO_BACKUP"
+cp "$PATH_TO_INSTALL/mcpe/whitelist.json" "$PATH_TO_BACKUP"
 
 #copia de seguraça
 zip  "$PATHBACKUP/$BACKUP".zip -r "$PATH_TO_INSTALL"
@@ -44,7 +46,14 @@ rm -rf "$PATH_TO_INSTALL"
 wget "$BDS" -O mcpe.zip
 unzip mcpe.zip -d mcpe
 
-#copiar mundo e as configuraçoes
+#copiar mundo e as configuraçoe
+cp -r "$PATH_TO_BACKUP/worlds" "./mcpe"
+cp "$PATHBACKUP/server.properties" "./mcpe"
+cp "$PATH_TO_BACKUP/whitelist.json" "./mcpe"
+
+#movendo
+mkdir $PATH_TO_INSTALL
+mv mcpe $PATH_TO_INSTALL
 
 #remover arquivos antigos
 rm mcpe.zip
