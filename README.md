@@ -1,3 +1,5 @@
+atualmente repo privado no  [aqui](https://git.sirherobrine23.org/Sirherobrine23/Minecraft-Bedrock-auto-install/-/tree/linux/)
+
 # Instalação do Minecraft Bedrock Server
 
 Como foi feito para Ajudar na instalação do Minecraft Bedrock server para uma instalação de um simples linha do terminal.
