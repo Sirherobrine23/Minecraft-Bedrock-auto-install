@@ -21,6 +21,7 @@ echo "Por padrão é no /home/Minecraft-Backup, mais esse diretorio será a apag
 
 echo "arquivos temporarios"
       read -rp "A onde vai ser a pasta temporaria: " -e -i "/tmp/mcpe-update" TMP_UPDATE
+      read -rp  "A onde sera savo o backup para amazenamento: " -e -i "/home/Minecraft" PATHBACKUP
 
 #---------------------------------------------------------------------------------------------------------
 cat "$PATH_TO_INSTALL/mcpe/server.properties" | grep "level-name=" >> "$TMP_UPDATE/level.txt" ;
@@ -31,10 +32,13 @@ echo " "
 echo " "
 
 #copia
+cp $PATH_TO_INSTALL  $PATH_TO_BACKUP
 
 #copia de seguraça
+zip  $PATHBACKUP/$BACKUP -r $PATH_TO_INSTALL
 
-#exterminar versao antiga
+#exterminar versao antig
+rm -r $PATH_TO_INSTALL
 
 #baixar a nova versão
 
