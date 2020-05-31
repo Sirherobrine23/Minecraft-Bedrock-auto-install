@@ -40,6 +40,7 @@ cp "$PATH_TO_INSTALL/mcpe/server.properties" "$PATH_TO_BACKUP"
 cp "$PATH_TO_INSTALL/mcpe/whitelist.json" "$PATH_TO_BACKUP"
 
 #copia de seguraça
+apt-get install zip unzip -y
 zip  "$PATHBACKUP/$BACKUP".zip -r "$PATH_TO_INSTALL"
 
 #exterminar versao antig
@@ -60,8 +61,8 @@ cp "$PATHBACKUP/server.properties" "./mcpe"
 cp "$PATH_TO_BACKUP/whitelist.json" "./mcpe"
 
 #movendo
-mkdir $PATH_TO_INSTALL
-mv mcpe $PATH_TO_INSTALL
+mkdir $PATH_TO_INSTALL/
+mv mcpe/ $PATH_TO_INSTALL
 
 #remover arquivos antigos
 rm mcpe.zip
