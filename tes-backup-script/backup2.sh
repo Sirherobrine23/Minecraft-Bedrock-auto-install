@@ -6,7 +6,10 @@ rm mcpe.zip
 #Software
 BDS="$(wget -qO- https://raw.githubusercontent.com/Sirherobrine23/Minecraft-Bedrock-auto-install/linux/Update.txt)"
 #caminho da instalação e do backup
-PATH_TO_INSTALL="/mnt/d/Gitlab/Minecraft-Bedrock-auto-install/tes-backup-script/mcpe-teste/"
+
+read -rp "a onde vai ser instalado: " -e -i "/home/minecraft" PATH_TO_INSTALL
+
+#PATH_TO_INSTALL="/mnt/d/Gitlab/Minecraft-Bedrock-auto-install/tes-backup-script/mcpe-teste/"
 #Usuario
 USUARIO=./
 #OLD
