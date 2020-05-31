@@ -80,51 +80,7 @@ case $1 in
       ;;
       "--update")
 
-      BACKUP="$(TZ=UTC+3 date +"%d-%m-%Y")"
-      # Nome do mapa
-      cat "$PATH_TO_INSTALL//mcpe/server.properties" | grep "level-name=" > "$TMP/level.txt" ; sed -i "s|level-name=||g" "$TMP/level.txt" >>$USUARIO/log.txt 2>&1 ;
-      MAPA=$(cat $TMP/level.txt) >>$USUARIO/log.txt 2>&1 ;
-                        #banner
-                        cat banner.txt;
-                        #Copiando
-                        echo -ne "Atualizando versão do Ubuntu\r"
-                        sleep 2
-                        echo -ne "Começado\r"
-                        echo -ne "                          (0%)\r";
-                        sudo mkdir $PATH_TO_BACKUP >>$USUARIO/log.txt 2>&1 ;
-                        sudo mkdir $PATH_TO_BACKUP/$BACKUP >>$USUARIO/log.txt 2>&1 ;            
-                        echo -ne "#                         (1%)\r";
-                        sudo cp -r $PATH_TO_INSTALL//mcpe/worlds/* $PATH_TO_BACKUP/$BACKUP >>$USUARIO/log.txt 2>&1 ;
-                        sudo cp $PATH_TO_INSTALL//mcpe/server.properties $PATH_TO_BACKUP/$BACKUP >>$USUARIO/log.txt 2>&1 ;
-                        sudo cp $PATH_TO_INSTALL//mcpe/whitelist.json $PATH_TO_BACKUP/$BACKUP >>$USUARIO/log.txt 2>&1 ;
-                        #Movendo versão antiga para $TMP
-                        echo -ne "##                       (10%)\r";
-                        
-                        sudo mv $PATH_TO_INSTALL $TMP >>$USUARIO/log.txt 2>&1 ;
-                        #Baixando
-                        sudo rm -rf $PATH_TO_INSTALL//mcpe.zip >>$USUARIO/log.txt 2>&1 ;
-                        sudo wget "$BDS" -O $PATH_TO_INSTALL//mcpe.zip >>$USUARIO/log.txt 2>&1 ;
-                        sudo unzip -o $PATH_TO_INSTALL//mcpe.zip -d $PATH_TO_INSTALL//mcpe >>$USUARIO/log.txt 2>&1 ;
-                        sudo rm -r $PATH_TO_INSTALL//mcpe.zip >>$USUARIO/log.txt 2>&1 ;
-                        echo -ne "###########              (50%)\r";
-                        #Criando Diretorios
-                        sudo mkdir $PATH_TO_INSTALL >>$USUARIO/log.txt 2>&1 ;
-                        sudo mkdir $PATH_TO_INSTALL//mcpe >>$USUARIO/log.txt 2>&1 ;
-                        
-                        #Copiando mapa para nova versão
-                        sudo rm -rf $PATH_TO_INSTALL/worlds >>$USUARIO/log.txt 2>&1 ;
-                        sudo rm -rf $PATH_TO_INSTALL/server.properties >>$USUARIO/log.txt 2>&1 ;
-                        sudo rm -rf $PATH_TO_INSTALL/whitelist.json >>$USUARIO/log.txt 2>&1 ;
-                        sudo cp -r $PATH_TO_BACKUP/$BACKUP/$MAPA $PATH_TO_INSTALL//mcpe/worlds/ >>$USUARIO/log.txt 2>&1 ;
-                        sudo cp $PATH_TO_BACKUP/$BACKUP/server.properties $PATH_TO_INSTALL//mcpe/ >>$USUARIO/log.txt 2>&1 ;
-                        sudo cp $PATH_TO_BACKUP/$BACKUP/whitelist.json $PATH_TO_INSTALL//mcpe/ >>$USUARIO/log.txt 2>&1 ;
-
-                        sudo rm -rf $PATH_TO_INSTALL//mcpe/worlds/server.properties >>$USUARIO/log.txt 2>&1 ;
-                        sudo rm -rf $PATH_TO_INSTALL//mcpe/worlds/whitelist.json >>$USUARIO/log.txt 2>&1 ;
-                        sudo rm -r $PATH_TO_BACKUP
-                        echo -ne "#######################   (100%)\r";
-                        echo -ne "###### Completo #######   (100%)\r";
-                        echo "O log está no arquivo $USUARIO/log.txt ou /tmp/install.log"
+      
       ;;
       "--backup")
             if [ -e /sbin/mcpe-server ] ; then
@@ -141,7 +97,7 @@ case $1 in
 
             fi
       ;;
-      "--iniciar")
+      "--fundo")
             rm start.sh
             rm -rf /tmp/level.txt
             rm -rf /sbin/mcpe
