@@ -16,10 +16,10 @@ USUARIO=./
 echo "Qual nome do Backup?"
       read -rp "  " -e -i "$(TZ=UTC+3 date +"%d-%m-%Y")" BACKUP
 
-echo "Por padrão é no /home/Minecraft-Backup, mais esse diretorio será a apagado depois mantendo os novos no $PATH_TO_INSTALL"
+echo "Por padrão é no /home/Minecraft-Backup, mais esse diretorio será a apagado depois mantendo os novos no $PATH_TO_INSTALL (debug)"
       read -rp "Aonde vai ser o backup: " -e -i "/home/Minecraft-Backup" PATH_TO_BACKUP
 
-echo "arquivos temporarios"
+echo "arquivos temporarios (debug)"
       read -rp "A onde vai ser a pasta temporaria: " -e -i "/tmp/mcpe-update" TMP_UPDATE
       read -rp  "A onde sera savo o backup para amazenamento: " -e -i "$(cd ~/;pwd)/mcpe-Backup" PATHBACKUP
 
@@ -32,13 +32,13 @@ echo " "
 echo " "
 
 #copia
-cp $PATH_TO_INSTALL  $PATH_TO_BACKUP
+cp -r "$PATH_TO_INSTALL"  "$PATH_TO_BACKUP"
 
 #copia de seguraça
-zip  $PATHBACKUP/$BACKUP -r $PATH_TO_INSTALL
+zip  "$PATHBACKUP/$BACKUP".zip -r "$PATH_TO_INSTALL"
 
 #exterminar versao antig
-rm -r $PATH_TO_INSTALL
+rm -rf "$PATH_TO_INSTALL"
 
 #baixar a nova versão
 wget "$BDS" -O mcpe.zip
@@ -47,3 +47,5 @@ unzip mcpe.zip -d mcpe
 #copiar mundo e as configuraçoes
 
 #remover arquivos antigos
+rm mcpe.zip
+rm -rf mcpe/
