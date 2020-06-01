@@ -1,4 +1,3 @@
-@echo off
 rem variaveis
 set URL_update=https://minecraft.azureedge.net/bin-win/bedrock-server-1.14.60.5.zip
 set PATH_TO_update=%HOMEPATH%\mcpe

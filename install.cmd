@@ -1,5 +1,3 @@
-@echo off
-
 rem variaveis
 set URL_INSTALL=https://minecraft.azureedge.net/bin-win/bedrock-server-1.14.60.5.zip >>install.log 2>&1
 set PATH_TO_INSTALL=%HOMEPATH%\mcpe >>install.log 2>&1
