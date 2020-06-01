@@ -67,3 +67,5 @@ mv mcpe/ $PATH_TO_INSTALL
 #remover arquivos antigos
 rm mcpe.zip
 rm -rf mcpe/
+rm -rf $PATH_TO_BACKUP
+rm -rf $TMP_UPDATE
