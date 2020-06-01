@@ -11,8 +11,14 @@ sudo apt install screen net-tools -y >>$USUARIO/log.txt 2>&1 ;
 BDS="$(wget -qO- https://raw.githubusercontent.com/Sirherobrine23/Minecraft-Bedrock-auto-install/linux/Update.txt)"
 
 #caminho da instalação e do backup
-PATH_TO_INSTALL="/home/Minecraft"
-PATH_TO_BACKUP="/home/Minecraft-Backup"
+if [[ -e installed.txt ]]; then
+read -rp "qual diretorio está instalado: " -e -i "$(cat installed.txt)" PATH_TO_INSTALL
+echo "Depois pode alterar o diretorio no installed.txt"
+else
+read -rp "a onde vai ser instalado: " -e -i "/home/minecraft" PATH_TO_INSTALL
+touch installed.txt -a $PATH_TO_INSTALL
+echo "$PATH_TO_INSTALL" >> installed.txt
+fi
 
 #Usuario
 USUARIO=$(cd ~/;pwd)
