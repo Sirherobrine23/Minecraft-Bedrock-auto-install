@@ -45,18 +45,27 @@ MAPA=$(cat $TMP_UPDATE/level.txt) >>$USUARIO/log.txt 2>&1 ;
 echo " "
 echo " "
 
+echo "verificando se a arquivos antingos no $(pwd)"
+if [[ mcpe/:mcpe.zip ]]; then
+echo "você tem algumas pasta e arquivos de alguma instalação estamos removendo"
+rm -rf mcpe/
+rm mcpe.zip
+else
+echo "Não há arquivos antigos aqui"
+fi
+
+#pasta do backup
+mkdir "$PATH_TO_BACKUP/"
+
 #copia
-cp -r "$PATH_TO_INSTALL/mcpe/worlds" "$PATH_TO_BACKUP"
-cp "$PATH_TO_INSTALL/mcpe/server.properties" "$PATH_TO_BACKUP"
-cp "$PATH_TO_INSTALL/mcpe/whitelist.json" "$PATH_TO_BACKUP"
+cp -r "$PATH_TO_INSTALL/mcpe/" "$PATH_TO_BACKUP"
 
 #copia de seguraça
 apt-get install zip unzip -y
-zip  "$PATHBACKUP/$BACKUP".zip -r "$PATH_TO_INSTALL"
+mkdir "$PATHBACKUP/"
+zip  "$PATHBACKUP/$BACKUP".zip -r "$PATH_TO_INSTALL/*"
 
-#exterminar versao antig
-rm -rf "$PATH_TO_INSTALL"
-
+if [[ $PATH_TO_INSTALL/mcpe ]];then
 #baixar a nova versão
 wget "$BDS" -O mcpe.zip
 unzip mcpe.zip -d mcpe
@@ -65,18 +74,25 @@ unzip mcpe.zip -d mcpe
 rm -r mcpe/server.properties
 rm -r mcpe/whitelist.json
 
-
+mv $PATH_TO_INSTALL/mcpe /tmp/
 #copiar mundo e as configuraçoe
-cp -r "$PATH_TO_BACKUP/worlds" "./mcpe"
-cp "$PATHBACKUP/server.properties" "./mcpe"
-cp "$PATH_TO_BACKUP/whitelist.json" "./mcpe"
+cp -r "$PATH_TO_BACKUP/mcpe/worlds" "./mcpe"
+cp "$PATHBACKUP/mcpe/server.properties" "./mcpe"
+cp "$PATH_TO_BACKUP/mcpe/whitelist.json" "./mcpe"
 
 #movendo
 mkdir $PATH_TO_INSTALL/
-mv mcpe/ $PATH_TO_INSTALL
+mv mcpe/ $PATH_TO_INSTALL/
 
 #remover arquivos antigos
 rm mcpe.zip
 rm -rf mcpe/
 rm -rf $PATH_TO_BACKUP
 rm -rf $TMP_UPDATE
+
+else
+echo "Não foi possivel atualizar"
+sleep 3
+echo "Restaurando os arquivos"
+mv 
+fi
