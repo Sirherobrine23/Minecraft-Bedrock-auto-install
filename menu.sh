@@ -1,5 +1,12 @@
 #!/bin/bash
 clear
+#Espaço
+echo "o Diretorio do seu usuario é $USUARIO"
+echo "Começamos ás $(TZ=UTC+3 date +"%H:%M:%S")"
+echo " "
+echo "--------------"
+echo " "
+
 
 #--unistall
 REMOVE=$(pwd)
@@ -33,13 +40,6 @@ sudo mkdir $TMP >>$USUARIO/log.txt 2>&1 ;
 
 # Remoção dos arquivo de log
 sudo rm -rf $TMP/level.txt >>$USUARIO/log.txt 2>&1 ;
-
-#Espaço
-echo "o Diretorio do seu usuario é $USUARIO"
-echo "Começamos ás $(TZ=UTC+3 date +"%H:%M:%S")"
-echo " "
-echo "--------------"
-echo " "
 
 #Root
 if [ "$EUID" -ne 0 ]; then
