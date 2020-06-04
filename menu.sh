@@ -7,7 +7,6 @@ echo " "
 echo "--------------"
 echo " "
 
-
 #Root
 if [ "$EUID" -ne 0 ]; then
 	echo "Você não está executando o script com root ou sudo"
@@ -20,7 +19,6 @@ else
 	echo "Você não tem instalado ou não esta com sistema Debian ou Ubuntu "
 	exit 1
 fi
-case $1 in
 
 #--unistall
 REMOVE=$(pwd)
@@ -55,6 +53,8 @@ sudo mkdir $TMP >>$USUARIO/log.txt 2>&1 ;
 # Remoção dos arquivo de log
 sudo rm -rf $TMP/level.txt >>$USUARIO/log.txt 2>&1 ;
 
+
+case $1 in
    "--install") 
                   #banner
                   cat banner.txt;
