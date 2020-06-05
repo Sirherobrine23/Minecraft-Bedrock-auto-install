@@ -1,6 +1,0 @@
-opções para instalação:
-    --install           - instalação para ubuntu X64
-    --fundo        - Adiciona um arquivo para "screen mcpe"
-    --sistema   - Adiciona um script para iniciar junto com sistema pelo service
-    --ip                - Mostre seu IPs Disponiveis
-    --unistall          - remove a pasta installer
