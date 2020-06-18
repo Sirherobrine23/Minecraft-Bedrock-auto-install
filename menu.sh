@@ -56,38 +56,113 @@ sudo rm -rf $TMP/level.txt >>$USUARIO/log.txt 2>&1 ;
 
 case $1 in
    "--install") 
-                  #banner
+                              #banner
                   cat banner.txt;
                   # Prerequisite
                   echo "  ";
                   echo "Instalando o Wget e unzip";
-                  echo -ne "#                         (01%)\r";
                   sudo apt install -y wget unzip >>$USUARIO/log.txt 2>&1 ;
-                  echo -ne "##                        (02%)\r";
+
+
                   echo " ";
                   echo "Criando diretorio do servidor no $PATH_TO_INSTALL"
                   sudo mkdir $PATH_TO_INSTALL >>$USUARIO/log.txt 2>&1 ;
+
                   #Download do arquivos servidor
-                  echo -ne "#####                     (20%)\r";
                   echo "Baixando o Software do Servidor";
                   sudo wget "$BDS" -O mcpe.zip >>$USUARIO/log.txt 2>&1 ;
-                  echo -ne "########                  (40%)\r";
                   echo "Instalando o Servidor";
-                  sudo unzip mcpe.zip -d $PATH_TO_INSTALL//mcpe >>$USUARIO/log.txt 2>&1 ;
+                  sudo unzip mcpe.zip -d mcpe/ >>$USUARIO/log.txt 2>&1 ;
                   sudo rm -rf mcpe.zip;
-                  echo -ne "#############             (50%)\r";
+
                   #config
-                  rm -rf $PATH_TO_INSTALL//mcpe/server.properties >>$USUARIO/log.txt 2>&1 ;
-                  rm -rf $PATH_TO_INSTALL//mcpe/whitelist.json >>$USUARIO/log.txt 2>&1 ;
-                  cp -r ./server.properties $PATH_TO_INSTALL//mcpe/ >>$USUARIO/log.txt 2>&1 ;
-                  cp -r ./whitelist.json $PATH_TO_INSTALL//mcpe/ >>$USUARIO/log.txt 2>&1 ;
-                  echo -ne "#######################   (100%)\r";
-                  echo -ne "####### completo ######   (100%)\r";
-                  echo "O log está no arquivo $USUARIO/log.txt ou /tmp/install.log"
+                  rm -rf mcpe/server.properties >>$USUARIO/log.txt 2>&1 ;
+                  rm -rf mcpe/whitelist.json >>$USUARIO/log.txt 2>&1 ;
+                  cp -r ./server.properties mcpe/ >>$USUARIO/log.txt 2>&1 ;
+                  cp -r ./whitelist.json mcpe/ >>$USUARIO/log.txt 2>&1 ;
+
+                  #Movendo
+                  mv -rf mcpe/ $PATH_TO_INSTALL/
+
+                  echo "O log está no arquivo $USUARIO/log.txt"
+
       ;;
       "--update")
+            #Preparando
+            echo " "
+            echo "Backup?"
+                  read -rp "Nome do backup:  " -e -i "$(TZ=UTC+3 date +"%d-%m-%Y")" BACKUP
+            echo " "
+            echo "Por padrão é no /home/Minecraft-Backup, mais esse diretorio será a apagado depois mantendo os novos no $PATH_TO_INSTALL (debug)"
+                  read -rp "Aonde vai ser o backup: " -e -i "/home/Minecraft-Backup" PATH_TO_BACKUP
+            echo " "
+            echo "arquivos temporarios (debug)"
+                  read -rp "A onde vai ser a pasta temporaria: " -e -i "/tmp/mcpe-update" TMP_UPDATE
+                  read -rp  "A onde sera savo o backup para amazenamento: " -e -i "$(cd ~/;pwd)/mcpe-Backup" PATHBACKUP
+            echo " "
+            echo " "
 
-      
+            #---------------------------------------------------------------------------------------------------------
+            cat "$PATH_TO_INSTALL/mcpe/server.properties" | grep "level-name=" >> "$TMP_UPDATE/level.txt" ;
+            sed -i "s|level-name=||g" "$TMP_UPDATE/level.txt"
+            MAPA=$(cat $TMP_UPDATE/level.txt) >>$USUARIO/log.txt 2>&1 ;
+            #---------------------------------------------------------------------------------------------------------
+            echo " "
+            echo " "
+
+            echo "verificando se a arquivos antingos no $(pwd)"
+            if [[ mcpe/:mcpe.zip ]]; then
+            echo "você tem algumas pasta e arquivos de alguma instalação estamos removendo"
+            rm -rf mcpe/
+            rm mcpe.zip
+            else
+            echo "Não há arquivos antigos aqui"
+            fi
+
+            #pasta do backup
+            mkdir "$PATH_TO_BACKUP/"
+
+            #copia
+            cp -r "$PATH_TO_INSTALL/mcpe/" "$PATH_TO_BACKUP"
+
+            #copia de seguraça
+            apt-get install zip unzip -y
+            mkdir "$PATHBACKUP/"
+            zip  "$PATHBACKUP/$BACKUP".zip -r "$PATH_TO_INSTALL/*"
+
+            if [[ $PATH_TO_INSTALL/mcpe ]];then
+            #baixar a nova versão
+            wget "$BDS" -O mcpe.zip
+            unzip mcpe.zip -d mcpe
+
+            #removendo alguns arquivos
+            rm -r mcpe/server.properties
+            rm -r mcpe/whitelist.json
+
+            mv $PATH_TO_INSTALL/mcpe /tmp/
+            #copiar mundo e as configuraçoe
+            cp -r "$PATH_TO_BACKUP/mcpe/worlds" "./mcpe"
+            cp "$PATHBACKUP/mcpe/server.properties" "./mcpe"
+            cp "$PATH_TO_BACKUP/mcpe/whitelist.json" "./mcpe"
+
+            #movendo
+            mkdir $PATH_TO_INSTALL/
+            mv mcpe/ $PATH_TO_INSTALL/
+
+            #remover arquivos antigos
+            rm mcpe.zip
+            rm -rf mcpe/
+            rm -rf $PATH_TO_BACKUP
+            rm -rf $TMP_UPDATE
+
+            else
+            echo "Não foi possivel atualizar"
+            sleep 3
+            rm -rf $PATH_TO_INSTALL >>$USUARIO/log.txt 2>&1
+            mkdir $PATH_TO_INSTALL >>$USUARIO/log.txt 2>&1
+            echo "Restaurando os arquivos"
+            mv "$PATH_TO_BACKUP/mcpe $PATH_TO_INSTALL" >>$USUARIO/log.txt 2>&1 ;
+            fi
       ;;
       "--backup")
             if [ -e /sbin/mcpe-server ] ; then

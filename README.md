@@ -11,9 +11,10 @@ Este Script só agiliza a instalação do servidor para MCPE (Minecraft Bedrock)
 atualmente opções para instalação:
 
     --install           - instalação para ubuntu X64
-    --screen            - Add screen, mais a instalação para servidor para funciona 24 Horas sem a necessidade de deixa o ssh ou outro meio conectado
-    --start-file        - Adiciona um arquivo para "screen mcpe"
-    --sistema           - Adiciona um script para iniciar junto com sistema pelo service
+    --update            - Atualização do BDS (BETA)
+    --backup            - Ativar backups (BETA)
+    --fundo             - Adiciona um arquivo para "screen mcpe"
+    --sistema           - Adiciona um script para iniciar junto com sistema pelo service (BETA)
     --ip                - Mostre seu IPs Disponiveis
     --unistall          - remove a pasta installer
 #### Testado no ubuntu e no debian não sei se vai funciona em outras distros que utilizam o apt.
