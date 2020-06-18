@@ -63,10 +63,6 @@ case $1 in
                   echo "Instalando o Wget e unzip";
                   sudo apt install -y wget unzip >>$USUARIO/log.txt 2>&1 ;
 
-                  echo " ";
-                  echo "Criando diretorio do servidor no $PATH_TO_INSTALL"
-                  sudo mkdir $PATH_TO_INSTALL/ >>$USUARIO/log.txt 2>&1 ;
-
                   #Download do arquivos servidor
                   echo "Baixando o Software do Servidor";
                   sudo wget "$BDS" -O mcpe.zip >>$USUARIO/log.txt 2>&1 ;
@@ -84,6 +80,8 @@ case $1 in
 
                   #Movendo
                   echo "Movendo para o $PATH_TO_INSTALL"
+                  rm -rf $PATH_TO_INSTALL
+                  mkdir $PATH_TO_INSTALL
                   mv mcpe/ $PATH_TO_INSTALL/
                   echo "Limpando alguns arquivos"
                   rm -rf mcpe/
