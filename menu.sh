@@ -84,7 +84,7 @@ case $1 in
 
                   #Movendo
                   echo "Movendo para o $PATH_TO_INSTALL"
-                  mv -rf mcpe/ $PATH_TO_INSTALL/
+                  mv mcpe/ $PATH_TO_INSTALL/
                   echo "Limpando alguns arquivos"
                   rm -rf mcpe/
                   echo "O log está no arquivo $USUARIO/log.txt"
