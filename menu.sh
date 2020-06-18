@@ -70,18 +70,20 @@ case $1 in
                   #Download do arquivos servidor
                   echo "Baixando o Software do Servidor";
                   sudo wget "$BDS" -O mcpe.zip >>$USUARIO/log.txt 2>&1 ;
+
                   echo "Instalando o Servidor";
                   sudo unzip mcpe.zip -d mcpe/ >>$USUARIO/log.txt 2>&1 ;
                   sudo rm -rf mcpe.zip;
 
                   #config
+                  echo "Configuração Base"
                   rm -rf mcpe/server.properties >>$USUARIO/log.txt 2>&1 ;
                   rm -rf mcpe/whitelist.json >>$USUARIO/log.txt 2>&1 ;
                   cp -r ./server.properties mcpe/ >>$USUARIO/log.txt 2>&1 ;
                   cp -r ./whitelist.json mcpe/ >>$USUARIO/log.txt 2>&1 ;
 
                   #Movendo
-                  echo "Movendo"
+                  echo "Movendo para o $PATH_TO_INSTALL"
                   mv -rf mcpe/ $PATH_TO_INSTALL/
                   echo "Limpando alguns arquivos"
                   rm -rf mcpe/
