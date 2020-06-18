@@ -63,10 +63,9 @@ case $1 in
                   echo "Instalando o Wget e unzip";
                   sudo apt install -y wget unzip >>$USUARIO/log.txt 2>&1 ;
 
-
                   echo " ";
                   echo "Criando diretorio do servidor no $PATH_TO_INSTALL"
-                  sudo mkdir $PATH_TO_INSTALL >>$USUARIO/log.txt 2>&1 ;
+                  sudo mkdir $PATH_TO_INSTALL/ >>$USUARIO/log.txt 2>&1 ;
 
                   #Download do arquivos servidor
                   echo "Baixando o Software do Servidor";
@@ -82,8 +81,10 @@ case $1 in
                   cp -r ./whitelist.json mcpe/ >>$USUARIO/log.txt 2>&1 ;
 
                   #Movendo
+                  echo "Movendo"
                   mv -rf mcpe/ $PATH_TO_INSTALL/
-
+                  echo "Limpando alguns arquivos"
+                  rm -rf mcpe/
                   echo "O log está no arquivo $USUARIO/log.txt"
 
       ;;
