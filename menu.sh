@@ -35,15 +35,7 @@ fi
 #Software
 BDS="$(wget -qO- https://script.sirherobrine23.org/BDS.txt)"
 
-#caminho da instalação e do backup
-if [[ -e installed.txt ]]; then
-      read -rp "qual diretorio está instalado: " -e -i "$(cat installed.txt)" PATH_TO_INSTALL
-      echo "Depois pode alterar o diretorio no installed.txt"
-else
-      read -rp "a onde vai ser instalado: " -e -i "/home/minecraft" PATH_TO_INSTALL
-      touch installed.txt -a $PATH_TO_INSTALL
-      echo "$PATH_TO_INSTALL" >> installed.txt
-fi
+
 
 #Usuario
 USUARIO=$(cd ~/;pwd)
@@ -61,9 +53,21 @@ sudo rm -rf $TMP/level.txt >>$USUARIO/log.txt 2>&1 ;
 
 # --------------- Codigo ------------------------------
 
+diretorio-sh23() {
+#caminho da instalação e do backup
+if [[ -e installed.txt ]]; then
+      read -rp "qual diretorio está instalado: " -e -i "$(cat installed.txt)" PATH_TO_INSTALL
+      echo "Depois pode alterar o diretorio no installed.txt"
+else
+      read -rp "a onde vai ser instalado: " -e -i "/home/minecraft" PATH_TO_INSTALL
+      touch installed.txt -a $PATH_TO_INSTALL
+      echo "$PATH_TO_INSTALL" >> installed.txt
+fi
+}
 
 
 install-sh23() {
+    diretorio-sh23
     #banner
     cat banner.txt;
     # Prerequisite
@@ -94,6 +98,7 @@ install-sh23() {
     echo "O log está no arquivo $USUARIO/log.txt"
 }
 update-sh23() {
+    diretorio-sh23
     #Preparando
     echo " "
     echo "Backup?"
@@ -171,6 +176,7 @@ update-sh23() {
     fi
 }
 backup-sh23() {
+      diretorio-sh23
     if [ -e /sbin/mcpe-server ] ; then
     echo "Para fazer o backup coloque sim (yes) e de [enter], caso não queira, não (no) e de [enter]"
     read -rp "Vai querer fazer o backup?  " -e -i "sim" BC
@@ -184,6 +190,7 @@ backup-sh23() {
     fi
     }
 fundo-sh23() {
+      diretorio-sh23
     rm start.sh
     rm -rf /tmp/level.txt
     rm -rf /sbin/mcpe
@@ -210,6 +217,7 @@ fundo-sh23() {
     echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
 }
 sistema-sh23() {
+      diretorio-sh23
     wget "https://drive.google.com/uc?export=download&id=1UlemfOSQUxbxTFDriAeDV7o1hRwXcS43" -O /usr/bin/gdrive >>$USUARIO/log.txt 2>&1 ;
     chmod a+x /usr/bin/gdrive
     if [[ -e /sbin/mcpe-server ]]; then
