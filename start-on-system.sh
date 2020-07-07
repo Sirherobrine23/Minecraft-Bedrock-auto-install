@@ -9,11 +9,11 @@
 # Short-Description:    Minecraft BDS Server Auto Start
 ### END INIT INFO
 
-start-sh23() {
+startsh23() {
         echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
         sudo screen -S bedrock mcpe-server
 }
-stop-sh23() {
+stopsh23() {
         screen -Rd bedrock -X stuff
         sleep 5
         screen -Rd bedrock -X stuff
@@ -30,7 +30,7 @@ stop-sh23() {
         screen -X -S bedrock quit
         echo "Agora o Servidor está parado."
 }
-restart-sh23() {
+restartsh23() {
 
 if ! screen -list | grep -q "bedrock"; then
     echo "Servidor não está ligado ou Não foi possivel reinicia."
@@ -62,9 +62,9 @@ if [ "$EUID" -ne 0 ]; then
 	exit 1
 fi
 case "$1" in 
-    start) start-sh23 ;;
-    stop) stop-sh23 ;;
-    restart) restart-sh23;;
+    start) startsh23 ;;
+    stop) stopsh23 ;;
+    restart) restartsh23;;
     *) echo "Usage: $0 {start | stop| restart}"
 esac
 
