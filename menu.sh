@@ -224,40 +224,44 @@ sistema-sh23() {
     wget "https://drive.google.com/uc?export=download&id=1UlemfOSQUxbxTFDriAeDV7o1hRwXcS43" -O /usr/bin/gdrive >>$USUARIO/log.txt 2>&1 ;
     chmod a+x /usr/bin/gdrive
     if [[ -e /sbin/mcpe-server ]]; then
-    echo "Percebi que já tem o $file pronto. Otimo!"
-    echo "montando o arquivos para que tudo nos ajude"
-    sudo cp start-on-system.sh /etc/init.d/mcpe-server;
-    echo "copiando o arquivo";
-    sudo chmod a+x /etc/init.d/mcpe-server;
-    update-rc.d mcpe-server enable
-    echo "pronto ele inicia junto com sistema(Beta), o comando abaixo pode ajudar"
-    echo " "
-    echo 'sudo service mcpe-server start | stop | restart'
-    echo " "
+      echo "Percebi que já tem o $file pronto. Otimo!"
+      echo "montando o arquivos para que tudo nos ajude"
+      sudo cp start-on-system.sh /etc/init.d/mcpe-server;
+      echo "copiando o arquivo";
+      sudo chmod a+x /etc/init.d/mcpe-server;
+      update-rc.d mcpe-server defaults
+      update-rc.d mcpe-server enable
+      echo "pronto ele inicia junto com sistema(Beta), o comando abaixo pode ajudar"
+      echo " "
+      echo 'sudo service mcpe-server start | stop | restart'
+      echo " "
     else
-    #Config File
-    echo "percebir que não executou $file, sem problema vamos fazer isso agora!"
-    echo "montando o arquivo necessario espere"
-    rm -rf /tmp/level.txt
-    rm -rf /sbin/mcpe
-    cat $FILE2 > "$file"
-    cat $PATH_TO_INSTALL//server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
-    sed -i "s|DIRE|$PATH_TO_INSTALL|g" "$file";
-    sed -i "s|MAPASS|$(cat /tmp/level.txt)|g" "$file"
-    sed -i "s|PATH_TO_INSTALL|$PATH_TO_INSTALL|g" "$file"
-    sudo mv "$file" /sbin/$file ; sudo chmod a+x /sbin/$file ;
-    echo "arquivo pronto"
-    echo "agora o outro arquivo"
-    #pos
-    sudo rm -rf /etc/init.d/mcpe
-    sudo rm -rf /etc/init.d/mcpe-server
-    sudo cp start-on-system.sh /etc/init.d/mcpe-server;
-    echo "copiando o arquivo";
-    sudo chmod a+x /etc/init.d/mcpe-server;
-    update-rc.d mcpe-server enable
-    echo "pronto ele inicia junto com sistema(Beta) o comando abaixo pode ajudar"
-    echo 'sudo service mcpe start | stop | restart'
-    echo " "
+      #Config File
+      echo "percebir que não executou $file, sem problema vamos fazer isso agora!"
+      echo "montando o arquivo necessario espere"
+      rm -rf /tmp/level.txt
+      rm -rf /sbin/mcpe
+      cat $FILE2 > "$file"
+      cat $PATH_TO_INSTALL//server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
+      sed -i "s|DIRE|$PATH_TO_INSTALL|g" "$file";
+      sed -i "s|MAPASS|$(cat /tmp/level.txt)|g" "$file"
+      sed -i "s|PATH_TO_INSTALL|$PATH_TO_INSTALL|g" "$file"
+      sudo mv "$file" /sbin/$file ; sudo chmod a+x /sbin/$file ;
+      echo "arquivo pronto"
+      echo "agora o outro arquivo"
+      
+      #pos
+      echo "Percebi que já tem o $file pronto. Otimo!"
+      echo "montando o arquivos para que tudo nos ajude"
+      sudo cp start-on-system.sh /etc/init.d/mcpe-server;
+      echo "copiando o arquivo";
+      sudo chmod a+x /etc/init.d/mcpe-server;
+      update-rc.d mcpe-server defaults
+      update-rc.d mcpe-server enable
+      echo "pronto ele inicia junto com sistema(Beta), o comando abaixo pode ajudar"
+      echo " "
+      echo 'sudo service mcpe-server start | stop | restart'
+      echo " "
     fi
 }
 ip-sh23(){
