@@ -264,13 +264,13 @@ ip-sh23(){
 }
 
 case $1 in
-*--install* | --Instalação )  install-sh23 ;;
----update* | *--Atualizar* ) update-sh23 ;;
---backup) backup-sh23 ;;
---System | --Sistema ) sistema-sh23 ;;
---fundo) fundo-sh23 ;;
---ip) ip-sh23 ;;
-"--unistall") sudo rm -rf "$REMOVE";;
+--install* | --Instalação* | --instalacao* | --Install* )  install-sh23 ;;
+---update* | --Atualizar* | --Update* | --Update* ) update-sh23 ;;
+--backup* | --Backup* ) backup-sh23 ;;
+--System | --Sistema | --system | --sistema ) sistema-sh23 ;;
+--fundo* | --Fundo* | --Backgroud* | --background*  ) fundo-sh23 ;;
+--ip | --Ip | --IP | --pi ) ip-sh23 ;;
+--unistall | --remover) sudo rm -rf "$REMOVE";;
 *) cat help.txt ; echo " ";exit 1;;
 esac
 
