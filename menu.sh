@@ -23,11 +23,17 @@ fi
 #--unistall
 REMOVE=$(pwd)
 
-#Debian - ubuntu
-sudo apt install screen net-tools -y >>$USUARIO/log.txt 2>&1 ;
+#Debian ou ubuntu
+if [[ $OS == 'ubuntu' ]]; then
+      sudo apt install screen unzip zip net-tools -y >>$USUARIO/log.txt 2>&1 ;
+elif [[ $OS == 'debian' ]]; then
+	sudo apt install screen unzip zip net-tools -y >>$USUARIO/log.txt 2>&1 ;
+else
+      exit 1
+fi
 
 #Software
-BDS="$(wget -qO- https://raw.githubusercontent.com/Sirherobrine23/Minecraft-Bedrock-auto-install/linux/Update.txt)"
+BDS="$(wget -qO- https://script.sirherobrine23.org/BDS.txt)"
 
 #caminho da instalação e do backup
 if [[ -e installed.txt ]]; then
@@ -246,17 +252,17 @@ sistema-sh23() {
     fi
 }
 ip-sh23(){
-#Comando --ip variaveis
-IP_V4=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
-SEARCH_IPV6=$(ip -6 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)
-IP_V6=$(ifconfig $SEARCH_IPV6 | grep "inet6" | awk -F' ' '{print $2}' | awk '{print $1}') 
-IP_PUBLICO=$(wget -qO- http://ipecho.net/plain)
-#Echo's
-        echo "Seu IPv4 é $IP_V4 para Jogar localmente , e o Seu IPv6 é $(echo -ne $IP_V6)"
-        echo " "
-        echo "Caso Queira Jogar Remotamento com alguém Abra as Portas 19132 e 19133 no seu Roteador ou seu Firewall, seu IPv4 Publico é $IP_PUBLICO"
-        echo "Também verifique se sua operadora ou provedor libera as portas do servidor. contate-os"
-echo " ";
+      #Comando --ip variaveis
+      IP_V4=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
+      SEARCH_IPV6=$(ip -6 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)
+      IP_V6=$(ifconfig $SEARCH_IPV6 | grep "inet6" | awk -F' ' '{print $2}' | awk '{print $1}') 
+      IP_PUBLICO=$(wget -qO- http://ipecho.net/plain)
+      #Echo's
+            echo "Seu IPv4 é $IP_V4 para Jogar localmente , e o Seu IPv6 é $(echo -ne $IP_V6)"
+            echo " "
+            echo "Caso Queira Jogar Remotamento com alguém Abra as Portas 19132 e 19133 no seu Roteador ou seu Firewall, seu IPv4 Publico é $IP_PUBLICO"
+            echo "Também verifique se sua operadora ou provedor libera as portas do servidor. contate-os"
+      echo " ";
 }
 
 case $1 in
