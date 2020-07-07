@@ -277,7 +277,39 @@ ip-sh23(){
             echo "Também verifique se sua operadora ou provedor libera as portas do servidor. contate-os"
       echo " ";
 }
+apache2-install-sh23() {
 
+      #Instalação do apache2
+      echo "Instalando o Apache2"
+      sudo apt update
+      sudo apt install apache2 -yes
+
+      # Removendo pasta HTML e Adicionando denovo
+      rm -rf /var/www/html
+      mkdir /var/www/html/
+
+      # Pegando as config
+      echo "Agora vamos começar a configurar o nova pagina do Apache"
+      sleep 2
+      echo "Vamos precicar de algumas informações como:"
+      echo "Dominio caso você tenha;"
+      echo "nome que aparacera na Pagina. etc ..."
+      cat $PATH_TO_INSTALL/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
+      MAPA_DO_SERVIDOR=$(cat /tmp/level.txt)
+      cat $PATH_TO_INSTALL/server.properties | grep "server-port=" > /tmp/port.txt ; sed -i "s|server-port=||g" "/tmp/port.txt"
+      PORTAD=$(cat /tmp/port.txt)
+      read -rp "Qual será o dominio ou nos da o IP publico: " -e -i "$(wget -qO- http://ipecho.net/plain)" IPDOMAIN
+      read -rp "Qual é o nome que aparacera na pagina: " -e -i "$(cat )" MAINSERVERNAME
+
+      # Montando as Configurações
+      sed -i "s|ENDEREÇODOSERVIDOROUIP|$IPDOMAIN|g" "./html-file/index.html"
+      sed -i "s|MAINSERVERNAME|$MAPA_DO_SERVIDOR|g" "./html-file/index.html"
+      sed -i "s|PORTASERVER|$PORTAD|g" "./html-file/index.html"
+
+      # Movendo as configurações
+      cp -rf ./html-files/* /var/www/html/
+
+}
 case $1 in
 --install* | --Instalação* | --instalacao* | --Install* )  install-sh23 ;;
 ---update* | --Atualizar* | --Update* | --Update* ) update-sh23 ;;
@@ -285,6 +317,7 @@ case $1 in
 --System | --Sistema | --system | --sistema ) sistema-sh23 ;;
 --fundo* | --Fundo* | --Backgroud* | --background*  ) fundo-sh23 ;;
 --ip | --Ip | --IP | --pi ) ip-sh23 ;;
+--Apache2 | apache2 | --Page | --page ) apache2-install-sh23 ;;
 --unistall | --remover) sudo rm -rf "$REMOVE";;
 *) cat help.txt ; echo " ";exit 1;;
 esac

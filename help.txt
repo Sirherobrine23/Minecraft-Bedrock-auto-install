@@ -1,8 +1,9 @@
 opções para instalação:
-    --install | --Instalação | --instalacao | --Install     - instalação do BDS
-    ---update | --Atualizar  | --Update     | --Update      - Atualização do BDS (BETA)
-    --backup  | --Backup                                    - Ativar backups (BETA)
-    --System  | --Sistema    | --system     | --sistema     - Adiciona um script para iniciar junto com sistema pelo service (BETA)
-    --fundo   | --Fundo      | --Backgroud  | --background  - Adiciona um arquivo para "screen mcpe"
-    --ip      | --Ip         | --IP         | --pi          - Mostre seu IPs Disponiveis Localmente e externo
-    --unistall | --remover                                  - remove a pasta installer
+    --install  | --Instalação | --instalacao | --Install     - instalação do BDS
+    ---update  | --Atualizar  | --Update     | --Update      - Atualização do BDS (BETA)
+    --backup   | --Backup                                    - Ativar backups (BETA)
+    --System   | --Sistema    | --system     | --sistema     - Adiciona um script para iniciar junto com sistema pelo service (BETA)
+    --fundo    | --Fundo      | --Backgroud  | --background  - Adiciona um arquivo para "screen mcpe"
+    --ip       | --Ip         | --IP         | --pi          - Mostre seu IPs Disponiveis Localmente e externo
+    --Apache2  | apache2      | --Page       | --page        - Adicionar uma pagina para adicionar o servidor em um click
+    --unistall | --remover                                   - remove a pasta installer                             - remove a pasta installer
