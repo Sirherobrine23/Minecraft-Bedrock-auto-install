@@ -11,6 +11,8 @@ $ sudo curl https://raw.githubusercontent.com/Sirherobrine23/Minecraft-Bedrock-a
 
 # Instalação do Minecraft Bedrock para Windows (Windows 10)
 
+#### Descontinuado mas será reescrito para ser executado em powershell
+
 Execute o seguinte comando no cmd.
 
 ```
