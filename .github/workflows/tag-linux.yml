@@ -53,3 +53,4 @@ jobs:
         tag_name: ${{ env.RELEASE_TAG }}
         body_path: release.txt
         files: files/*
+        
