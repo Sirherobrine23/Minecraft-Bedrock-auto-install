@@ -2,7 +2,7 @@ name: Zip Linux
 
 on:
   push:
-    tags-ignore:
+    tags-ignore
 env:
   REPO_URL: https://github.com/Sirherobrine23/Minecraft-Bedrock-auto-install.git
   REPO_BRANCH: linux
@@ -26,7 +26,7 @@ jobs:
 
     - name: Date
       run: |
-        echo ::set-env name=NAMES::""$(TZ=UTC+3 date +"%d-%m-%Y")_$(TZ=UTC+3 date +"%H-%M-%S")"
+        echo ::set-env name=NAMES::"$(TZ=UTC+3 date +"%d-%m-%Y")_$(TZ=UTC+3 date +"%H-%M-%S")"
 
     - name: Criando o Arquivo
       run: |
