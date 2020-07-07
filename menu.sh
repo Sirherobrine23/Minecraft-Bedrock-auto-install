@@ -56,7 +56,7 @@ sudo rm -rf $TMP/level.txt >>$USUARIO/log.txt 2>&1 ;
 diretorio-sh23() {
 #caminho da instalação e do backup
 if [[ -e installed.txt ]]; then
-      read -rp "qual diretorio está instalado: " -e -i "$(cat installed.txt)" PATH_TO_INSTALL
+      PATH_TO_INSTALL="$(cat installed.txt)" 
       echo "Depois pode alterar o diretorio no installed.txt"
 else
       read -rp "a onde vai ser instalado: " -e -i "/home/minecraft" PATH_TO_INSTALL
@@ -104,7 +104,7 @@ update-sh23() {
     echo "Backup?"
         read -rp "Nome do backup:  " -e -i "$(TZ=UTC+3 date +"%d-%m-%Y")" BACKUP
     echo " "
-    echo "Por padrão é no /home/Minecraft-Backup, mais esse diretorio será a apagado depois mantendo os novos no $PATH_TO_INSTALL (debug)"
+    echo "Por padrão é no /home/Minecraft-Backup, mais esse diretorio será a apagado depois, mas isso não é do Backup, mas mantendo os novos no $PATH_TO_INSTALL (debug)"
         read -rp "Aonde vai ser o backup: " -e -i "/home/Minecraft-Backup" PATH_TO_BACKUP
     echo " "
     echo "arquivos temporarios (debug)"
@@ -134,7 +134,7 @@ update-sh23() {
     mkdir "$PATH_TO_BACKUP/"
 
     #copia
-    cp -r "$PATH_TO_INSTALL/" "$PATH_TO_BACKUP"
+    cp -r "$PATH_TO_INSTALL/*" "$PATH_TO_BACKUP"
 
     #copia de seguraça
     apt-get install zip unzip -y
@@ -150,7 +150,9 @@ update-sh23() {
     rm -r mcpe/server.properties
     rm -r mcpe/whitelist.json
 
-    mv $PATH_TO_INSTALL/mcpe /tmp/
+    # Movendo para o temp
+    mv $PATH_TO_INSTALL/* /tmp/
+    
     #copiar mundo e as configuraçoe
     cp -r "$PATH_TO_BACKUP/worlds" "./mcpe"
     cp "$PATHBACKUP/server.properties" "./mcpe"
@@ -158,7 +160,7 @@ update-sh23() {
 
     #movendo
     mkdir $PATH_TO_INSTALL/
-    mv mcpe/ $PATH_TO_INSTALL/
+    mv ./mcpe/* $PATH_TO_INSTALL/
 
     #remover arquivos antigos
     rm mcpe.zip
@@ -179,39 +181,40 @@ backup-sh23() {
       diretorio-sh23
     if [ -e /sbin/mcpe-server ] ; then
     echo "Para fazer o backup coloque sim (yes) e de [enter], caso não queira, não (no) e de [enter]"
-    read -rp "Vai querer fazer o backup?  " -e -i "sim" BC
-    case $BC in
-    [simyes]* )cp backup.txt $PATH_TO_INSTALL ;;
-    [naono]* ) exit;;
-    * ) echo "por favor qual, sim ou não "
-    esac
+      read -rp "Vai querer fazer o backup?  " -e -i "sim" BC
+            case $BC in
+            sim | yes ) cp backup.txt $PATH_TO_INSTALL ;;
+            nao | no ) exit;;
+            * ) echo "não houve escolha"
+            esac
     else
     echo "não podemos cria agora, por favor execute primeiro o --iniciar"
     fi
-    }
+}
 fundo-sh23() {
       diretorio-sh23
     rm start.sh
     rm -rf /tmp/level.txt
     rm -rf /sbin/mcpe
-    cat $PATH_TO_INSTALL//server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
+    cat $PATH_TO_INSTALL/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
     MAPA_DO_SERVIDOR=$(cat /tmp/level.txt)
-    echo " #!/bin/bash " >> start.sh
-    echo " if [[ -e $PATH_TO_INSTALL/backup.txt ]]; then " >> start.sh
-    echo "     echo 'Com Backup, já já iniciamos seu servidor' " >> start.sh
-    echo "     cd $PATH_TO_INSTALL/ " >> start.sh
-    echo "     LD_LIBRARY_PATH=. ./bedrock_server " >> start.sh
-    echo "     cd $PATH_TO_INSTALL/ " >> start.sh
-    echo "     echo 'Fazendo backup do mapa'" >> start.sh
-    echo '     GDRIVE_FOLDE=ID-DA-PASTA-NO-GOOGLE-DRIVE' >> start.sh
-    echo "     cd worlds/ ; zip '$MAPA_DO_SERVIDOR'.zip -r '$MAPA_DO_SERVIDOR' "  >> start.sh 
-    echo "     gdrive upload --parent $GDRIVE_FOLDE $MAPA_DO_SERVIDOR.zip " >> start.sh
-    echo "     rm $MAPA_DO_SERVIDOR.zip" >> start.sh
-    echo " else " >> start.shecho "     echo 'Sem backup, já já iniciamos seu servidor' " >> start.sh
-    echo "     cd $PATH_TO_INSTALL/ " >> start.sh
-    echo "     LD_LIBRARY_PATH=. ./bedrock_server " >> start.sh
-    echo 'fi ' >> start.sh
-    echo ' exit 1' >> start.sh
+      echo " #!/bin/bash " >> start.sh
+      echo " if [[ -e $PATH_TO_INSTALL/backup.txt ]]; then " >> start.sh
+      echo "     echo 'Com Backup, já já iniciamos seu servidor' " >> start.sh
+      echo "     cd $PATH_TO_INSTALL/ " >> start.sh
+      echo "     LD_LIBRARY_PATH=. ./bedrock_server " >> start.sh
+      echo "     cd $PATH_TO_INSTALL/ " >> start.sh
+      echo "     echo 'Fazendo backup do mapa'" >> start.sh
+      echo '     GDRIVE_FOLDE=ID-DA-PASTA-NO-GOOGLE-DRIVE' >> start.sh
+      echo "     cd worlds/ ; zip '$MAPA_DO_SERVIDOR'.zip -r '$MAPA_DO_SERVIDOR' "  >> start.sh 
+      echo "     gdrive upload --parent $GDRIVE_FOLDE $MAPA_DO_SERVIDOR.zip " >> start.sh
+      echo "     rm $MAPA_DO_SERVIDOR.zip" >> start.sh
+      echo " else " >> start.sh
+      echo "     echo 'Sem backup, já já iniciamos seu servidor' " >> start.sh
+      echo "     cd $PATH_TO_INSTALL/ " >> start.sh
+      echo "     LD_LIBRARY_PATH=. ./bedrock_server " >> start.sh
+      echo 'fi ' >> start.sh
+      echo ' exit 1' >> start.sh
     sudo mv start.sh /sbin/mcpe-server ; sudo chmod a+x /sbin/mcpe-server ; 
     echo " "
     echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
