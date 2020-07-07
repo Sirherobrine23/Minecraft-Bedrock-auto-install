@@ -2,7 +2,7 @@ name: Zip Linux
 
 on:
   push:
-    tags-ignore: *
+    tags-ignore:
 env:
   REPO_URL: https://github.com/Sirherobrine23/Minecraft-Bedrock-auto-install.git
   REPO_BRANCH: linux
