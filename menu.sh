@@ -37,12 +37,12 @@ BDS="$(wget -qO- https://script.sirherobrine23.org/BDS.txt)"
 
 #caminho da instalação e do backup
 if [[ -e installed.txt ]]; then
-read -rp "qual diretorio está instalado: " -e -i "$(cat installed.txt)" PATH_TO_INSTALL
-echo "Depois pode alterar o diretorio no installed.txt"
+      read -rp "qual diretorio está instalado: " -e -i "$(cat installed.txt)" PATH_TO_INSTALL
+      echo "Depois pode alterar o diretorio no installed.txt"
 else
-read -rp "a onde vai ser instalado: " -e -i "/home/minecraft" PATH_TO_INSTALL
-touch installed.txt -a $PATH_TO_INSTALL
-echo "$PATH_TO_INSTALL" >> installed.txt
+      read -rp "a onde vai ser instalado: " -e -i "/home/minecraft" PATH_TO_INSTALL
+      touch installed.txt -a $PATH_TO_INSTALL
+      echo "$PATH_TO_INSTALL" >> installed.txt
 fi
 
 #Usuario
@@ -68,8 +68,6 @@ install-sh23() {
     cat banner.txt;
     # Prerequisite
     echo "  ";
-    echo "Instalando o Wget e unzip";
-    sudo apt install -y wget unzip >>$USUARIO/log.txt 2>&1 ;
 
     #Download do arquivos servidor
     echo "Baixando o Software do Servidor";
@@ -90,7 +88,7 @@ install-sh23() {
     echo "Movendo para o $PATH_TO_INSTALL"
     rm -rf $PATH_TO_INSTALL
     mkdir $PATH_TO_INSTALL
-    mv mcpe/ $PATH_TO_INSTALL/
+    cp -r mcpe/* $PATH_TO_INSTALL/
     echo "Limpando alguns arquivos"
     rm -rf mcpe/
     echo "O log está no arquivo $USUARIO/log.txt"
@@ -111,7 +109,7 @@ update-sh23() {
     echo " "
 
     #---------------------------------------------------------------------------------------------------------
-    cat "$PATH_TO_INSTALL/mcpe/server.properties" | grep "level-name=" >> "$TMP_UPDATE/level.txt" ;
+    cat "$PATH_TO_INSTALL/server.properties" | grep "level-name=" >> "$TMP_UPDATE/level.txt" ;
     sed -i "s|level-name=||g" "$TMP_UPDATE/level.txt"
     MAPA=$(cat $TMP_UPDATE/level.txt) >>$USUARIO/log.txt 2>&1 ;
     #---------------------------------------------------------------------------------------------------------
@@ -131,7 +129,7 @@ update-sh23() {
     mkdir "$PATH_TO_BACKUP/"
 
     #copia
-    cp -r "$PATH_TO_INSTALL/mcpe/" "$PATH_TO_BACKUP"
+    cp -r "$PATH_TO_INSTALL/" "$PATH_TO_BACKUP"
 
     #copia de seguraça
     apt-get install zip unzip -y
@@ -149,9 +147,9 @@ update-sh23() {
 
     mv $PATH_TO_INSTALL/mcpe /tmp/
     #copiar mundo e as configuraçoe
-    cp -r "$PATH_TO_BACKUP/mcpe/worlds" "./mcpe"
-    cp "$PATHBACKUP/mcpe/server.properties" "./mcpe"
-    cp "$PATH_TO_BACKUP/mcpe/whitelist.json" "./mcpe"
+    cp -r "$PATH_TO_BACKUP/worlds" "./mcpe"
+    cp "$PATHBACKUP/server.properties" "./mcpe"
+    cp "$PATH_TO_BACKUP/whitelist.json" "./mcpe"
 
     #movendo
     mkdir $PATH_TO_INSTALL/
@@ -189,21 +187,21 @@ fundo-sh23() {
     rm start.sh
     rm -rf /tmp/level.txt
     rm -rf /sbin/mcpe
-    cat $PATH_TO_INSTALL//mcpe/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
+    cat $PATH_TO_INSTALL//server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
     MAPA_DO_SERVIDOR=$(cat /tmp/level.txt)
     echo " #!/bin/bash " >> start.sh
     echo " if [[ -e $PATH_TO_INSTALL/backup.txt ]]; then " >> start.sh
     echo "     echo 'Com Backup, já já iniciamos seu servidor' " >> start.sh
-    echo "     cd $PATH_TO_INSTALL/mcpe/ " >> start.sh
+    echo "     cd $PATH_TO_INSTALL/ " >> start.sh
     echo "     LD_LIBRARY_PATH=. ./bedrock_server " >> start.sh
-    echo "     cd $PATH_TO_INSTALL/mcpe/ " >> start.sh
+    echo "     cd $PATH_TO_INSTALL/ " >> start.sh
     echo "     echo 'Fazendo backup do mapa'" >> start.sh
     echo '     GDRIVE_FOLDE=ID-DA-PASTA-NO-GOOGLE-DRIVE' >> start.sh
     echo "     cd worlds/ ; zip '$MAPA_DO_SERVIDOR'.zip -r '$MAPA_DO_SERVIDOR' "  >> start.sh 
     echo "     gdrive upload --parent $GDRIVE_FOLDE $MAPA_DO_SERVIDOR.zip " >> start.sh
     echo "     rm $MAPA_DO_SERVIDOR.zip" >> start.sh
     echo " else " >> start.shecho "     echo 'Sem backup, já já iniciamos seu servidor' " >> start.sh
-    echo "     cd $PATH_TO_INSTALL/mcpe/ " >> start.sh
+    echo "     cd $PATH_TO_INSTALL/ " >> start.sh
     echo "     LD_LIBRARY_PATH=. ./bedrock_server " >> start.sh
     echo 'fi ' >> start.sh
     echo ' exit 1' >> start.sh
@@ -232,7 +230,7 @@ sistema-sh23() {
     rm -rf /tmp/level.txt
     rm -rf /sbin/mcpe
     cat $FILE2 > "$file"
-    cat $PATH_TO_INSTALL//mcpe/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
+    cat $PATH_TO_INSTALL//server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
     sed -i "s|DIRE|$PATH_TO_INSTALL|g" "$file";
     sed -i "s|MAPASS|$(cat /tmp/level.txt)|g" "$file"
     sed -i "s|PATH_TO_INSTALL|$PATH_TO_INSTALL|g" "$file"
