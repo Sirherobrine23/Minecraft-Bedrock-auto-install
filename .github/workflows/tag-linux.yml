@@ -1,45 +1,55 @@
-# This workflow will triage pull requests and apply a label based on the
-# paths that are modified in the pull request.
-#
-# To use this workflow, you will need to set up a .github/labeler.yml
-# file with configuration.  For more information, see:
-# https://github.com/actions/labeler/blob/master/README.md
+name: Zip Linux
 
-name: Tag-linux
 on:
   push:
-    branches:
-      - Beta
-    paths:
-      - .gitgnore
-      - banner.txt
-      - help.txt
-      - install.sh
-      - menu.sh
-      - mcpe-start.sh
-      - server.properties
-      - whitelist.json
-      - start-on-system.sh
-      - Update.txt
+    tags-ignore:
+env:
+  REPO_URL: https://github.com/Sirherobrine23/Minecraft-Bedrock-auto-install.git
+  REPO_BRANCH: linux
+  UPLOAD_RELEASE: true
+  EVENTO: " ${{ github.event_name }} "
+  TZ: America/Sao_Paulo
 
 jobs:
-  Tag:
-
+  Linux:
     runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
 
     steps:
-    - name: Gerando Tag
+    - name: Inicializando
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo -E apt-get -qq install zip unzip dos2unix
+    - name: Clonando
+      run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH zip-sh
+
+    - name: Date
+      run: |
+        echo ::set-env name=NAMES::""$(TZ=UTC+3 date +"%d-%m-%Y")_$(TZ=UTC+3 date +"%H-%M-%S")"
+
+    - name: Criando o Arquivo
+      run: |
+       sudo mkdir files/
+       cd zip-sh
+       sudo dos2unix *.sh
+       sudo rm -rf README.md LICENSE *.git*
+       sudo zip "${{ env.NAMES }}.zip" -r * 
+       sudo mv "${{ env.NAMES }}.zip" ../files/
+    
+    - name: Gerando o body
       id: tag
       run: |
-        echo ::set-env name=RELEASE_TAG::"$(TZ=UTC+3 date +"%d/%m/%Y-%H-%M-%S")-tag-Linux"
-        echo "Tag $(TZ=UTC+3 date +"%d/%m/%Y-%H-%M-%S")" >> release.txt
+        echo ::set-env name=RELEASE_TAG::"$(TZ=UTC+3 date +"%d/%m/%Y")-BDS-Script"
+        echo "$(TZ=UTC+3 date +"%H:%M:%S")" >> release.txt
         echo "::set-output name=status::success"
     
-    - name: tag
+    - name: Upload do zip para o Release
       uses: softprops/action-gh-release@v1
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
-        GITHUB_TOKEN: ${{ secrets.tag }}
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
       with:
         tag_name: ${{ env.RELEASE_TAG }}
         body_path: release.txt
+        files: files/*
