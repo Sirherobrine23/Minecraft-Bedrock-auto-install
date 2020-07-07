@@ -35,7 +35,7 @@ jobs:
         echo "Tag $(TZ=UTC+3 date +"%d/%m/%Y-%H-%M-%S")" >> release.txt
         echo "::set-output name=status::success"
     
-    - name: Upload so Firmware para o Release
+    - name: tag
       uses: softprops/action-gh-release@v1
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
