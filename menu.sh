@@ -42,7 +42,7 @@ USUARIO=$(cd ~/;pwd)
 
 # Iniacialização
 file=mcpe-server
-FILE2=mcpe-start.sh
+FILE2=mcpe-/sbin/mcpe-server
 
 #pode ser aqui ali ou DEBIAN
 TMP=/home/Minecraft-temp
@@ -179,45 +179,37 @@ update-sh23() {
 }
 backup-sh23() {
       diretorio-sh23
-    if [ -e /sbin/mcpe-server ] ; then
-    echo "Para fazer o backup coloque sim (yes) e de [enter], caso não queira, não (no) e de [enter]"
+      if [ -e /sbin/mcpe-server ] ; then
+      echo "Para fazer o backup coloque sim (yes) e de [enter], caso não queira, não (no) e de [enter]"
       read -rp "Vai querer fazer o backup?  " -e -i "sim" BC
             case $BC in
-            sim | yes ) cp backup.txt $PATH_TO_INSTALL ;;
+            sim | yes ) touch $PATH_TO_INSTALL/backup.txt -a $PATH_TO_INSTALL ; echo "Vamos configurar agora o Gdrive, precisamos fazer um login na sua conta do google. nenhum dado será amarzenado pelo script." ; sleep2 ; gdrive about  ;;
             nao | no ) exit;;
-            * ) echo "não houve escolha"
+            * ) echo "não houve escolha, saindo ..."; exit
             esac
-    else
-    echo "não podemos cria agora, por favor execute primeiro o --iniciar"
-    fi
+      else
+      echo "não podemos cria agora, por favor execute primeiro o --fundo"
+      fi
 }
 fundo-sh23() {
       diretorio-sh23
-    rm start.sh
-    rm -rf /tmp/level.txt
-    rm -rf /sbin/mcpe
-    cat $PATH_TO_INSTALL/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
-    MAPA_DO_SERVIDOR=$(cat /tmp/level.txt)
-      echo " #!/bin/bash " >> start.sh
-      echo " if [[ -e $PATH_TO_INSTALL/backup.txt ]]; then " >> start.sh
-      echo "     echo 'Com Backup, já já iniciamos seu servidor' " >> start.sh
-      echo "     cd $PATH_TO_INSTALL/ " >> start.sh
-      echo "     LD_LIBRARY_PATH=. ./bedrock_server " >> start.sh
-      echo "     cd $PATH_TO_INSTALL/ " >> start.sh
-      echo "     echo 'Fazendo backup do mapa'" >> start.sh
-      echo '     GDRIVE_FOLDE=ID-DA-PASTA-NO-GOOGLE-DRIVE' >> start.sh
-      echo "     cd worlds/ ; zip '$MAPA_DO_SERVIDOR'.zip -r '$MAPA_DO_SERVIDOR' "  >> start.sh 
-      echo "     gdrive upload --parent $GDRIVE_FOLDE $MAPA_DO_SERVIDOR.zip " >> start.sh
-      echo "     rm $MAPA_DO_SERVIDOR.zip" >> start.sh
-      echo " else " >> start.sh
-      echo "     echo 'Sem backup, já já iniciamos seu servidor' " >> start.sh
-      echo "     cd $PATH_TO_INSTALL/ " >> start.sh
-      echo "     LD_LIBRARY_PATH=. ./bedrock_server " >> start.sh
-      echo 'fi ' >> start.sh
-      echo ' exit 1' >> start.sh
-    sudo mv start.sh /sbin/mcpe-server ; sudo chmod a+x /sbin/mcpe-server ; 
-    echo " "
-    echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
+      rm /sbin/mcpe-server
+      rm -rf /tmp/level.txt
+      rm -rf /sbin/mcpe
+      cat $PATH_TO_INSTALL/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
+      MAPA_DO_SERVIDOR=$(cat /tmp/level.txt)
+      cp fundo.sh /tmp/
+      # -- Config --
+            read -rp "Qual é o ID da pasta no google Drive caso fará backup (Exemplo: 1-FWzQJWhhJK_00ETU4uVOg6R5c5p_yMP)? " -e -i "" ID
+            read -rp "Qual é o nome do Mapa (Só confimação do nome): " -e -i "$MAPA_DO_SERVIDOR" NAME
+            sed -i "s|ID|$ID|g" "/tmp/fundo.sh";
+            sed -i "s|MINE|$PATH_TO_INSTALL|g" "/tmp/fundo.sh";
+            sed -i "s|NAME|$NAME|g" "/tmp/fundo.sh";
+      # -- Config --
+      cp -rf /tmp/fundo.sh /sbin/mcpe-server
+      sudo chmod a+x /sbin/mcpe-server 
+      echo " "
+      echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
 }
 sistema-sh23() {
       diretorio-sh23
