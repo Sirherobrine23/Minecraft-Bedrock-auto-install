@@ -311,6 +311,7 @@ diretorio-sh23
       cp -rf ./html-files/* /var/www/html/
 }
 externo-sh23() {
+      diretorio-sh23
       # vsftp and Samba
       sudo apt install -y vsftpd samba >> /dev/null 2>&1 ;
 
@@ -319,8 +320,11 @@ externo-sh23() {
       sed -i "s|root||g" "/etc/ftpusers"
 
       rm /etc/samba/smb.conf
-      cp ./smb.conf /etc/samba/
+      cp -rf ./smb.conf /etc/samba/
+      cp -rf ./vsftp.conf /etc/vsftpd.conf
 
+echo "Para adicionar um usuario no Smb use smbpasswd -a username"
+echo "Para usar o ftp não precisar de nada a mais para configura só ter um usuario no sistema"
 
 }
 case $1 in
