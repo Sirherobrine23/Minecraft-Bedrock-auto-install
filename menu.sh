@@ -322,17 +322,24 @@ echo "Para adicionar um usuario no Smb use smbpasswd -a username"
 echo "Para usar o ftp não precisar de nada a mais para configura só ter um usuario no sistema"
 
 }
+script-update() {
+      git clone https://github.com/Sirherobrine23/Minecraft-Bedrock-auto-install.git -b linux ../ins2/
+      cp -rf ../ins2/* ./
+      rm -rf ../ins2/
+}
+$1
 case $1 in
---install* | --Instalação* | --instalacao* | --Install* )  install-sh23 ;;
----update* | --Atualizar* | --Update* | --Update* ) update-sh23 ;;
---backup* | --Backup* ) backup-sh23 ;;
---System | --Sistema | --system | --sistema ) sistema-sh23 ;;
---fundo* | --Fundo* | --Backgroud* | --background*  ) fundo-sh23 ;;
---ip | --Ip | --IP | --pi ) ip-sh23 ;;
---Apache2 | apache2 | --Page | --page ) apache2-install-sh23 ;;
---externo ) externo-sh23 ;;
---unistall | --remover) sudo rm -rf "$REMOVE";;
-*) cat help.txt ; echo " ";exit 1;;
+--install* | --Instalação* | --instalacao* | --Install* | -i | -I )  install-sh23 ;;
+--update* | --Atualizar* | --Update* | --Update* | -u | -U) update-sh23 ;;
+--backup* | --Backup* | -b | -B ) backup-sh23 ;;
+--System | --Sistema | --system | --sistema | -S | -s ) sistema-sh23 ;;
+--fundo* | --Fundo* | --Backgroud* | --background* | -f | -F ) fundo-sh23 ;;
+--ip | --Ip | --IP | --pi | -p | -P ) ip-sh23 ;;
+--Apache2 | apache2 | --Page | --page | -a | -A ) apache2-install-sh23 ;;
+--externo | -e | -E) externo-sh23 ;;
+--script | --Script | -S | -s) script-update ;;
+--unistall | --remover | -r | -R ) sudo rm -rf "$REMOVE";;
+*) cat help.txt ; echo " "; exit 1
 esac
 
 
