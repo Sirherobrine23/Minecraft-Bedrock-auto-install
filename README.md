@@ -25,12 +25,12 @@ $ curl https://raw.githubusercontent.com/Sirherobrine23/Minecraft-Bedrock-auto-i
 
 atualmente opções para instalação:
 
-    --install           - instalação do BDS
-    --install           - instalação para ubuntu X64
-    --update            - Atualização do BDS (BETA)
-    --backup            - Ativar backups (BETA)
-    --fundo             - Adiciona um arquivo para "screen mcpe"
-    --sistema           - Adiciona um script para iniciar junto com sistema pelo service (BETA)
-    --ip                - Mostre seu IPs Disponiveis
-    --unistall          - remove a pasta installer
+    --install  | --Instalação | --instalacao | --Install     - instalação do BDS
+    ---update  | --Atualizar  | --Update     | --Update      - Atualização do BDS (BETA)
+    --backup   | --Backup                                    - Ativar backups (BETA)
+    --System   | --Sistema    | --system     | --sistema     - Adiciona um script para iniciar junto com sistema pelo service (BETA)
+    --fundo    | --Fundo      | --Backgroud  | --background  - Adiciona um arquivo para "screen mcpe"
+    --ip       | --Ip         | --IP         | --pi          - Mostre seu IPs Disponiveis Localmente e externo
+    --Apache2  | apache2      | --Page       | --page        - Adicionar uma pagina para adicionar o servidor em um click
+    --unistall | --remover                                   - remove a pasta installer
 #### Testado no ubuntu e no debian não sei se vai funciona em outras distros que utilizam o apt.
