@@ -1,3 +1,9 @@
+# Privacidade
+
+Pelo amor de tudo, esse script não vai amazena a senha da sua conta do google, e o `Gdrive` foi copilado pelo e-mail que eu uso para o backup e uso pessoal, por problemas na minha conta comercial, ele terá um token que só acessar o google drive para backup do mapa, nada mais.
+
+o Google auth fala que não é seguro, mais é um app do linux que acesssa o google drive que acessa e pode fazer Upload/Download de arquivos e ainda criar/apagas pastas, e ainda não foi verificado, o codigo fonte do Gdrive se encontra [Aqui](https://github.com/gdrive-org/gdrive).
+
 # Instalação do Minecraft Bedrock Server
 
 Como foi feito para Ajudar na instalação do Minecraft Bedrock server para uma instalação de um simples linha do terminal.
@@ -18,4 +24,3 @@ atualmente opções para instalação:
     --ip       | --Ip         | --IP         | --pi          - Mostre seu IPs Disponiveis Localmente e externo
     --Apache2  | apache2      | --Page       | --page        - Adicionar uma pagina para adicionar o servidor em um click
     --unistall | --remover                                   - remove a pasta installer
-#### Testado no ubuntu e no debian não sei se vai funciona em outras distros que utilizam o apt.
