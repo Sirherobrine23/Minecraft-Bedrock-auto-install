@@ -1,11 +1,6 @@
 #!/bin/bash
 clear
 #Espaço
-echo "o Diretorio do seu usuario é $USUARIO"
-echo "Começamos ás $(TZ=UTC+3 date +"%H:%M:%S")"
-echo " "
-echo "--------------"
-echo " "
 
 #Root
 if [ "$EUID" -ne 0 ]; then
@@ -35,8 +30,6 @@ fi
 #Software
 BDS="$(wget -qO- https://script.sirherobrine23.org/BDS.txt)"
 
-
-
 #Usuario
 USUARIO=$(cd ~/;pwd)
 
@@ -50,6 +43,12 @@ sudo mkdir $TMP >>$USUARIO/log.txt 2>&1 ;
 
 # Remoção dos arquivo de log
 sudo rm -rf $TMP/level.txt >>$USUARIO/log.txt 2>&1 ;
+
+echo "o Diretorio do seu usuario é $USUARIO"
+echo "Começamos ás $(TZ=UTC+3 date +"%H:%M:%S")"
+echo " "
+echo "--------------"
+echo " "
 
 # --------------- Codigo ------------------------------
 
@@ -113,6 +112,7 @@ update-sh23() {
     echo " "
     echo " "
 
+      mkdir "$TMP_UPDATE"
     #---------------------------------------------------------------------------------------------------------
     cat "$PATH_TO_INSTALL/server.properties" | grep "level-name=" >> "$TMP_UPDATE/level.txt" ;
     sed -i "s|level-name=||g" "$TMP_UPDATE/level.txt"
@@ -122,60 +122,50 @@ update-sh23() {
     echo " "
 
     echo "verificando se a arquivos antingos no $(pwd)"
-    if [[ mcpe/:mcpe.zip ]]; then
-    echo "você tem algumas pasta e arquivos de alguma instalação estamos removendo"
+    if [[ -d mcpe/ ]]; then
     rm -rf mcpe/
-    rm mcpe.zip
-    else
-    echo "Não há arquivos antigos aqui"
     fi
-
-    #pasta do backup
-    mkdir "$PATH_TO_BACKUP/"
+    if [[ -e mcpe.zip ]];then
+    rm -rf mcpe.zip
+    fi
 
     #copia
-    cp -r "$PATH_TO_INSTALL/*" "$PATH_TO_BACKUP"
+      cp -rf "$PATH_TO_INSTALL/*" "$PATH_TO_BACKUP"
 
     #copia de seguraça
-    apt-get install zip unzip -y
-    mkdir "$PATHBACKUP/"
-    zip  "$PATHBACKUP/$BACKUP".zip -r "$PATH_TO_INSTALL/*"
+      mkdir "$PATH_TO_BACKUP/"
+      mkdir "$PATHBACKUP/"
+      zip  "$PATHBACKUP/$BACKUP".zip -r "$PATH_TO_INSTALL/*"
 
-    if [[ $PATH_TO_INSTALL/mcpe ]];then
-    #baixar a nova versão
-    wget "$BDS" -O mcpe.zip
-    unzip mcpe.zip -d mcpe
+      if [[ -d $PATH_TO_INSTALL/ ]];then
+            rm -rf $PATH_TO_INSTALL/
+      fi
 
-    #removendo alguns arquivos
-    rm -r mcpe/server.properties
-    rm -r mcpe/whitelist.json
+      #baixar a nova versão
+      wget "$BDS" -O mcpe.zip
+      unzip mcpe.zip -d mcpe
 
-    # Movendo para o temp
-    mv $PATH_TO_INSTALL/* /tmp/
-    
-    #copiar mundo e as configuraçoe
-    cp -r "$PATH_TO_BACKUP/worlds" "./mcpe"
-    cp "$PATHBACKUP/server.properties" "./mcpe"
-    cp "$PATH_TO_BACKUP/whitelist.json" "./mcpe"
+      #removendo alguns arquivos
+      rm -r mcpe/server.properties
+      rm -r mcpe/whitelist.json
 
-    #movendo
-    mkdir $PATH_TO_INSTALL/
-    mv ./mcpe/* $PATH_TO_INSTALL/
+      # Movendo para o temp
+      rm -rf $PATH_TO_INSTALL/
+      
+      #copiar mundo e as configuraçoe
+      cp -r "$PATH_TO_BACKUP/worlds" "mcpe/"
+      cp "$PATH_TO_BACKUP/server.properties" "mcpe/"
+      cp "$PATH_TO_BACKUP/whitelist.json" "mcpe/"
 
-    #remover arquivos antigos
-    rm mcpe.zip
-    rm -rf mcpe/
-    rm -rf $PATH_TO_BACKUP
-    rm -rf $TMP_UPDATE
+      #movendo
+      mkdir $PATH_TO_INSTALL/
+      cp -rf mcpe/* $PATH_TO_INSTALL/
 
-    else
-    echo "Não foi possivel atualizar"
-    sleep 3
-    rm -rf $PATH_TO_INSTALL >>$USUARIO/log.txt 2>&1
-    mkdir $PATH_TO_INSTALL >>$USUARIO/log.txt 2>&1
-    echo "Restaurando os arquivos"
-    mv "$PATH_TO_BACKUP/mcpe $PATH_TO_INSTALL" >>$USUARIO/log.txt 2>&1 ;
-    fi
+      #remover arquivos antigos
+      rm mcpe.zip
+      #rm -rf mcpe/
+      #rm -rf $PATH_TO_BACKUP
+      #rm -rf $TMP_UPDATE
 }
 backup-sh23() {
       diretorio-sh23
