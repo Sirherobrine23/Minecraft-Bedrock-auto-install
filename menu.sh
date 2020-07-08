@@ -323,6 +323,9 @@ externo-sh23() {
       cp -rf ./smb.conf /etc/samba/
       cp -rf ./vsftp.conf /etc/vsftpd.conf
 
+      service smbd restart
+      service vsftpd restart
+
 echo "Para adicionar um usuario no Smb use smbpasswd -a username"
 echo "Para usar o ftp não precisar de nada a mais para configura só ter um usuario no sistema"
 
