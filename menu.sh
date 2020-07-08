@@ -278,36 +278,49 @@ ip-sh23(){
       echo " ";
 }
 apache2-install-sh23() {
-
+diretorio-sh23
       #Instalação do apache2
       echo "Instalando o Apache2"
-      sudo apt update
-      sudo apt install apache2 -yes
+      sudo apt update >> /dev/null 2>&1 
+      sudo apt install apache2 -y >> /dev/null 2>&1 
 
       # Removendo pasta HTML e Adicionando denovo
-      rm -rf /var/www/html
+      rm -rf /var/www/html/
       mkdir /var/www/html/
 
       # Pegando as config
       echo "Agora vamos começar a configurar o nova pagina do Apache"
       sleep 2
       echo "Vamos precicar de algumas informações como:"
-      echo "Dominio caso você tenha;"
+      echo "Dominio caso você tenha"
       echo "nome que aparacera na Pagina. etc ..."
+      sleep 3
       cat $PATH_TO_INSTALL/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
       MAPA_DO_SERVIDOR=$(cat /tmp/level.txt)
       cat $PATH_TO_INSTALL/server.properties | grep "server-port=" > /tmp/port.txt ; sed -i "s|server-port=||g" "/tmp/port.txt"
       PORTAD=$(cat /tmp/port.txt)
       read -rp "Qual será o dominio ou nos da o IP publico: " -e -i "$(wget -qO- http://ipecho.net/plain)" IPDOMAIN
-      read -rp "Qual é o nome que aparacera na pagina: " -e -i "$(cat )" MAINSERVERNAME
+      read -rp "Qual é o nome que aparacera na pagina: " -e -i "$(cat /tmp/level.txt)" MAINSERVERNAME
 
       # Montando as Configurações
-      sed -i "s|ENDEREÇODOSERVIDOROUIP|$IPDOMAIN|g" "./html-file/index.html"
-      sed -i "s|MAINSERVERNAME|$MAPA_DO_SERVIDOR|g" "./html-file/index.html"
-      sed -i "s|PORTASERVER|$PORTAD|g" "./html-file/index.html"
+      sed -i "s|ENDEREÇODOSERVIDOROUIP|$IPDOMAIN|g" "./html-files/index.html"
+      sed -i "s|MAINSERVERNAME|$MAPA_DO_SERVIDOR|g" "./html-files/index.html"
+      sed -i "s|PORTASERVER|$PORTAD|g" "./html-files/index.html"
 
       # Movendo as configurações
       cp -rf ./html-files/* /var/www/html/
+}
+externo-sh23() {
+      # vsftp and Samba
+      sudo apt install -y vsftpd samba >> /dev/null 2>&1 ;
+
+      #config
+      sed -i "s|PATHTOISNTALL|$PATH_TO_INSTALL|g" "./smb.conf"
+      sed -i "s|root||g" "/etc/ftpusers"
+
+      rm /etc/samba/smb.conf
+      cp ./smb.conf /etc/samba/
+
 
 }
 case $1 in
@@ -318,6 +331,7 @@ case $1 in
 --fundo* | --Fundo* | --Backgroud* | --background*  ) fundo-sh23 ;;
 --ip | --Ip | --IP | --pi ) ip-sh23 ;;
 --Apache2 | apache2 | --Page | --page ) apache2-install-sh23 ;;
+--externo ) externo-sh23 ;;
 --unistall | --remover) sudo rm -rf "$REMOVE";;
 *) cat help.txt ; echo " ";exit 1;;
 esac
