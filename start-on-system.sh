@@ -14,8 +14,8 @@ echo "Você não está executando o service com root ou sudo";exit 1
 fi
 
 backupsh232(){
-    source /sbin/mcpe-server
-    backup-sh23
+    source /usr/sbin/mcpe-server
+    backupsh23
 }
 
 startsh23() {
@@ -70,5 +70,4 @@ case "$1" in
     restart) restartsh23;;
     *) echo "Usage: $0 {start | stop| restart}"
 esac
-
 exit 0 

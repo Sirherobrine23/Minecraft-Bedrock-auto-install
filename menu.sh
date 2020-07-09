@@ -186,6 +186,8 @@ fundo-sh23() {
       rm /sbin/mcpe-server
       rm -rf /tmp/level.txt
       rm -rf /sbin/mcpe
+      rm -rf /usr/sbin/mcpe-server
+      rm -rf /usr/sbin/mcpe
       cat $PATH_TO_INSTALL/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
       MAPA_DO_SERVIDOR=$(cat /tmp/level.txt)
       cp fundo.sh /tmp/
@@ -196,8 +198,8 @@ fundo-sh23() {
             sed -i "s|MINE|$PATH_TO_INSTALL|g" "/tmp/fundo.sh";
             sed -i "s|NAME|$NAME|g" "/tmp/fundo.sh";
       # -- Config --
-      cp -rf /tmp/fundo.sh /sbin/mcpe-server
-      sudo chmod a+x /sbin/mcpe-server 
+      cp -rf /tmp/fundo.sh /usr/sbin/mcpe-server
+      sudo chmod a+x /usr/sbin/mcpe-server 
       echo " "
       echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
 }
