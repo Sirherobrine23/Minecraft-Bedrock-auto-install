@@ -13,7 +13,7 @@ if [[ "$EUID" -ne 0 ]]; then
 echo "Você não está executando o service com root ou sudo";exit 1
 fi
 
-backup-sh232(){
+backupsh232(){
     source /sbin/mcpe-server
     backup-sh23
 }
@@ -36,7 +36,7 @@ stopsh23() {
         sleep 1
         screen -Rd bedrock -X stuff
         screen -X -S bedrock quit
-        backup-sh232
+        backupsh232
 }
 restartsh23() {
 
