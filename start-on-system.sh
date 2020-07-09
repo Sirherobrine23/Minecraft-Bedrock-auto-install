@@ -9,11 +9,14 @@
 # Short-Description:    Minecraft BDS Server Auto Start
 ### END INIT INFO
 
-if [ "$EUID" -ne 0 ]; then
-	echo "Você não está executando o service com root ou sudo"
-	exit 1
+if [[ "$EUID" -ne 0 ]]; then
+echo "Você não está executando o service com root ou sudo";exit 1
 fi
 
+backup-sh232(){
+    source /sbin/mcpe-server
+    backup-sh23
+}
 
 startsh23() {
         sudo screen -dmS bedrock mcpe-server
@@ -33,6 +36,7 @@ stopsh23() {
         sleep 1
         screen -Rd bedrock -X stuff
         screen -X -S bedrock quit
+        backup-sh232
 }
 restartsh23() {
 
