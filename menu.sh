@@ -52,20 +52,23 @@ echo " "
 
 # --------------- Codigo ------------------------------
 
-diretorio-sh23() {
+diretorio-sh23(){
 #caminho da instalação e do backup
 if [[ -e installed.txt ]]; then
       PATH_TO_INSTALL="$(cat installed.txt)" 
-      echo "Depois pode alterar o diretorio no installed.txt"
+      echo "Depois voçê pode alterar o diretorio no arquivo 'installed.txt'"
+      echo " "
+      echo " "
 else
       read -rp "a onde vai ser instalado: " -e -i "/home/minecraft" PATH_TO_INSTALL
       touch installed.txt -a $PATH_TO_INSTALL
       echo "$PATH_TO_INSTALL" >> installed.txt
+      echo " "
+      echo " "
 fi
 }
 
 mapaname(){
-    diretorio-sh23
     cat $PATH_TO_INSTALL/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
     level=$(cat /tmp/level.txt)
     read -rp "Qual é o nome do Mapa (Só confimação do nome): " -e -i "$level" MAPA_DO_SERVIDOR
@@ -74,7 +77,7 @@ mapaname(){
 }
 
 
-install-sh23() {
+install-sh23(){
     diretorio-sh23
     #banner
     cat banner.txt;
@@ -105,7 +108,7 @@ install-sh23() {
     rm -rf mcpe/
     echo "O log está no arquivo $USUARIO/log.txt"
 }
-update-sh23() {
+update-sh23(){
     diretorio-sh23
     #Preparando
     echo " "
@@ -176,7 +179,7 @@ update-sh23() {
       #rm -rf $PATH_TO_BACKUP
       #rm -rf $TMP_UPDATE
 }
-backup-sh23() {
+backup-sh23(){
       diretorio-sh23
       if [ -e /sbin/mcpe-server ] ; then
       echo "Para fazer o backup coloque sim (yes) e de [enter], caso não queira, não (no) e de [enter]"
@@ -203,7 +206,7 @@ ip-sh23(){
             echo "Também verifique se sua operadora ou provedor libera as portas do servidor. contate-os"
       echo " ";
 }
-apache2-install-sh23() {
+apache2-install-sh23(){
 diretorio-sh23
       #Instalação do apache2
       echo "Instalando o Apache2"
@@ -233,7 +236,7 @@ diretorio-sh23
       # Movendo as configurações
       cp -rf ./html-files/* /var/www/html/
 }
-externo-sh23() {
+externo-sh23(){
       diretorio-sh23
       # vsftp and Samba
       sudo apt install -y vsftpd samba >> /dev/null 2>&1 ;
@@ -256,7 +259,7 @@ echo "Para usar o ftp não precisar de nada a mais para configura só ter um usu
 
 #
 
-fundo-sh23() {
+fundo-sh23(){
     echo " "
         rm /sbin/mcpe-server
         rm -rf /tmp/level.txt
@@ -281,7 +284,7 @@ fundo-sh23() {
     echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
 
 }
-sistema-sh23() {
+sistema-sh23(){
       diretorio-sh23
       wget "https://drive.google.com/uc?export=download&id=1UlemfOSQUxbxTFDriAeDV7o1hRwXcS43" -O /usr/bin/gdrive >>$USUARIO/log.txt 2>&1 ;
       chmod a+x /usr/bin/gdrive
@@ -332,7 +335,7 @@ sistema-sh23() {
 #
 
 
-script-update() {
+script-update(){
       git clone https://github.com/Sirherobrine23/Minecraft-Bedrock-auto-install.git -b linux ../ins2/
       cp -rf ../ins2/* ./
       rm -rf ../ins2/
@@ -341,16 +344,15 @@ script-update() {
 
 # Escolha --------------  ***  -----------
 case $1 in
---install* | --Instalação* | --instalacao* | --Install* | -i | -I )  install-sh23 ;;
---update* | --Atualizar* | --Update* | --Update* | -u | -U) update-sh23 ;;
---backup* | --Backup* | -b | -B ) backup-sh23 ;;
---System | --Sistema | --system | --sistema | -S | -s ) sistema-sh23 ;;
---fundo* | --Fundo* | --Backgroud* | --background* | -f | -F ) fundo-sh23 ;;
---ip | --Ip | --IP | --pi | -p | -P ) ip-sh23 ;;
---Apache2 | apache2 | --Page | --page | -a | -A ) apache2-install-sh23 ;;
---externo | -e | -E) externo-sh23 ;;
---script | --Script | -S | -s) script-update ;;
---unistall | --remover | -r | -R ) sudo rm -rf "$REMOVE";;
+--install | -i )  install-sh23 ;;
+--update | -u ) update-sh23 ;;
+--backup | -b ) backup-sh23 ;;
+--start-on-system | -s ) sistema-sh23 ;;
+--ip | -P ) ip-sh23 ;;
+--apache2 | --page | -a ) apache2-install-sh23 ;;
+--files | -f ) externo-sh23 ;;
+--update-script | -u-s ) script-update ;;
+--remover | -r ) sudo rm -rf "$REMOVE";;
 *) cat help.txt ; echo " "; exit 1
 esac
 
