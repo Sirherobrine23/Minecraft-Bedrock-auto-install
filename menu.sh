@@ -355,7 +355,8 @@ case $1 in
 --files | -f ) externo-sh23 ;;
 --update-script | -u-s ) script-update ;;
 --remover | -r ) sudo rm -rf "$REMOVE";;
-*) cat help.txt ; echo " "; exit 1
+--help) cat help.txt ; echo " ";;
+*) echo "Exeute $0 --help - o comando $0 $1 não existe aqui";echo " "
 esac
 
 
@@ -368,3 +369,4 @@ echo " "
 echo "qualquer erro no script me comunique no https://github.com/Sirherobrine23/Minecraft-Bedrock-auto-install/issues"
 echo "Terminamos as $(TZ=UTC+3 date +"%H:%M:%S")"
 sudo rm -rf mcpe.zip
+echo " "
