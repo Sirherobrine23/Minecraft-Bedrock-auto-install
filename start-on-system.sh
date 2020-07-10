@@ -12,10 +12,10 @@
 if [[ "$EUID" -ne 0 ]]; then
 echo "Você não está executando o service com root ou sudo";exit 1
 fi
-GDRIVE_FOLDE="ID"
-PATH_TO_INSTALL="MINE"
-PATH_TO_BACKUP="MINESh23"
-MAPS_DO="NAME"
+GDRIVE_FOLDE="IDSh23"
+PATH_TO_INSTALL="MINESh23"
+PATH_TO_BACKUP="MINE2Sh23"
+MAPS_DO="NAMESh23"
 DATE="$(TZ=UTC+3 date +"%d-%m-%Y")"
 backupsh232() {
         cd "$PATH_TO_INSTALL/" 

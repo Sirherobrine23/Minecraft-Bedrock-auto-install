@@ -4,8 +4,13 @@ Pelo amor de tudo, esse script não vai amazena a senha da sua conta do google, 
 
 o Google auth fala que não é seguro, mais é um app do linux que acesssa o google drive que acessa e pode fazer Upload/Download de arquivos e ainda criar/apagas pastas, e ainda não foi verificado, o codigo fonte do Gdrive se encontra [Aqui](https://github.com/gdrive-org/gdrive).
 
-# Instalação do Minecraft Bedrock Server
+# Antes de instalar olhe a Compatibilidade
 
+    Por algum problema do meu script, no Ubuntu 20.0 o update.rc.d está dando algun problema mas o comando service ainda funciona, para que quiser use o Ubuntu 18.04 LTS que vai funcionar perfeitamente. Uma correção do script será feita mais rapida possivel.
+
+    Debian 9 não foi testado, mais no Debian 10 está funcionando (Foi testado no Debian 10 com XFCE).
+
+# Instalação do Minecraft Bedrock Server
 Como foi feito para Ajudar na instalação do Minecraft Bedrock server para uma instalação de um simples linha do terminal.
 
 por favor instale o **curl** para agilizar o instalador.

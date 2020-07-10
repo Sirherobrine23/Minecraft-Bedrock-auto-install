@@ -303,15 +303,17 @@ sistema-sh23(){
                 read -rp "Qual é o ID da pasta no google Drive caso fará backup para A Nuven (Exemplo: 1-FWzQJWhhJK_00ETU4uVOg6R5c5p_yMP)? " -e -i "" ID
                 read -rp "Aonde você vai quere colocar os Backups Locais (Caso queira)? " -e -i "$MINE2Sh23" MINE2Sh23
                 mkdir $MINE2Sh23
-                sed -i "s|ID|$ID|g" "/tmp/fundo.sh";
-                sed -i "s|MINE|$PATH_TO_INSTALL|g" "/tmp/fundo.sh";
-                sed -i "s|NAME|$MAPA_DO_SERVIDOR|g" "/tmp/fundo.sh";
-                sed -i "s|2MINESh23|$MINE2Sh23|g" "/tmp/fundo.sh";
+                sed -i "s|IDSh23|$ID|g" "/tmp/fundo.sh";
+                sed -i "s|MINESh23|$PATH_TO_INSTALL|g" "/tmp/fundo.sh";
+                sed -i "s|NAMESh23|$MAPA_DO_SERVIDOR|g" "/tmp/fundo.sh";
+                sed -i "s|MINE2Sh23|$MINE2Sh23|g" "/tmp/fundo.sh";
                 cp -rf /tmp/fundo.sh /usr/sbin/mcpe-server
                 sudo chmod a+x /usr/sbin/mcpe-server
             # -- Config --
     echo " "
     echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
+
+
 
     # ---------------------------------------
 
@@ -320,7 +322,7 @@ sistema-sh23(){
             sed -i "s|IDSh23|$ID|g" "/tmp/systemsh23.sh";
             sed -i "s|MINESh23|$PATH_TO_INSTALL|g" "/tmp/systemsh23.sh";
             sed -i "s|NAMESh23|$MAPA_DO_SERVIDOR|g" "/tmp/systemsh23.sh";
-            sed -i "s|2MINESh23|$MINE2Sh23|g" "/tmp/systemsh23.sh";
+            sed -i "s|MINE2Sh23|$MINE2Sh23|g" "/tmp/systemsh23.sh";
         sudo cp "/tmp/systemsh23.sh" "/etc/init.d/mcpe-server";
     echo "copiando o arquivo";
         sudo chmod a+x /etc/init.d/mcpe-server;
