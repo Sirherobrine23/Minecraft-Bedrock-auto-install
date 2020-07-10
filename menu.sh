@@ -64,6 +64,15 @@ else
 fi
 }
 
+mapaname(){
+    diretorio-sh23
+    cat $PATH_TO_INSTALL/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
+    level=$(cat /tmp/level.txt)
+    read -rp "Qual é o nome do Mapa (Só confimação do nome): " -e -i "$level" MAPA_DO_SERVIDOR
+    cat $PATH_TO_INSTALL/server.properties | grep "server-port=" > /tmp/port.txt ; sed -i "s|server-port=||g" "/tmp/port.txt"
+    PORTAD=$(cat /tmp/port.txt)
+}
+
 
 install-sh23() {
     diretorio-sh23
@@ -181,73 +190,6 @@ backup-sh23() {
       echo "não podemos cria agora, por favor execute primeiro o --fundo"
       fi
 }
-fundo-sh23() {
-      diretorio-sh23
-      rm /sbin/mcpe-server
-      rm -rf /tmp/level.txt
-      rm -rf /sbin/mcpe
-      rm -rf /usr/sbin/mcpe-server
-      rm -rf /usr/sbin/mcpe
-      cat $PATH_TO_INSTALL/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
-      MAPA_DO_SERVIDOR=$(cat /tmp/level.txt)
-      cp fundo.sh /tmp/
-      # -- Config --
-            read -rp "Qual é o ID da pasta no google Drive caso fará backup (Exemplo: 1-FWzQJWhhJK_00ETU4uVOg6R5c5p_yMP)? " -e -i "" ID
-            read -rp "Qual é o nome do Mapa (Só confimação do nome): " -e -i "$MAPA_DO_SERVIDOR" NAME
-            sed -i "s|ID|$ID|g" "/tmp/fundo.sh";
-            sed -i "s|MINE|$PATH_TO_INSTALL|g" "/tmp/fundo.sh";
-            sed -i "s|NAME|$NAME|g" "/tmp/fundo.sh";
-      # -- Config --
-      cp -rf /tmp/fundo.sh /usr/sbin/mcpe-server
-      sudo chmod a+x /usr/sbin/mcpe-server 
-      echo " "
-      echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
-}
-sistema-sh23() {
-      diretorio-sh23
-    wget "https://drive.google.com/uc?export=download&id=1UlemfOSQUxbxTFDriAeDV7o1hRwXcS43" -O /usr/bin/gdrive >>$USUARIO/log.txt 2>&1 ;
-    chmod a+x /usr/bin/gdrive
-    if [[ -e /sbin/mcpe-server ]]; then
-      echo "Percebi que já tem o $file pronto. Otimo!"
-      echo "montando o arquivos para que tudo nos ajude"
-      sudo cp start-on-system.sh /etc/init.d/mcpe-server;
-      echo "copiando o arquivo";
-      sudo chmod a+x /etc/init.d/mcpe-server;
-      update-rc.d mcpe-server defaults
-      update-rc.d mcpe-server enable
-      echo "pronto ele inicia junto com sistema(Beta), o comando abaixo pode ajudar"
-      echo " "
-      echo 'sudo service mcpe-server start | stop | restart'
-      echo " "
-    else
-      #Config File
-      echo "percebir que não executou $file, sem problema vamos fazer isso agora!"
-      echo "montando o arquivo necessario espere"
-      rm -rf /tmp/level.txt
-      rm -rf /sbin/mcpe
-      cat $FILE2 > "$file"
-      cat $PATH_TO_INSTALL//server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
-      sed -i "s|DIRE|$PATH_TO_INSTALL|g" "$file";
-      sed -i "s|MAPASS|$(cat /tmp/level.txt)|g" "$file"
-      sed -i "s|PATH_TO_INSTALL|$PATH_TO_INSTALL|g" "$file"
-      sudo mv "$file" /sbin/$file ; sudo chmod a+x /sbin/$file ;
-      echo "arquivo pronto"
-      echo "agora o outro arquivo"
-      
-      #pos
-      echo "Percebi que já tem o $file pronto. Otimo!"
-      echo "montando o arquivos para que tudo nos ajude"
-      sudo cp start-on-system.sh /etc/init.d/mcpe-server;
-      echo "copiando o arquivo";
-      sudo chmod a+x /etc/init.d/mcpe-server;
-      update-rc.d mcpe-server defaults
-      update-rc.d mcpe-server enable
-      echo "pronto ele inicia junto com sistema(Beta), o comando abaixo pode ajudar"
-      echo " "
-      echo 'sudo service mcpe-server start | stop | restart'
-      echo " "
-    fi
-}
 ip-sh23(){
       #Comando --ip variaveis
       IP_V4=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
@@ -279,10 +221,7 @@ diretorio-sh23
       echo "Dominio caso você tenha"
       echo "nome que aparacera na Pagina. etc ..."
       sleep 3
-      cat $PATH_TO_INSTALL/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
-      MAPA_DO_SERVIDOR=$(cat /tmp/level.txt)
-      cat $PATH_TO_INSTALL/server.properties | grep "server-port=" > /tmp/port.txt ; sed -i "s|server-port=||g" "/tmp/port.txt"
-      PORTAD=$(cat /tmp/port.txt)
+      mapaname
       read -rp "Qual será o dominio ou nos da o IP publico: " -e -i "$(wget -qO- http://ipecho.net/plain)" IPDOMAIN
       read -rp "Qual é o nome que aparacera na pagina: " -e -i "$(cat /tmp/level.txt)" MAINSERVERNAME
 
@@ -314,12 +253,93 @@ echo "Para adicionar um usuario no Smb use smbpasswd -a username"
 echo "Para usar o ftp não precisar de nada a mais para configura só ter um usuario no sistema"
 
 }
+
+#
+
+fundo-sh23() {
+    echo " "
+        rm /sbin/mcpe-server
+        rm -rf /tmp/level.txt
+        rm -rf /sbin/mcpe
+        rm -rf /usr/sbin/mcpe-server
+        rm -rf /usr/sbin/mcpe
+        mapaname
+            # -- Config --
+                cp fundo.sh /tmp/
+                MINE2Sh23="/home/MCPE-Backups"
+                read -rp "Qual é o ID da pasta no google Drive caso fará backup para A Nuven (Exemplo: 1-FWzQJWhhJK_00ETU4uVOg6R5c5p_yMP)? " -e -i "" ID
+                read -rp "Aonde você vai quere colocar os Backups Locais (Caso queira)? " -e -i "$MINE2Sh23" MINE2Sh23
+                mkdir $MINE2Sh23
+                sed -i "s|ID|$ID|g" "/tmp/fundo.sh";
+                sed -i "s|MINE|$PATH_TO_INSTALL|g" "/tmp/fundo.sh";
+                sed -i "s|NAME|$MAPA_DO_SERVIDOR|g" "/tmp/fundo.sh";
+                sed -i "s|2MINESh23|$MINE2Sh23|g" "/tmp/fundo.sh";
+                cp -rf /tmp/fundo.sh /usr/sbin/mcpe-server
+                sudo chmod a+x /usr/sbin/mcpe-server
+            # -- Config --
+    echo " "
+    echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
+
+}
+sistema-sh23() {
+      diretorio-sh23
+      wget "https://drive.google.com/uc?export=download&id=1UlemfOSQUxbxTFDriAeDV7o1hRwXcS43" -O /usr/bin/gdrive >>$USUARIO/log.txt 2>&1 ;
+      chmod a+x /usr/bin/gdrive
+
+# ---------------------------------------    
+    echo " "
+        rm /sbin/mcpe-server
+        rm -rf /tmp/level.txt
+        rm -rf /sbin/mcpe
+        rm -rf /usr/sbin/mcpe-server
+        rm -rf /usr/sbin/mcpe
+        mapaname
+            # -- Config --
+                cp fundo.sh /tmp/
+                MINE2Sh23="/home/MCPE-Backups"
+                read -rp "Qual é o ID da pasta no google Drive caso fará backup para A Nuven (Exemplo: 1-FWzQJWhhJK_00ETU4uVOg6R5c5p_yMP)? " -e -i "" ID
+                read -rp "Aonde você vai quere colocar os Backups Locais (Caso queira)? " -e -i "$MINE2Sh23" MINE2Sh23
+                mkdir $MINE2Sh23
+                sed -i "s|ID|$ID|g" "/tmp/fundo.sh";
+                sed -i "s|MINE|$PATH_TO_INSTALL|g" "/tmp/fundo.sh";
+                sed -i "s|NAME|$MAPA_DO_SERVIDOR|g" "/tmp/fundo.sh";
+                sed -i "s|2MINESh23|$MINE2Sh23|g" "/tmp/fundo.sh";
+                cp -rf /tmp/fundo.sh /usr/sbin/mcpe-server
+                sudo chmod a+x /usr/sbin/mcpe-server
+            # -- Config --
+    echo " "
+    echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
+
+    # ---------------------------------------
+
+    echo "Iniciando as Configurações do arquivo para Inicialização junto com o Sistema"
+        sudo cp start-on-system.sh /tmp/systemsh23.sh;
+            sed -i "s|IDSh23|$ID|g" "/tmp/systemsh23.sh";
+            sed -i "s|MINESh23|$PATH_TO_INSTALL|g" "/tmp/systemsh23.sh";
+            sed -i "s|NAMESh23|$MAPA_DO_SERVIDOR|g" "/tmp/systemsh23.sh";
+            sed -i "s|2MINESh23|$MINE2Sh23|g" "/tmp/systemsh23.sh";
+        sudo cp "/tmp/systemsh23.sh" "/etc/init.d/mcpe-server";
+    echo "copiando o arquivo";
+        sudo chmod a+x /etc/init.d/mcpe-server;
+        update-rc.d mcpe-server defaults
+        update-rc.d mcpe-server enable
+    echo "pronto ele inicia junto com sistema(Beta), o comando abaixo pode ajudar"
+    echo " "
+    echo 'sudo service mcpe-server start | stop | restart'
+    echo " "
+}
+
+#
+
+
 script-update() {
       git clone https://github.com/Sirherobrine23/Minecraft-Bedrock-auto-install.git -b linux ../ins2/
       cp -rf ../ins2/* ./
       rm -rf ../ins2/
 }
-$1
+
+
+# Escolha --------------  ***  -----------
 case $1 in
 --install* | --Instalação* | --instalacao* | --Install* | -i | -I )  install-sh23 ;;
 --update* | --Atualizar* | --Update* | --Update* | -u | -U) update-sh23 ;;
