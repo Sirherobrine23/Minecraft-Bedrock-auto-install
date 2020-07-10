@@ -2,12 +2,14 @@
 
 ### BEGIN INIT INFO
 # Provides:             BDS
-# Required-Start:       $all
+# Required-Start:       $network
 # Required-Stop:        
 # Default-Start:        2 3 4 5
 # Default-Stop:         
 # Short-Description:    Minecraft BDS Server Auto Start
 ### END INIT INFO
+
+NAME="BDS"
 
 if [[ "$EUID" -ne 0 ]]; then
 echo "Você não está executando o service com root ou sudo";exit 1
@@ -27,7 +29,7 @@ backupsh232() {
         rm "$MAPS_DO.zip"
 }
 startsh23() {
-        sudo screen -dmS bedrock mcpe-server
+        sudo screen -dmS bedrock BDS
 }
 stopsh23() {
         screen -Rd bedrock -X stuff
@@ -72,6 +74,12 @@ else
         screen -S bedrock -X stuff "./bedrock_server"
 fi
 }
+status-sh23(){
+    status_of_proc -p $PIDFILE "$NAME" "$NAME"
+	exit $?
+}
+
+
 case "$1" in 
     start) startsh23 ;;
     stop) stopsh23 ;;

@@ -34,8 +34,8 @@ BDS="$(wget -qO- https://script.sirherobrine23.org/BDS.txt)"
 USUARIO=$(cd ~/;pwd)
 
 # Iniacialização
-file=mcpe-server
-FILE2=mcpe-/sbin/mcpe-server
+file=BDS
+FILE2=mcpe-/sbin/BDS
 
 #pode ser aqui ali ou DEBIAN
 TMP=/home/Minecraft-temp
@@ -181,7 +181,7 @@ update-sh23(){
 }
 backup-sh23(){
       diretorio-sh23
-      if [ -e /sbin/mcpe-server ] ; then
+      if [ -e /usr/sbin/BDS ] ; then
       echo "Para fazer o backup coloque sim (yes) e de [enter], caso não queira, não (no) e de [enter]"
       read -rp "Vai querer fazer o backup?  " -e -i "sim" BC
             case $BC in
@@ -261,10 +261,10 @@ echo "Para usar o ftp não precisar de nada a mais para configura só ter um usu
 
 fundo-sh23(){
     echo " "
-        rm /sbin/mcpe-server
+        rm /usr/sbin/BDS
         rm -rf /tmp/level.txt
         rm -rf /sbin/mcpe
-        rm -rf /usr/sbin/mcpe-server
+        rm -rf /usr/sbin/BDS
         rm -rf /usr/sbin/mcpe
         mapaname
             # -- Config --
@@ -277,8 +277,8 @@ fundo-sh23(){
                 sed -i "s|MINE|$PATH_TO_INSTALL|g" "/tmp/fundo.sh";
                 sed -i "s|NAME|$MAPA_DO_SERVIDOR|g" "/tmp/fundo.sh";
                 sed -i "s|2MINESh23|$MINE2Sh23|g" "/tmp/fundo.sh";
-                cp -rf /tmp/fundo.sh /usr/sbin/mcpe-server
-                sudo chmod a+x /usr/sbin/mcpe-server
+                cp -rf /tmp/fundo.sh /usr/sbin/BDS
+                sudo chmod a+x /usr/sbin/BDS
             # -- Config --
     echo " "
     echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
@@ -291,10 +291,10 @@ sistema-sh23(){
 
 # ---------------------------------------    
     echo " "
-        rm /sbin/mcpe-server
+        rm /usr/sbin/BDS
         rm -rf /tmp/level.txt
         rm -rf /sbin/mcpe
-        rm -rf /usr/sbin/mcpe-server
+        rm -rf /usr/sbin/BDS
         rm -rf /usr/sbin/mcpe
         mapaname
             # -- Config --
@@ -307,8 +307,8 @@ sistema-sh23(){
                 sed -i "s|MINESh23|$PATH_TO_INSTALL|g" "/tmp/fundo.sh";
                 sed -i "s|NAMESh23|$MAPA_DO_SERVIDOR|g" "/tmp/fundo.sh";
                 sed -i "s|MINE2Sh23|$MINE2Sh23|g" "/tmp/fundo.sh";
-                cp -rf /tmp/fundo.sh /usr/sbin/mcpe-server
-                sudo chmod a+x /usr/sbin/mcpe-server
+                cp -rf /tmp/fundo.sh /usr/sbin/BDS
+                sudo chmod a+x /usr/sbin/BDS
             # -- Config --
     echo " "
     echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
@@ -323,14 +323,14 @@ sistema-sh23(){
             sed -i "s|MINESh23|$PATH_TO_INSTALL|g" "/tmp/systemsh23.sh";
             sed -i "s|NAMESh23|$MAPA_DO_SERVIDOR|g" "/tmp/systemsh23.sh";
             sed -i "s|MINE2Sh23|$MINE2Sh23|g" "/tmp/systemsh23.sh";
-        sudo cp "/tmp/systemsh23.sh" "/etc/init.d/mcpe-server";
+        sudo cp "/tmp/systemsh23.sh" "/etc/init.d/BDS";
     echo "copiando o arquivo";
-        sudo chmod a+x /etc/init.d/mcpe-server;
-        update-rc.d mcpe-server defaults
-        update-rc.d mcpe-server enable
+        sudo chmod a+x /etc/init.d/BDS;
+        update-rc.d BDS defaults
+        update-rc.d BDS enable
     echo "pronto ele inicia junto com sistema(Beta), o comando abaixo pode ajudar"
     echo " "
-    echo 'sudo service mcpe-server start | stop | restart'
+    echo 'sudo service BDS start | stop | restart'
     echo " "
 }
 
