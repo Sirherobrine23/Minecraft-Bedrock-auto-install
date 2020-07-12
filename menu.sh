@@ -20,9 +20,9 @@ REMOVE=$(pwd)
 
 #Debian ou ubuntu
 if [[ $OS == 'ubuntu' ]]; then
-      sudo apt install screen unzip zip net-tools -y >>$USUARIO/log.txt 2>&1 ;
+      sudo apt install screen unzip dos2unix zip net-tools -y >>$USUARIO/log.txt 2>&1 ;
 elif [[ $OS == 'debian' ]]; then
-	sudo apt install screen unzip zip net-tools -y >>$USUARIO/log.txt 2>&1 ;
+	sudo apt install screen unzip zip dos2unix net-tools -y >>$USUARIO/log.txt 2>&1 ;
 else
       exit 1
 fi
@@ -70,10 +70,10 @@ fi
 
 mapaname(){
     cat $PATH_TO_INSTALL/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
-    level=$(cat /tmp/level.txt)
+    level=$(dos2unix /tmp/port.txt;cat /tmp/level.txt)
     read -rp "Qual é o nome do Mapa (Só confimação do nome): " -e -i "$level" MAPA_DO_SERVIDOR
     cat $PATH_TO_INSTALL/server.properties | grep "server-port=" > /tmp/port.txt ; sed -i "s|server-port=||g" "/tmp/port.txt"
-    PORTAD=$(cat /tmp/port.txt)
+    PORTAD=$(dos2unix /tmp/port.txt;cat /tmp/port.txt)
 }
 
 
@@ -291,17 +291,30 @@ sistema-sh23(){
 
 # ---------------------------------------    
     echo " "
-        rm /usr/sbin/BDS
-        rm -rf /tmp/level.txt
-        rm -rf /sbin/mcpe
+        rm -rf /usr/sbin/mcpe-server
+            rm -rf /sbin/mcpe-server
+            rm -rf /sbin/BDS
         rm -rf /usr/sbin/BDS
-        rm -rf /usr/sbin/mcpe
+        rm -rf /tmp/level.txt
         mapaname
             # -- Config --
                 cp fundo.sh /tmp/
-                MINE2Sh23="/home/MCPE-Backups"
-                read -rp "Qual é o ID da pasta no google Drive caso fará backup para A Nuven (Exemplo: 1-FWzQJWhhJK_00ETU4uVOg6R5c5p_yMP)? " -e -i "" ID
-                read -rp "Aonde você vai quere colocar os Backups Locais (Caso queira)? " -e -i "$MINE2Sh23" MINE2Sh23
+                MINE2Sh23="/var/www/html"
+                
+                if [[ -e IDs.txt ]];then
+                ID="$(cat IDs.txt)"
+                else
+                    read -rp "Qual é o ID da pasta no google Drive caso fará backup para A Nuven (Exemplo: 1-FWzQJWhhJK_00ETU4uVOg6R5c5p_yMP)? " -e -i "" ID
+                    echo "$ID" > IDs.txt
+                    dos2unix IDs.txt
+                fi
+                if [[ -e pasta.txt ]];then
+                    MINE2Sh23="$(cat ~/pasta.txt)"
+                else
+                    read -rp "Aonde você vai quere colocar os Backups Locais (Caso queira)? " -e -i "$MINE2Sh23" MINE2Sh23
+                    echo $MINE2Sh23 > pasta.txt
+                    dos2unix pasta.txt
+                fi
                 mkdir $MINE2Sh23
                 sed -i "s|IDSh23|$ID|g" "/tmp/fundo.sh";
                 sed -i "s|MINESh23|$PATH_TO_INSTALL|g" "/tmp/fundo.sh";

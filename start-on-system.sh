@@ -10,28 +10,33 @@
 ### END INIT INFO
 
 NAME="BDS"
-
 if [[ "$EUID" -ne 0 ]]; then
 echo "Você não está executando o service com root ou sudo";exit 1
 fi
-GDRIVE_FOLDE="IDSh23"
+DATE="$(TZ=UTC+3 date +"%d-%m-%Y")"
+TM="/tmp/"
+MKDIRID="IDSh23"
+rm -rf "$TM/ID.txt"
+gdrive mkdir $(echo $DATE) -p "$MKDIRID" >> "$TM/ID.txt"
+sed -i "s| created||g" "$TM/ID.txt"
+sed -i "s|Directory ||g" "$TM/ID.txt"
+GDRIVE_FOLDE="$(cat $TM/ID.txt)"
+# leste
 PATH_TO_INSTALL="MINESh23"
 PATH_TO_BACKUP="MINE2Sh23"
 MAPS_DO="NAMESh23"
-DATE="$(TZ=UTC+3 date +"%d-%m-%Y")"
-backupsh232() {
-        cd "$PATH_TO_INSTALL/" 
-        echo "Fazendo backup do mapa"
-        cd worlds/
-        zip "$MAPS_DO-$DATE.zip" -r "$MAPS_DO"
-        cp "$MAPS_DO-$DATE.zip" "$PATH_TO_BACKUP/"
-        gdrive upload "$MAPS_DO-$DATE.zip" --parent "$GDRIVE_FOLDE"
-        rm "$MAPS_DO.zip"
+ALLNAME="$MAPS_DO-$DATE"
+sh23backup(){
+cd "$PATH_TO_INSTALL/worlds/"
+zip "$ALLNAME.zip" -r "$MAPS_DO"
+cp "$ALLNAME.zip" "$PATH_TO_BACKUP/"
+gdrive upload "$ALLNAME.zip" --parent "$GDRIVE_FOLDE"
+rm "$ALLNAME.zip"
 }
-startsh23() {
+startsh23(){
         sudo screen -dmS bedrock BDS
 }
-stopsh23() {
+stopsh23(){
         screen -Rd bedrock -X stuff
         sleep 5
         screen -Rd bedrock -X stuff
@@ -46,10 +51,9 @@ stopsh23() {
         sleep 1
         screen -Rd bedrock -X stuff
         screen -X -S bedrock quit
-        backupsh232
+        sh23backup
 }
-restartsh23() {
-
+restartsh23(){
 if ! screen -list | grep -q "bedrock"; then
     echo "Servidor não está ligado ou Não foi possivel reinicia."
 else
@@ -67,6 +71,7 @@ else
         screen -Rd bedrock -X stuff
     sleep 1
         screen -Rd bedrock -X stuff
+        sh23backup
         screen -X -S bedrock quit
     echo "O servidor está ligado ágora:)"
     sleep 2
@@ -78,8 +83,6 @@ status-sh23(){
     status_of_proc -p $PIDFILE "$NAME" "$NAME"
 	exit $?
 }
-
-
 case "$1" in 
     start) startsh23 ;;
     stop) stopsh23 ;;
