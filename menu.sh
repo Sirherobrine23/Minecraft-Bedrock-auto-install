@@ -360,8 +360,8 @@ script-update(){
 }
 crontabsh23(){
 diretoriosh23
+mapaname
 read -rp "Por favor nos informe uma data via crontab!(Exemplo 0 23 * * *, voce tamém pode usar o https://crontab.guru/#0_23_*_*_*) " -e -i "0 23 * * *" CRON
-
 mkdir /bc/
 #                 
 if [[ -e IDs.txt ]];then
@@ -389,7 +389,7 @@ cp -rf /tmp/backup.sh /bc/backup-mcpe.sh
 # 
 echo "adiciona essa linha a seguir no crontab"
 echo "$CRON bash /bc/backup-mcpe.sh"
-read -rp "DE [ENTER] para continua" -e -i "" NULL
+read -rp "De [ENTER] para continua" -e -i "" NULL
 crontab -e
 }
 
