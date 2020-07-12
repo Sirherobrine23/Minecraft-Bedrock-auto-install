@@ -281,8 +281,6 @@ fundo-sh23(){
                 sudo chmod a+x /usr/sbin/BDS
             # -- Config --
     echo " "
-    echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
-
 }
 sistema-sh23(){
       diretorio-sh23
@@ -324,7 +322,7 @@ sistema-sh23(){
                 sudo chmod a+x /usr/sbin/BDS
             # -- Config --
     echo " "
-    echo "Para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
+    
 
 
 
@@ -341,12 +339,21 @@ sistema-sh23(){
         sudo chmod a+x /etc/init.d/BDS;
         update-rc.d BDS defaults
         update-rc.d BDS enable
-    echo "pronto ele inicia junto com sistema(Beta), o comando abaixo pode ajudar"
+    echo "pronto ele inicia junto com sistema, o comando abaixo pode ajudar"
     echo " "
-    echo 'sudo service BDS start | stop | restart'
+    echo 'sudo service BDS start|stop|restart'
     echo " "
+    echo "Para desativar o Inicio altomatico execute $0 --remover-service ou  $0 -R"
+    echo "Para quem quiser iniciar manualmente:"
+    echo "Execute 'screen BDS'"
+    echo "E para deixar o servidor em segundo plano aperte CRTL + A + D. deixara em segundo plano para voltar basta executar o comando screen -r"
 }
-
+#
+removerservicesh23(){
+update-rc.d BDS defaults-disabled
+update-rc.d BDS disable
+rm -rf /etc/init.d/BDS
+}
 #
 
 
@@ -365,6 +372,7 @@ case $1 in
 --apache2 | --page | -a ) apache2-install-sh23 ;;
 --files | -f ) externo-sh23 ;;
 --update-script | -u-s ) script-update ;;
+--remover-service | -R ) removerservicesh23 ;;
 --remover | -r ) sudo rm -rf "$REMOVE";;
 --help) cat help.txt ; echo " ";;
 *) echo "Exeute $0 --help - o comando $0 $1 não existe aqui";echo " "
