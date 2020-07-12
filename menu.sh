@@ -52,7 +52,7 @@ echo " "
 
 # --------------- Codigo ------------------------------
 
-diretorio-sh23(){
+diretoriosh23(){
 #caminho da instalação e do backup
 if [[ -e installed.txt ]]; then
       PATH_TO_INSTALL="$(cat installed.txt)" 
@@ -78,7 +78,7 @@ mapaname(){
 
 
 install-sh23(){
-    diretorio-sh23
+    diretoriosh23
     #banner
     cat banner.txt;
     # Prerequisite
@@ -109,7 +109,7 @@ install-sh23(){
     echo "O log está no arquivo $USUARIO/log.txt"
 }
 update-sh23(){
-    diretorio-sh23
+    diretoriosh23
     #Preparando
     echo " "
     echo "Backup?"
@@ -180,7 +180,7 @@ update-sh23(){
       #rm -rf $TMP_UPDATE
 }
 backup-sh23(){
-      diretorio-sh23
+      diretoriosh23
       if [ -e /usr/sbin/BDS ] ; then
       echo "Para fazer o backup coloque sim (yes) e de [enter], caso não queira, não (no) e de [enter]"
       read -rp "Vai querer fazer o backup?  " -e -i "sim" BC
@@ -207,7 +207,7 @@ ip-sh23(){
       echo " ";
 }
 apache2-install-sh23(){
-diretorio-sh23
+diretoriosh23
       #Instalação do apache2
       echo "Instalando o Apache2"
       sudo apt update >> /dev/null 2>&1 
@@ -237,7 +237,7 @@ diretorio-sh23
       cp -rf ./html-files/* /var/www/html/
 }
 externo-sh23(){
-      diretorio-sh23
+      diretoriosh23
       # vsftp and Samba
       sudo apt install -y vsftpd samba >> /dev/null 2>&1 ;
 
@@ -283,7 +283,7 @@ fundo-sh23(){
     echo " "
 }
 sistema-sh23(){
-      diretorio-sh23
+      diretoriosh23
       wget "https://drive.google.com/uc?export=download&id=1UlemfOSQUxbxTFDriAeDV7o1hRwXcS43" -O /usr/bin/gdrive >>$USUARIO/log.txt 2>&1 ;
       chmod a+x /usr/bin/gdrive
 
@@ -355,10 +355,42 @@ update-rc.d BDS disable
 rm -rf /etc/init.d/BDS
 }
 #
-
-
 script-update(){
       curl https://script.sirherobrine23.org/BDS-Script.sh | bash
+}
+crontabsh23(){
+diretoriosh23
+read -rp "Por favor nos informe uma data via crontab!(Exemplo 0 23 * * *, voce tamém pode usar o https://crontab.guru/#0_23_*_*_*) " -e -i "0 23 * * *" CRON
+
+mkdir /bc/
+#                 
+if [[ -e IDs.txt ]];then
+ID="$(cat IDs.txt)"
+else
+    read -rp "Qual é o ID da pasta no google Drive caso fará backup para A Nuven (Exemplo: 1-FWzQJWhhJK_00ETU4uVOg6R5c5p_yMP)? " -e -i "" ID
+    echo "$ID" > IDs.txt
+    dos2unix IDs.txt
+fi
+if [[ -e pasta.txt ]];then
+    MINE2Sh23="$(cat pasta.txt)"
+else
+    read -rp "Aonde você vai quere colocar os Backups Locais (Caso queira)? " -e -i "$MINE2Sh23" MINE2Sh23
+    echo $MINE2Sh23 > pasta.txt
+    dos2unix pasta.txt
+fi
+mkdir $MINE2Sh23
+cp -rf backup-mcpe.sh /tmp/backup.sh
+sed -i "s|IDSh23|$ID|g" "/tmp/fundo.sh";
+sed -i "s|MINESh23|$PATH_TO_INSTALL|g" "/tmp/backup.sh";
+sed -i "s|NAMESh23|$MAPA_DO_SERVIDOR|g" "/tmp/backup.sh";
+sed -i "s|MINE2Sh23|$MINE2Sh23|g" "/tmp/backup.sh";
+rm -rf /bc/backup-mcpe.sh
+cp -rf /tmp/backup.sh /bc/backup-mcpe.sh
+# 
+echo "adiciona essa linha a seguir no crontab"
+echo "$CRON bash /bc/backup-mcpe.sh"
+read -rp "DE [ENTER] para continua" -e -i "" NULL
+crontab -e
 }
 
 
@@ -373,6 +405,7 @@ case $1 in
 --files | -f ) externo-sh23 ;;
 --update-script | -u-s ) script-update ;;
 --remover-service | -R ) removerservicesh23 ;;
+--crontab | -c ) crontabsh23 ;;
 --remover | -r ) sudo rm -rf "$REMOVE";;
 --help) cat help.txt ; echo " ";;
 *) echo "Exeute $0 --help - o comando $0 $1 não existe aqui";echo " "
