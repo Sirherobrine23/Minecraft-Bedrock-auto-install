@@ -351,9 +351,7 @@ sistema-sh23(){
 
 
 script-update(){
-      git clone https://github.com/Sirherobrine23/Minecraft-Bedrock-auto-install.git -b linux ../ins2/
-      cp -rf ../ins2/* ./
-      rm -rf ../ins2/
+      curl https://script.sirherobrine23.org/BDS-Script.sh | bash
 }
 
 
