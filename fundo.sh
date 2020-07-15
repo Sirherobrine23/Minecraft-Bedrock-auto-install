@@ -1,9 +1,10 @@
 #!/bin/bash 
-DATE="$(TZ=UTC+3 date +"%d-%m-%Y")"
+DATE="$(TZ=UTC+3 date +"%H-%M-%S")"
+DA2TE=""$(TZ=UTC+3 date +"%d/%m/%Y-%H-%M-%S")"
 TM="/tmp/"
 MKDIRID="IDSh23"
 rm -rf "$TM/ID.txt"
-gdrive mkdir $(echo $DATE) -p "$MKDIRID" >> "$TM/ID.txt"
+gdrive mkdir $(echo $DA2TE) -p "$MKDIRID" >> "$TM/ID.txt"
 sed -i "s| created||g" "$TM/ID.txt"
 sed -i "s|Directory ||g" "$TM/ID.txt"
 GDRIVE_FOLDE="$(cat $TM/ID.txt)"
