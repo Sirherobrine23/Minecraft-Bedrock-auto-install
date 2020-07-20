@@ -110,74 +110,77 @@ install-sh23(){
 }
 update-sh23(){
     diretoriosh23
-    #Preparando
-    echo " "
-    echo "Backup?"
+    mapaname
+        #Preparando
+        echo " "
+        echo "Backup?"
         read -rp "Nome do backup:  " -e -i "$(TZ=UTC+3 date +"%d-%m-%Y")" BACKUP
-    echo " "
-    echo "Por padrão é no /home/Minecraft-Backup, mais esse diretorio será a apagado depois, mas isso não é do Backup, mas mantendo os novos no $PATH_TO_INSTALL (debug)"
+        echo " "
+        echo "Por padrão é no /home/Minecraft-Backup, mais esse diretorio será a apagado depois, mas isso não é do Backup, mas mantendo os novos no $PATH_TO_INSTALL (debug)"
         read -rp "Aonde vai ser o backup: " -e -i "/home/Minecraft-Backup" PATH_TO_BACKUP
-    echo " "
-    echo "arquivos temporarios (debug)"
+        echo " "
+        echo "arquivos temporarios (debug)"
         read -rp "A onde vai ser a pasta temporaria: " -e -i "/tmp/mcpe-update" TMP_UPDATE
         read -rp  "A onde sera savo o backup para amazenamento: " -e -i "$(cd ~/;pwd)/mcpe-Backup" PATHBACKUP
-    echo " "
-    echo " "
+        echo " "
+        echo " "
 
-      mkdir "$TMP_UPDATE"
-    #---------------------------------------------------------------------------------------------------------
-    cat "$PATH_TO_INSTALL/server.properties" | grep "level-name=" >> "$TMP_UPDATE/level.txt" ;
-    sed -i "s|level-name=||g" "$TMP_UPDATE/level.txt"
-    MAPA=$(cat $TMP_UPDATE/level.txt) >>$USUARIO/log.txt 2>&1 ;
-    #---------------------------------------------------------------------------------------------------------
-    echo " "
-    echo " "
+        mkdir "$TMP_UPDATE"
+        #---------------------------------------------------------------------------------------------------------
+        cat "$PATH_TO_INSTALL/server.properties" | grep "level-name=" >> "$TMP_UPDATE/level.txt" ;
+        sed -i "s|level-name=||g" "$TMP_UPDATE/level.txt"
+        MAPA=$(cat $TMP_UPDATE/level.txt) >>$USUARIO/log.txt 2>&1 ;
+        #---------------------------------------------------------------------------------------------------------
+        echo " "
+        echo " "
 
-    echo "verificando se a arquivos antingos no $(pwd)"
-    if [[ -d mcpe/ ]]; then
-    rm -rf mcpe/
-    fi
-    if [[ -e mcpe.zip ]];then
-    rm -rf mcpe.zip
-    fi
+        echo "verificando se a arquivos antingos no $(pwd)"
+        if [[ -d mcpe/ ]]; then
+        rm -rf mcpe/
+        fi
+        if [[ -e mcpe.zip ]];then
+        rm -rf mcpe.zip
+        fi
 
-    #copia
-      cp -rf "$PATH_TO_INSTALL/*" "$PATH_TO_BACKUP"
+        #copia
+        cp -rf "$PATH_TO_INSTALL/" "$PATH_TO_BACKUP"
 
-    #copia de seguraça
-      mkdir "$PATH_TO_BACKUP/"
-      mkdir "$PATHBACKUP/"
-      zip  "$PATHBACKUP/$BACKUP".zip -r "$PATH_TO_INSTALL/*"
+        zip "$PATHBACKUP/$BACKUP-2".zip -r "$PATH_TO_INSTALL/"
 
-      if [[ -d $PATH_TO_INSTALL/ ]];then
-            rm -rf $PATH_TO_INSTALL/
-      fi
+        #copia de seguraça
+        mkdir "$PATH_TO_BACKUP/"
+        mkdir "$PATHBACKUP/"
+        zip  "$PATHBACKUP/$BACKUP".zip -r "$PATH_TO_INSTALL/"
 
-      #baixar a nova versão
-      wget "$BDS" -O mcpe.zip
-      unzip mcpe.zip -d mcpe
+        if [[ -d $PATH_TO_INSTALL/ ]];then
+        rm -rf $PATH_TO_INSTALL/
+        fi
 
-      #removendo alguns arquivos
-      rm -r mcpe/server.properties
-      rm -r mcpe/whitelist.json
+        #baixar a nova versão
+        wget "$BDS" -O mcpe.zip
+        unzip mcpe.zip -d mcpe
 
-      # Movendo para o temp
-      rm -rf $PATH_TO_INSTALL/
-      
-      #copiar mundo e as configuraçoe
-      cp -r "$PATH_TO_BACKUP/worlds" "mcpe/"
-      cp "$PATH_TO_BACKUP/server.properties" "mcpe/"
-      cp "$PATH_TO_BACKUP/whitelist.json" "mcpe/"
+        #removendo alguns arquivos
+        rm -r mcpe/server.properties
+        rm -r mcpe/whitelist.json
 
-      #movendo
-      mkdir $PATH_TO_INSTALL/
-      cp -rf mcpe/* $PATH_TO_INSTALL/
+        # Movendo para o temp
+        mv $PATH_TO_INSTALL/ /tmp/
 
-      #remover arquivos antigos
-      rm mcpe.zip
-      #rm -rf mcpe/
-      #rm -rf $PATH_TO_BACKUP
-      #rm -rf $TMP_UPDATE
+        #copiar mundo e as configuraçoe
+        cp -r "$PATH_TO_BACKUP/worlds" "mcpe/"
+        cp "$PATH_TO_BACKUP/server.properties" "mcpe/"
+        cp "$PATH_TO_BACKUP/whitelist.json" "mcpe/"
+
+        #movendo
+        mkdir $PATH_TO_INSTALL/
+        cp -rf mcpe/* $PATH_TO_INSTALL/
+
+        #remover arquivos antigos
+        rm mcpe.zip
+        rm -rf mcpe/
+        rm -rf $PATH_TO_BACKUP
+        rm -rf $TMP_UPDATE
 }
 backup-sh23(){
       diretoriosh23
