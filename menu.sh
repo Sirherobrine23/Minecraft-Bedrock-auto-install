@@ -410,7 +410,7 @@ case $1 in
 --remover-service | -R ) removerservicesh23 ;;
 --crontab | -c ) crontabsh23 ;;
 --remover | -r ) sudo rm -rf "$REMOVE";;
---help) cat help.txt ; echo " ";;
+--help | -h ) cat help.txt ; echo " ";;
 *) echo "Exeute $0 --help - o comando $0 $1 não existe aqui";echo " "
 esac
 
