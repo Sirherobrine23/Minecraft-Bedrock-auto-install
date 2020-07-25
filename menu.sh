@@ -11,21 +11,15 @@ else
 	echo "Você não tem instalado ou não esta com sistema Debian ou Ubuntu "
 	exit 1
 fi
-
-#--unistall
 REMOVE=$(pwd)
-
-#Debian ou ubuntu
 if [[ $OS == 'ubuntu' ]]; then
+    echo "Ubuntu detectado instalando algumas recomendações espere ..."
        apt install screen unzip dos2unix zip net-tools -y >>$USUARIO/log.txt 2>&1 ;
 elif [[ $OS == 'debian' ]]; then
 	 apt install screen unzip zip dos2unix net-tools -y >>$USUARIO/log.txt 2>&1 ;
 else
       exit 1
 fi
-
-#Software
-BDS="$(wget -qO- https://script.sirherobrine23.org/BDS.txt)"
 
 #Usuario
 USUARIO=$(cd ~/;pwd)
@@ -60,7 +54,10 @@ else
       echo " "
 fi
 }
-
+URLDOWNLOAD(){
+BDS="$(wget -qO- https://script.sirherobrine23.org/BDS.txt)"
+echo "Atualmente temos os sequinte link download: $BDS"
+}
 mapaname(){
     cat $PATH_TO_INSTALL/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
     level=$(dos2unix /tmp/port.txt;cat /tmp/level.txt)
@@ -70,8 +67,9 @@ mapaname(){
 }
 
 
-install-sh23(){
+installbysh23(){
     diretoriosh23
+    URLDOWNLOAD
     #banner
     cat banner.txt;
     # Prerequisite
@@ -101,9 +99,10 @@ install-sh23(){
     rm -rf mcpe/
     echo "O log está no arquivo $USUARIO/log.txt"
 }
-update-sh23(){
+updatebysh23(){
     diretoriosh23
     mapaname
+    URLDOWNLOAD
     cat banner.txt
         #Preparando
         echo " "
@@ -173,7 +172,7 @@ update-sh23(){
         rm -rf $PATH_TO_BACKUP
         rm -rf $TMP_UPDATE
 }
-backup-sh23(){
+backupbysh23(){
       diretoriosh23
       if [ -e /usr/sbin/BDS ] ; then
       echo "Para fazer o backup coloque sim (yes) e de [enter], caso não queira, não (no) e de [enter]"
@@ -187,7 +186,7 @@ backup-sh23(){
       echo "não podemos cria agora, por favor execute primeiro o --fundo"
       fi
 }
-ip-sh23(){
+ipbysh23(){
       #Comando --ip variaveis
       IP_V4=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
       SEARCH_IPV6=$(ip -6 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)
@@ -200,7 +199,7 @@ ip-sh23(){
             echo "Também verifique se sua operadora ou provedor libera as portas do servidor. contate-os"
       echo " ";
 }
-apache2-install-sh23(){
+apache2-installbysh23(){
 diretoriosh23
       #Instalação do apache2
       echo "Instalando o Apache2"
@@ -230,7 +229,7 @@ diretoriosh23
       # Movendo as configurações
       cp -rf ./html-files/* /var/www/html/
 }
-externo-sh23(){
+externobysh23(){
       diretoriosh23
       # vsftp and Samba
        apt install -y vsftpd samba >> /dev/null 2>&1 ;
@@ -253,7 +252,7 @@ echo "Para usar o ftp não precisar de nada a mais para configura só ter um usu
 
 #
 
-fundo-sh23(){
+fundobysh23(){
     echo " "
         rm /usr/sbin/BDS
         rm -rf /tmp/level.txt
@@ -276,7 +275,7 @@ fundo-sh23(){
             # -- Config --
     echo " "
 }
-sistema-sh23(){
+sistemabysh23(){
       diretoriosh23
       wget "https://drive.google.com/uc?export=download&id=1UlemfOSQUxbxTFDriAeDV7o1hRwXcS43" -O /usr/bin/gdrive >>$USUARIO/log.txt 2>&1 ;
       chmod a+x /usr/bin/gdrive
@@ -390,14 +389,14 @@ crontab -e
 
 # Escolha --------------  ***  -----------
 case $1 in
---install | -i )  install-sh23 ;;
---update | -u ) update-sh23 ;;
---backup | -b ) backup-sh23 ;;
---start-on-system | -s ) sistema-sh23 ;;
---ip | -P ) ip-sh23 ;;
---apache2 | --page | -a ) apache2-install-sh23 ;;
---files | -f ) externo-sh23 ;;
---update-script | -u-s ) script-update ;;
+--install | -i )  installbysh23 ;;
+--update | -u ) updatebysh23 ;;
+--backup | -b ) backupbysh23 ;;
+--start-on-system | -s ) sistemabysh23 ;;
+--ip | -P ) ipbysh23 ;;
+--apache2 | --page | -a ) apache2-installbysh23 ;;
+--files | -f ) externobysh23 ;;
+--update-script | -ds ) script-update ;;
 --remover-service | -R ) removerservicesh23 ;;
 --crontab | -c ) crontabsh23 ;;
 --remover | -r )  rm -rf "$REMOVE";;

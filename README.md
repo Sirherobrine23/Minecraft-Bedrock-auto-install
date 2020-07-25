@@ -28,5 +28,5 @@ atualmente opções para instalação:
     --ip                | -P    - Mostrar seu IPs
     --apache2 | --page  | -a    - Instalar o Apache2 para adicionar o Servidor ao acessae pelo Navegadores tipo o Chrome, Firefox ...
     --files             | -f    - Ativa acesso dos arquivos do Servidor via SMB (SAMBA) e FTP (VSFTPD)
-    --update-script     | -u-s  - Atualizar o Script (Atualizações do script para correção de Bugs)
+    --update-script     | -ds  - Atualizar o Script (Atualizações do script para correção de Bugs)
     --remover           | -r    - Remoção do Script, não será desistalado o BDS e outros programas já instalado

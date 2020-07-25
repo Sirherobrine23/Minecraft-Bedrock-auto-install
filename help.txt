@@ -8,7 +8,7 @@ opções para instalação:
     --apache2 | --page  | -a    - Instalar o Apache2 para adicionar o Servidor ao acessae pelo Navegadores tipo o Chrome, Firefox ...
     --files             | -f    - Ativa acesso dos arquivos do Servidor via SMB (SAMBA) e FTP (VSFTPD)
     --remover-service   | -R    - Remover auto inicialização do BDS
-    --update-script     | -u-s  - Atualizar o Script (Atualizações do script para correção de Bugs)
+    --update-script     | -ds  - Atualizar o Script (Atualizações do script para correção de Bugs)
     --remover           | -r    - Remoção do Script, não será desistalado o BDS e outros programas já instalado
 
 
@@ -26,7 +26,7 @@ opções para instalação:
 
 --files ou -f: Para quém quer acessar seus arquivos do BDS teremos um servidor smb e ftp pré-configurado pelo script;
 
---update-script ou -u-s: Atulizaçoes que mantemos desses script;
+--update-script ou -ds: Atulizaçoes que mantemos desses script;
 
 --remover ou -r: para quem não gostou basta remover a pasta atual e ficar feliz, e depois nos falar que merda deu no "https://github.com/Sirherobrine23/Minecraft-Bedrock-auto-install/issues/new";
 
