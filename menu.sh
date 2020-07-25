@@ -1,7 +1,7 @@
 #!/bin/bash
 #Root
 if [ "$EUID" -ne 0 ]; then
-	echo "Você não está executando o script com root ou sudo"
+	echo "Você não está executando o script com root ou "
 	exit 1
 fi
 if [[ -e /etc/debian_version ]]; then
@@ -17,9 +17,9 @@ REMOVE=$(pwd)
 
 #Debian ou ubuntu
 if [[ $OS == 'ubuntu' ]]; then
-      sudo apt install screen unzip dos2unix zip net-tools -y >>$USUARIO/log.txt 2>&1 ;
+       apt install screen unzip dos2unix zip net-tools -y >>$USUARIO/log.txt 2>&1 ;
 elif [[ $OS == 'debian' ]]; then
-	sudo apt install screen unzip zip dos2unix net-tools -y >>$USUARIO/log.txt 2>&1 ;
+	 apt install screen unzip zip dos2unix net-tools -y >>$USUARIO/log.txt 2>&1 ;
 else
       exit 1
 fi
@@ -32,10 +32,10 @@ USUARIO=$(cd ~/;pwd)
 
 #pode ser aqui ali ou DEBIAN
 TMP=/home/Minecraft-temp
-sudo mkdir $TMP >>$USUARIO/log.txt 2>&1 ;
+ mkdir $TMP >>$USUARIO/log.txt 2>&1 ;
 
 # Remoção dos arquivo de log
-sudo rm -rf $TMP/level.txt >>$USUARIO/log.txt 2>&1 ;
+ rm -rf $TMP/level.txt >>$USUARIO/log.txt 2>&1 ;
 
 echo "o Diretorio do seu usuario é $USUARIO"
 echo "Começamos ás $(TZ=UTC+3 date +"%H:%M:%S")"
@@ -79,11 +79,11 @@ install-sh23(){
 
     #Download do arquivos servidor
     echo "Baixando o Software do Servidor";
-    sudo wget "$BDS" -O mcpe.zip >>$USUARIO/log.txt 2>&1 ;
+     wget "$BDS" -O mcpe.zip >>$USUARIO/log.txt 2>&1 ;
 
     echo "Instalando o Servidor";
-    sudo unzip mcpe.zip -d mcpe/ >>$USUARIO/log.txt 2>&1 ;
-    sudo rm -rf mcpe.zip;
+     unzip mcpe.zip -d mcpe/ >>$USUARIO/log.txt 2>&1 ;
+     rm -rf mcpe.zip;
 
     #config
     echo "Configuração Base"
@@ -204,8 +204,8 @@ apache2-install-sh23(){
 diretoriosh23
       #Instalação do apache2
       echo "Instalando o Apache2"
-      sudo apt update >> /dev/null 2>&1 
-      sudo apt install apache2 -y >> /dev/null 2>&1 
+       apt update >> /dev/null 2>&1 
+       apt install apache2 -y >> /dev/null 2>&1 
 
       # Removendo pasta HTML e Adicionando denovo
       rm -rf /var/www/html/
@@ -233,7 +233,7 @@ diretoriosh23
 externo-sh23(){
       diretoriosh23
       # vsftp and Samba
-      sudo apt install -y vsftpd samba >> /dev/null 2>&1 ;
+       apt install -y vsftpd samba >> /dev/null 2>&1 ;
 
       #config
       sed -i "s|PATHTOISNTALL|$PATH_TO_INSTALL|g" "./smb.conf"
@@ -272,7 +272,7 @@ fundo-sh23(){
                 sed -i "s|NAME|$MAPA_DO_SERVIDOR|g" "/tmp/fundo.sh";
                 sed -i "s|2MINESh23|$MINE2Sh23|g" "/tmp/fundo.sh";
                 cp -rf /tmp/fundo.sh /usr/sbin/BDS
-                sudo chmod a+x /usr/sbin/BDS
+                 chmod a+x /usr/sbin/BDS
             # -- Config --
     echo " "
 }
@@ -313,7 +313,7 @@ sistema-sh23(){
                 sed -i "s|NAMESh23|$MAPA_DO_SERVIDOR|g" "/tmp/fundo.sh";
                 sed -i "s|MINE2Sh23|$MINE2Sh23|g" "/tmp/fundo.sh";
                 cp -rf /tmp/fundo.sh /usr/sbin/BDS
-                sudo chmod a+x /usr/sbin/BDS
+                 chmod a+x /usr/sbin/BDS
             # -- Config --
     echo " "
     
@@ -323,19 +323,19 @@ sistema-sh23(){
     # ---------------------------------------
 
     echo "Iniciando as Configurações do arquivo para Inicialização junto com o Sistema"
-        sudo cp start-on-system.sh /tmp/systemsh23.sh;
+         cp start-on-system.sh /tmp/systemsh23.sh;
             sed -i "s|IDSh23|$ID|g" "/tmp/systemsh23.sh";
             sed -i "s|MINESh23|$PATH_TO_INSTALL|g" "/tmp/systemsh23.sh";
             sed -i "s|NAMESh23|$MAPA_DO_SERVIDOR|g" "/tmp/systemsh23.sh";
             sed -i "s|MINE2Sh23|$MINE2Sh23|g" "/tmp/systemsh23.sh";
-        sudo cp "/tmp/systemsh23.sh" "/etc/init.d/BDS";
+         cp "/tmp/systemsh23.sh" "/etc/init.d/BDS";
     echo "copiando o arquivo";
-        sudo chmod a+x /etc/init.d/BDS;
+         chmod a+x /etc/init.d/BDS;
         update-rc.d BDS defaults
         update-rc.d BDS enable
     echo "pronto ele inicia junto com sistema, o comando abaixo pode ajudar"
     echo " "
-    echo 'sudo service BDS start|stop|restart'
+    echo ' service BDS start|stop|restart'
     echo " "
     echo "Para desativar o Inicio altomatico execute $0 --remover-service ou  $0 -R"
     echo "Para quem quiser iniciar manualmente:"
@@ -400,7 +400,7 @@ case $1 in
 --update-script | -u-s ) script-update ;;
 --remover-service | -R ) removerservicesh23 ;;
 --crontab | -c ) crontabsh23 ;;
---remover | -r ) sudo rm -rf "$REMOVE";;
+--remover | -r )  rm -rf "$REMOVE";;
 --help | -h ) cat help.txt ; echo " ";;
 *) echo "Exeute $0 --help - o comando $0 $1 não existe aqui";echo " "
 esac
@@ -414,5 +414,5 @@ echo "--------------"
 echo " "
 echo "qualquer erro no script me comunique no https://github.com/Sirherobrine23/Minecraft-Bedrock-auto-install/issues"
 echo "Terminamos as $(TZ=UTC+3 date +"%H:%M:%S")"
-sudo rm -rf mcpe.zip
+ rm -rf mcpe.zip
 echo " "
