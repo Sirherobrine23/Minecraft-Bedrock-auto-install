@@ -30,3 +30,41 @@ atualmente opções para instalação:
     --files             | -f    - Ativa acesso dos arquivos do Servidor via SMB (SAMBA) e FTP (VSFTPD)
     --update-script     | -ds  - Atualizar o Script (Atualizações do script para correção de Bugs)
     --remover           | -r    - Remoção do Script, não será desistalado o BDS e outros programas já instalado
+
+---- 
+# Whitelist
+
+Para quem for utilizar o whitelist olhe como adicionar, além olhe se está como true o `whitelist=` no server.propierties:
+
+para os playes que voçê sabe o XUID dele: 
+```json
+    {"ignoresPlayerLimit":false,
+        "name":"Player1",
+        "xuid":"000000000000000"
+    }
+```
+
+para os playes que voçê não sabe o XUID dele: 
+```json
+    {"ignoresPlayerLimit":false,
+        "name":"Player2"
+    }
+```
+
+lembre para deixa dentro do `[]`
+
+exemplo:
+```json
+[
+    {"ignoresPlayerLimit":false,
+        "name":"Player1"
+    },
+    {"ignoresPlayerLimit":false,
+        "name":"Player2",
+        "xuid":"120908000000000"
+    }
+
+]
+```
+
+----
