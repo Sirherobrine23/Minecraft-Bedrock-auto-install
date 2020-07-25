@@ -1,7 +1,4 @@
 #!/bin/bash
-clear
-#Espaço
-
 #Root
 if [ "$EUID" -ne 0 ]; then
 	echo "Você não está executando o script com root ou sudo"
@@ -32,10 +29,6 @@ BDS="$(wget -qO- https://script.sirherobrine23.org/BDS.txt)"
 
 #Usuario
 USUARIO=$(cd ~/;pwd)
-
-# Iniacialização
-file=BDS
-FILE2=mcpe-/sbin/BDS
 
 #pode ser aqui ali ou DEBIAN
 TMP=/home/Minecraft-temp
@@ -111,20 +104,18 @@ install-sh23(){
 update-sh23(){
     diretoriosh23
     mapaname
+    cat banner.txt
         #Preparando
         echo " "
         echo "Backup?"
         read -rp "Nome do backup:  " -e -i "$(TZ=UTC+3 date +"%d-%m-%Y")" BACKUP
         echo " "
-        echo "Por padrão é no /home/Minecraft-Backup, mais esse diretorio será a apagado depois, mas isso não é do Backup, mas mantendo os novos no $PATH_TO_INSTALL (debug)"
-        read -rp "Aonde vai ser o backup: " -e -i "/home/Minecraft-Backup" PATH_TO_BACKUP
+        PATH_TO_BACKUP="~/MCPE-BACKUP";echo "$PATH_TO_BACKUP"
         echo " "
-        echo "arquivos temporarios (debug)"
-        read -rp "A onde vai ser a pasta temporaria: " -e -i "/tmp/mcpe-update" TMP_UPDATE
-        read -rp  "A onde sera savo o backup para amazenamento: " -e -i "$(cd ~/;pwd)/mcpe-Backup" PATHBACKUP
-        echo " "
-        echo " "
-
+        TMP_UPDATE="~/mcpe-update";echo $TMP_UPDATE
+        PATHBACKUP="$(cd ~/;pwd)/mcpe-Backup";echo $PATHBACKUP
+ 	# separação dos arquivos
+        echo "-------------------------------"
         mkdir "$TMP_UPDATE"
         #---------------------------------------------------------------------------------------------------------
         cat "$PATH_TO_INSTALL/server.properties" | grep "level-name=" >> "$TMP_UPDATE/level.txt" ;
