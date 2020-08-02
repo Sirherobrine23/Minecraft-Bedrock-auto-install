@@ -68,3 +68,23 @@ exemplo:
 ```
 
 ----
+# usando o install.json
+
+exemplo completo das configuraçoes completas
+
+```json
+{
+    "global": {
+        "name_map": "bds",
+        "port": "19132",
+        "url_download": "https://script.sirherobrine23.org/BDS.txt"
+    },
+    "install": {
+        "dir": "/home/minecraft"
+    },
+    "update": {
+        "dir_update": "/tmp/Minecraft_update",
+        "dir_backup": "~/mcpe-backup"
+    }
+}
+```

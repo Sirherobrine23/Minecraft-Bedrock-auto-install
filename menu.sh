@@ -14,15 +14,17 @@ fi
 REMOVE=$(pwd)
 if [[ $OS == 'ubuntu' ]]; then
     echo "Ubuntu detectado instalando algumas recomendações espere ..."
-       apt install screen unzip dos2unix zip net-tools -y >>$USUARIO/log.txt 2>&1 ;
+       apt install screen unzip dos2unix jq zip net-tools -y >>$USUARIO/log.txt 2>&1 ;
 elif [[ $OS == 'debian' ]]; then
-	 apt install screen unzip zip dos2unix net-tools -y >>$USUARIO/log.txt 2>&1 ;
+	 apt install screen unzip zip dos2unix jq net-tools -y >>$USUARIO/log.txt 2>&1 ;
 else
       exit 1
 fi
 
 #Usuario
 USUARIO=$(cd ~/;pwd)
+
+
 
 #pode ser aqui ali ou DEBIAN
 TMP=/home/Minecraft-temp
@@ -39,8 +41,11 @@ echo " "
 
 # --------------- Codigo ------------------------------
 
-diretoriosh23(){
-#caminho da instalação e do backup
+
+variaveis_predefinidas(){
+BDS="$(wget -qO- https://script.sirherobrine23.org/BDS.txt)"
+echo "Atualmente temos os sequinte link download: $BDS"
+
 if [[ -e installed.txt ]]; then
       PATH_TO_INSTALL="$(cat installed.txt)" 
       echo "Depois voçê pode alterar o diretorio no arquivo 'installed.txt'"
@@ -53,23 +58,34 @@ else
       echo " "
       echo " "
 fi
-}
-URLDOWNLOAD(){
-BDS="$(wget -qO- https://script.sirherobrine23.org/BDS.txt)"
-echo "Atualmente temos os sequinte link download: $BDS"
-}
-mapaname(){
-    cat $PATH_TO_INSTALL/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
+
+cat $PATH_TO_INSTALL/server.properties | grep "level-name=" > /tmp/level.txt ; sed -i "s|level-name=||g" "/tmp/level.txt"
     level=$(dos2unix /tmp/port.txt;cat /tmp/level.txt)
     read -rp "Qual é o nome do Mapa (Só confimação do nome): " -e -i "$level" MAPA_DO_SERVIDOR
     cat $PATH_TO_INSTALL/server.properties | grep "server-port=" > /tmp/port.txt ; sed -i "s|server-port=||g" "/tmp/port.txt"
     PORTAD=$(dos2unix /tmp/port.txt;cat /tmp/port.txt)
+
 }
 
+json(){
+     PATH_TO_INSTALL="$(cat install.json | jq ".install.dir" | sed 's|"||g')"
+     BDS="$(wget -qO- $(cat install.json | jq ".global.url_download" | sed 's|"||g'))"
+     PORTAD="$(cat install.json | jq ".global.port" | sed 's|"||g')"
+     MAPA_DO_SERVIDOR="$(cat install.json | jq ".global.name_map" | sed 's|"||g')"
+     level="$(cat install.json | jq ".global.name_map" | sed 's|"||g')"
+}
+
+# Usando arquivo json
+
+if [[ -e install.json ]];then
+json
+else
+variaveis_predefinidas
+fi
 
 installbysh23(){
-    diretoriosh23
-    URLDOWNLOAD
+    
+    
     #banner
     cat banner.txt;
     # Prerequisite
@@ -100,9 +116,9 @@ installbysh23(){
     echo "O log está no arquivo $USUARIO/log.txt"
 }
 updatebysh23(){
-    diretoriosh23
-    mapaname
-    URLDOWNLOAD
+    
+    
+    
     cat banner.txt
         #Preparando
         echo " "
@@ -173,7 +189,7 @@ updatebysh23(){
         rm -rf $TMP_UPDATE
 }
 backupbysh23(){
-      diretoriosh23
+      
       if [ -e /usr/sbin/BDS ] ; then
       echo "Para fazer o backup coloque sim (yes) e de [enter], caso não queira, não (no) e de [enter]"
       read -rp "Vai querer fazer o backup?  " -e -i "sim" BC
@@ -200,7 +216,7 @@ ipbysh23(){
       echo " ";
 }
 apache2-installbysh23(){
-diretoriosh23
+
       #Instalação do apache2
       echo "Instalando o Apache2"
        apt update >> /dev/null 2>&1 
@@ -217,7 +233,7 @@ diretoriosh23
       echo "Dominio caso você tenha"
       echo "nome que aparacera na Pagina. etc ..."
       sleep 3
-      mapaname
+      
       read -rp "Qual será o dominio ou nos da o IP publico: " -e -i "$(wget -qO- http://ipecho.net/plain)" IPDOMAIN
       read -rp "Qual é o nome que aparacera na pagina: " -e -i "$(cat /tmp/level.txt)" MAINSERVERNAME
 
@@ -230,7 +246,7 @@ diretoriosh23
       cp -rf ./html-files/* /var/www/html/
 }
 externobysh23(){
-      diretoriosh23
+      
       # vsftp and Samba
        apt install -y vsftpd samba >> /dev/null 2>&1 ;
 
@@ -259,7 +275,7 @@ fundobysh23(){
         rm -rf /sbin/mcpe
         rm -rf /usr/sbin/BDS
         rm -rf /usr/sbin/mcpe
-        mapaname
+        
             # -- Config --
                 cp fundo.sh /tmp/
                 MINE2Sh23="/home/MCPE-Backups"
@@ -276,7 +292,7 @@ fundobysh23(){
     echo " "
 }
 sistemabysh23(){
-      diretoriosh23
+      
       wget "https://drive.google.com/uc?export=download&id=1UlemfOSQUxbxTFDriAeDV7o1hRwXcS43" -O /usr/bin/gdrive >>$USUARIO/log.txt 2>&1 ;
       chmod a+x /usr/bin/gdrive
 
@@ -287,7 +303,7 @@ sistemabysh23(){
             rm -rf /sbin/BDS
         rm -rf /usr/sbin/BDS
         rm -rf /tmp/level.txt
-        mapaname
+        
             # -- Config --
                 cp fundo.sh /tmp/
                 MINE2Sh23="/var/www/html"
@@ -352,8 +368,8 @@ script-update(){
       curl https://script.sirherobrine23.org/BDS-Script.sh | bash
 }
 crontabsh23(){
-diretoriosh23
-mapaname
+
+
 read -rp "Por favor nos informe uma data via crontab!(Exemplo 0 23 * * *, voce tamém pode usar o https://crontab.guru/#0_23_*_*_*) " -e -i "0 23 * * *" CRON
 mkdir /bc/
 #                 
@@ -401,6 +417,7 @@ case $1 in
 --crontab | -c ) crontabsh23 ;;
 --remover | -r )  rm -rf "$REMOVE";;
 --help | -h ) cat help.txt ; echo " ";;
+--teste ) echo "$0 $1 $2 $3 $4 $5";;
 *) echo "Exeute $0 --help - o comando $0 $1 não existe aqui";echo " "
 esac
 
