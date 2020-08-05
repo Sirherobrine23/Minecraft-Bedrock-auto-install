@@ -1,5 +1,5 @@
 #!/bin/bash
-
+source progress_bar.sh
 if [[ -e /etc/debian_version ]]; then
 	source /etc/os-release
 	OS=$ID # debian or ubuntu
@@ -17,7 +17,7 @@ fi
 REMOVE=$(pwd)
 
 #Usuario
-USUARIO=$(echo $HOME)
+
 
 #Root
 if [ "$EUID" -ne 0 ]; then
@@ -53,7 +53,7 @@ echo " "
 variaveis_predefinidas(){
 BDS="$(wget -qO- https://script.sirherobrine23.org/BDS.txt)"
 echo "Atualmente temos os sequinte link download: $BDS"
-
+USUARIO=$(echo $HOME)
 if [[ -e installed.txt ]]; then
       PATH_TO_INSTALL="$(cat installed.txt)" 
       echo "Depois voçê pode alterar o diretorio no arquivo 'installed.txt'"
@@ -98,14 +98,16 @@ installbysh23(){
     cat banner.txt;
     # Prerequisite
     echo "  ";
-
+draw_progress_bar 1
     #Download do arquivos servidor
-    echo "Baixando o Software do Servidor";
+    echo "Baixando o Software do BDS";
      wget "$BDS" -O mcpe.zip >>$USUARIO/log.txt 2>&1 ;
-
-    echo "Instalando o Servidor";
+draw_progress_bar 2
+    echo "Descompactando o software do BDS";
+    draw_progress_bar 5
      unzip mcpe.zip -d mcpe/ >>$USUARIO/log.txt 2>&1 ;
      rm -rf mcpe.zip;
+     draw_progress_bar 10
 
     #config
     echo "Configuração Base"
@@ -113,88 +115,23 @@ installbysh23(){
     rm -rf mcpe/whitelist.json >>$USUARIO/log.txt 2>&1 ;
     cp -r ./server.properties mcpe/ >>$USUARIO/log.txt 2>&1 ;
     cp -r ./whitelist.json mcpe/ >>$USUARIO/log.txt 2>&1 ;
-
+draw_progress_bar 15
     #Movendo
-    echo "Movendo para o $PATH_TO_INSTALL"
+    echo "Criando e Movendo para o $PATH_TO_INSTALL"
     rm -rf $PATH_TO_INSTALL
+    draw_progress_bar 20
     mkdir $PATH_TO_INSTALL
+    draw_progress_bar 30
     cp -r mcpe/* $PATH_TO_INSTALL/
+    draw_progress_bar 50
     echo "Limpando alguns arquivos"
     rm -rf mcpe/
     echo "O log está no arquivo $USUARIO/log.txt"
+    draw_progress_bar 100
 }
 updatebysh23(){
-    
-    
-    
     cat banner.txt
-        #Preparando
-        echo " "
-        echo "Backup?"
-        read -rp "Nome do backup:  " -e -i "$(TZ=UTC+3 date +"%d-%m-%Y")" BACKUP
-        echo " "
-        PATH_TO_BACKUP="~/MCPE-BACKUP";echo "$PATH_TO_BACKUP"
-        echo " "
-        TMP_UPDATE="~/mcpe-update";echo $TMP_UPDATE
-        PATHBACKUP="$(cd ~/;pwd)/mcpe-Backup";echo $PATHBACKUP
- 	# separação dos arquivos
-        echo "-------------------------------"
-        mkdir "$TMP_UPDATE"
-        #---------------------------------------------------------------------------------------------------------
-        cat "$PATH_TO_INSTALL/server.properties" | grep "level-name=" >> "$TMP_UPDATE/level.txt" ;
-        sed -i "s|level-name=||g" "$TMP_UPDATE/level.txt"
-        MAPA=$(cat $TMP_UPDATE/level.txt) >>$USUARIO/log.txt 2>&1 ;
-        #---------------------------------------------------------------------------------------------------------
-        echo " "
-        echo " "
 
-        echo "verificando se a arquivos antingos no $(pwd)"
-        if [[ -d mcpe/ ]]; then
-        rm -rf mcpe/
-        fi
-        if [[ -e mcpe.zip ]];then
-        rm -rf mcpe.zip
-        fi
-
-        #copia
-        cp -rf "$PATH_TO_INSTALL/" "$PATH_TO_BACKUP"
-
-        zip "$PATHBACKUP/$BACKUP-2".zip -r "$PATH_TO_INSTALL/"
-
-        #copia de seguraça
-        mkdir "$PATH_TO_BACKUP/"
-        mkdir "$PATHBACKUP/"
-        zip  "$PATHBACKUP/$BACKUP".zip -r "$PATH_TO_INSTALL/"
-
-        if [[ -d $PATH_TO_INSTALL/ ]];then
-        rm -rf $PATH_TO_INSTALL/
-        fi
-
-        #baixar a nova versão
-        wget "$BDS" -O mcpe.zip
-        unzip mcpe.zip -d mcpe
-
-        #removendo alguns arquivos
-        rm -r mcpe/server.properties
-        rm -r mcpe/whitelist.json
-
-        # Movendo para o temp
-        mv $PATH_TO_INSTALL/ /tmp/
-
-        #copiar mundo e as configuraçoe
-        cp -r "$PATH_TO_BACKUP/worlds" "mcpe/"
-        cp "$PATH_TO_BACKUP/server.properties" "mcpe/"
-        cp "$PATH_TO_BACKUP/whitelist.json" "mcpe/"
-
-        #movendo
-        mkdir $PATH_TO_INSTALL/
-        cp -rf mcpe/* $PATH_TO_INSTALL/
-
-        #remover arquivos antigos
-        rm mcpe.zip
-        rm -rf mcpe/
-        rm -rf $PATH_TO_BACKUP
-        rm -rf $TMP_UPDATE
 }
 backupbysh23(){
       
@@ -412,6 +349,9 @@ crontab -e
 
 
 # Escolha --------------  ***  -----------
+enable_trapping
+    # Create progress bar
+    setup_scroll_area
 case $1 in
 --install | -i )  installbysh23 ;;
 --update | -u ) updatebysh23 ;;
@@ -428,7 +368,7 @@ case $1 in
 --teste ) echo "$0 $1 $2 $3 $4 $5";;
 *) echo "Exeute $0 --help - o comando $0 $1 não existe aqui";echo " "
 esac
-
+destroy_scroll_area
 
 
 # --------------- Codigo ------------------------------
