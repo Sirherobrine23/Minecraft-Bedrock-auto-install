@@ -1,9 +1,5 @@
 #!/bin/bash
-#Root
-if [ "$EUID" -ne 0 ]; then
-	echo "Você não está executando o script com root ou "
-	exit 1
-fi
+
 if [[ -e /etc/debian_version ]]; then
 	source /etc/os-release
 	OS=$ID # debian or ubuntu
@@ -11,7 +7,23 @@ else
 	echo "Você não tem instalado ou não esta com sistema Debian ou Ubuntu "
 	exit 1
 fi
+if [ "$(uname -m)" = "x86_64" ];then
+    echo "Processador (X64) AMD64, continuando"
+else
+    echo "Seu processador não é uma AMD64 (X64) ele é um $(uname -m)"
+    exit 1
+fi
+
 REMOVE=$(pwd)
+
+#Usuario
+USUARIO=$(echo $HOME)
+
+#Root
+if [ "$EUID" -ne 0 ]; then
+	echo "Você não está executando o script com root ou sudo"
+	exit 0
+fi
 if [[ $OS == 'ubuntu' ]]; then
     echo "Ubuntu detectado instalando algumas recomendações espere ..."
        apt install screen unzip dos2unix jq zip net-tools -y >>$USUARIO/log.txt 2>&1 ;
@@ -20,10 +32,6 @@ elif [[ $OS == 'debian' ]]; then
 else
       exit 1
 fi
-
-#Usuario
-USUARIO=$(cd ~/;pwd)
-
 
 
 #pode ser aqui ali ou DEBIAN
