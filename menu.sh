@@ -91,6 +91,11 @@ else
 variaveis_predefinidas
 fi
 
+limpando(){
+    rm mcpe.zip
+    rm -rf mcpe/
+}
+
 installbysh23(){
     
     
@@ -132,20 +137,89 @@ draw_progress_bar 15
 updatebysh23(){
     cat banner.txt
 
+#Preparando
+block_progress_bar 1
+echo "Backup?"
+read -rp "Nome do backup:  " -e -i "$(TZ=UTC+3 date +"%d-%m-%Y")" BACKUP
+draw_progress_bar 20
+PATH_TO_BACKUP="$HOME/MCPE-BACKUP"
+echo "$PATH_TO_BACKUP"
+mkdir "$PATH_TO_BACKUP"
+
+echo "verificando se a arquivos antingos no $(pwd)"
+if [[ -d mcpe/ ]]; then
+rm -rf mcpe/
+fi
+if [[ -e mcpe.zip ]];then
+rm -rf mcpe.zip
+fi
+draw_progress_bar 34
+
+# backup
+voltando="$(pwd)"
+cd $PATH_TO_INSTALL
+zip -q "$PATH_TO_BACKUP/$BACKUP.zip" -r *
+cp -r * $PATH_TO_BACKUP/
+cd $voltando
+
+# BDS DOWNLOADS
+draw_progress_bar 48
+wget -q "$BDS" -O mcpe.zip
+
+# descompactando 
+draw_progress_bar 50
+unzip mcpe.zip -d mcpe > /dev/null
+
+# configurando
+if [ $? -eq 0 ];then
+echo "Whitelist.json"
+rm mcpe/whitelist.json
+cp $PATH_TO_BACKUP/whitelist.json mcpe/whitelist.json
+else
+echo "$?"
+echo "Saindo error ao extrair os arquivos"
+exit 127
+fi
+
+if [ $? -eq 0 ];then
+echo "Server.properties"
+rm mcpe/server.properties
+cp $PATH_TO_BACKUP/server.properties mcpe/server.properties
+else
+echo "Saindo error no comando anterior"
+exit 127
+fi
+
+if [ $? -eq 0 ];then
+echo "Mapas/Worlds"
+rm -r mcpe/worlds
+cp $PATH_TO_BACKUP/worlds mcpe/worlds
+else
+echo "Saindo error no comando anterior"
+exit 127
+fi
+
+if [ -d $PATH_TO_INSTALL ];then
+"Movendo a instalação antiga para a pasta /tmp/"
+mv -f $PATH_TO_INSTALL /tmp/
+fi
+
+#movendo
+cp -rf mcpe/* "$PATH_TO_INSTALL"
+limpando
 }
-backupbysh23(){
-      
-      if [ -e /usr/sbin/BDS ] ; then
-      echo "Para fazer o backup coloque sim (yes) e de [enter], caso não queira, não (no) e de [enter]"
-      read -rp "Vai querer fazer o backup?  " -e -i "sim" BC
-            case $BC in
-            sim | yes ) touch $PATH_TO_INSTALL/backup.txt -a $PATH_TO_INSTALL ; echo "Vamos configurar agora o Gdrive, precisamos fazer um login na sua conta do google. nenhum dado será amarzenado pelo script." ; sleep2 ; gdrive about  ;;
-            nao | no ) exit;;
-            * ) echo "não houve escolha, saindo ..."; exit
-            esac
-      else
-      echo "não podemos cria agora, por favor execute primeiro o --fundo"
-      fi
+backupbysh23(){      
+if [ -e /usr/sbin/BDS ] ; then
+echo "Para fazer o backup coloque sim (yes) e de [enter], caso não queira, não (no) e de [enter]"
+read -rp "Vai querer fazer o backup?  " -e -i "sim" BC
+    case $BC in
+    sim | yes ) touch $PATH_TO_INSTALL/backup.txt -a $PATH_TO_INSTALL ; echo "Vamos configurar agora o Gdrive, precisamos fazer um login na sua conta do google. nenhum dado será amarzenado pelo script." ; sleep2 ; gdrive about  ;;
+    nao | no ) exit;;
+    * ) echo "não houve escolha, saindo ..."; exit
+    esac
+else
+echo "não podemos cria agora, por favor execute primeiro o --fundo"
+fi
 }
 ipbysh23(){
       #Comando --ip variaveis
@@ -261,7 +335,7 @@ sistemabysh23(){
                     dos2unix IDs.txt
                 fi
                 if [[ -e pasta.txt ]];then
-                    MINE2Sh23="$(cat ~/pasta.txt)"
+                    MINE2Sh23="$(cat $HOME/pasta.txt)"
                 else
                     read -rp "Aonde você vai quere colocar os Backups Locais (Caso queira)? " -e -i "$MINE2Sh23" MINE2Sh23
                     echo $MINE2Sh23 > pasta.txt
