@@ -1,1 +1,1 @@
-dpkg-deb -b ./ bds-install-1.0.1.deb
+dpkg-deb -b ./ ../$(cat ./DEBIAN/control | grep 'Package:' | sed 's|Package:||g')_$(cat ./DEBIAN/control | grep 'Version: ' | sed 's|Version: ||g')_$(cat ./DEBIAN/control | grep 'Architecture: ' | sed 's|Architecture: ||g').deb

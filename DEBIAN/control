@@ -1,8 +1,7 @@
-Package: bds-install
-Version: 1.0.1
+Package:bds-install
+Version: 0.6
 Priority:
 Architecture: all
 Depends: screen, unzip, dos2unix, jq, zip, unzip, net-tools
-Installed-Size: 100kb
-Maintainer: Matheus Sampaio Queiroga (Sirherobrine23)
-Description: instalador do BDS com sistemas compativeis
+Maintainer: Matheus Sampaio Queiroga (Sirherobrine23) <srherobrine20@gmail.com>
+Description: Pequeno script para a instalação do Minecraft Bedrock Server
