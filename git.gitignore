@@ -1,7 +1,6 @@
 log.txt
 *.log
 mcpe.zip
-teste*
 start.shecho
 installed.txt
 mcpe/
@@ -10,4 +9,3 @@ pasta.txt
 IDs.txt
 pasta.txt
 IDs.txt
-install.json

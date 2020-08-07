@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Bds install system
+Icon=/usr/opt/bds-install/mcpe.ico
+Comment=Pequeno shutcurt do comando bds-install
+Type=Application
+Categories=Minecraft;bds-install;
+Exec=sudo DESKTOP_GTK_SH23=yes bds-install
+StartupNotify=false
+Terminal=true
