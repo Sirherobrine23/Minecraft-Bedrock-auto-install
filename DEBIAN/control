@@ -1,7 +1,7 @@
 Package: bds-install
 Version: 1.0.1
 Priority:
-Architecture: amd64
+Architecture: all
 Depends: screen, unzip, dos2unix, jq, zip, unzip, net-tools
 Installed-Size: 100kb
 Maintainer: Matheus Sampaio Queiroga (Sirherobrine23)

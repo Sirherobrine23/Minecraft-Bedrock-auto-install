@@ -9,3 +9,5 @@ pasta.txt
 IDs.txt
 pasta.txt
 IDs.txt
+*.deb
+tmp/*

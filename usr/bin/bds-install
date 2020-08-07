@@ -208,6 +208,7 @@ printf_new() {
 root_acess(){
 if [ "$EUID" -ne 0 ]; then
 echo "Você não está executando o script com root ou sudo, por favor execute de novo o com: sudo $0 $1"
+destroy_scroll_area
 exit 0
 fi
 }

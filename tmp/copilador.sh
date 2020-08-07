@@ -1,0 +1,1 @@
+dpkg-deb -b ./ bds-install-1.0.1.deb
